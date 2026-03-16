@@ -15,7 +15,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:#111;display:flex;flex-direction:column;align-items:center;
-  min-height:100vh;padding:10px 6px 30px;font-family:'Press Start 2P',monospace;
+  min-height:100dvh;padding:6px 4px 16px;font-family:'Press Start 2P',monospace;
   background-image:radial-gradient(ellipse at 50% 0%,rgba(139,172,15,.1) 0%,transparent 60%);}
 h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(--gb0),5px 5px 0 rgba(0,0,0,.5);
   letter-spacing:5px;text-align:center;margin-bottom:4px;}
@@ -30,14 +30,14 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 #save-indicator{font-size:5px;color:var(--gb1);}
 
 /* SHELL */
-#shell{width:100%;max-width:520px;background:var(--gb0);border:4px solid var(--gb1);
-  border-radius:8px;padding:4px;box-shadow:0 0 40px rgba(139,172,15,.2),inset 0 0 20px rgba(0,0,0,.4);}
-#screen{background:var(--scr);border:3px solid var(--gb1);border-radius:4px;
-  position:relative;overflow:hidden;min-height:320px;}
+#shell{width:100%;max-width:480px;background:var(--gb0);border:3px solid var(--gb1);
+  border-radius:6px;padding:3px;box-shadow:0 0 30px rgba(139,172,15,.2),inset 0 0 16px rgba(0,0,0,.4);}
+#screen{background:var(--scr);border:2px solid var(--gb1);border-radius:4px;
+  position:relative;overflow:hidden;}
 #screen::after{content:'';position:absolute;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(15,56,15,.04) 3px,rgba(15,56,15,.04) 4px);
   pointer-events:none;z-index:200;}
-.view{display:none;width:100%;min-height:320px;flex-direction:column;}
+.view{display:none;width:100%;flex-direction:column;}
 .view.active{display:flex;}
 
 /* STARTER */
@@ -53,8 +53,8 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 .s-mv{font-size:5px;color:var(--gb0);opacity:.6;line-height:1.6;}
 
 /* WORLD */
-#view-world{padding:0;position:relative;}
-#world-canvas{display:block;width:100%;image-rendering:pixelated;cursor:none;}
+#view-world{padding:0;position:relative;line-height:0;}
+#world-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:none;aspect-ratio:2/1;}
 #world-hud{position:absolute;top:6px;left:6px;right:6px;display:flex;justify-content:space-between;
   pointer-events:none;z-index:10;flex-wrap:wrap;gap:3px;}
 .hud-box{background:rgba(15,56,15,.9);border:2px solid var(--gb2);padding:3px 6px;border-radius:2px;}
@@ -163,6 +163,8 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 .dr-tag{font-size:5px;margin-top:2px;}
 .dr-tag.c{color:var(--gb0);font-weight:bold;}.dr-tag.s{color:var(--gb1);}.dr-tag.u{opacity:.5;color:var(--gb1);}
 .dr-tag.mc{color:var(--mythic2);font-weight:bold;}.dr-tag.mu{color:var(--mythic);opacity:.6;}
+.ultra-dex{background:linear-gradient(90deg,#0a0000,#1a0005);border:1px solid #ff0044;}
+.ultra-name{color:#ff0044;text-shadow:0 0 8px #ff0044;}
 
 /* MULTIPLAYER */
 .mp-input{background:var(--gb4);border:2px solid var(--gb0);font-family:'Press Start 2P',monospace;
@@ -222,6 +224,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 @keyframes co-shake{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}
 @keyframes mythic-idle{0%,100%{transform:translateY(0);filter:drop-shadow(0 0 4px var(--mythic))}50%{transform:translateY(-3px);filter:drop-shadow(0 0 8px var(--mythic2))}}
 @keyframes mythic-idleF{0%,100%{transform:translateY(0) scaleX(-1);filter:drop-shadow(0 0 4px var(--mythic))}50%{transform:translateY(-3px) scaleX(-1);filter:drop-shadow(0 0 8px var(--mythic2))}}
+@keyframes ultra-idleF{0%,100%{transform:translateY(0) scaleX(-1);filter:drop-shadow(0 0 8px #ff0044) brightness(1.2)}50%{transform:translateY(-4px) scaleX(-1);filter:drop-shadow(0 0 16px #ff4400) brightness(1.4)}}
 @media(max-width:400px){
   #dpad{grid-template-columns:repeat(3,32px);grid-template-rows:repeat(3,32px);}
   .dp-act{width:30px;height:30px;}
@@ -281,7 +284,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/14</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/15</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -303,7 +306,8 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
     <button class="bmb" id="bm2" onclick="useMove(1)"><span id="bm2n">FIGHT</span><span class="bs" id="bm2p">PWR —</span></button>
     <button class="bmb bcatch" id="bmc" onclick="tryBall()">JAYBALL<span class="bs" id="ball-count">x0</span></button>
     <button class="bmb bitem" id="bmi" onclick="usePotionInBattle()">POTION<span class="bs" id="pot-count">x0</span></button>
-    <button class="bmb bflee" id="bmf" onclick="battleFlee()" style="grid-column:1/-1">RUN AWAY<span class="bs">escape!</span></button>
+    <button class="bmb" id="bms" onclick="openMidBattleSwitch()" style="color:#5577cc">SWITCH<span class="bs">swap jayjamon</span></button>
+    <button class="bmb bflee" id="bmf" onclick="battleFlee()" style="border-right:none">RUN<span class="bs">escape!</span></button>
    </div>
   </div>
 
@@ -318,7 +322,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-menu">
    <div class="panel-title">MENU</div>
    <button class="menu-btn" onclick="showView('world');startWalk()">▸ BACK TO WORLD<span class="ms">resume exploring</span></button>
-   <button class="menu-btn" onclick="showView('dex');renderDex()">▸ JAYDEX<span class="ms">14 Jayjamon total</span></button>
+   <button class="menu-btn" onclick="showView('dex');renderDex()">▸ JAYDEX<span class="ms">14 Jayjamon + SONNY</span></button>
    <button class="menu-btn" onclick="openBag()">▸ BAG<span class="ms">items &amp; jayballs</span></button>
    <button class="menu-btn" onclick="showView('mp')">▸ MULTIPLAYER<span class="ms">battle online</span></button>
    <button class="menu-btn" onclick="doSave()">▸ SAVE GAME<span class="ms">saves to your account</span></button>
@@ -356,6 +360,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
    <div class="shop-item"><div class="si-info"><div class="si-name">MYTH JAYBALL</div><div class="si-desc">For mythical Jayjamon!</div></div><button class="si-buy" onclick="buyItem('mythball')">₽500</button></div>
    <div class="shop-item"><div class="si-info"><div class="si-name">POTION</div><div class="si-desc">Restores 30 HP</div></div><button class="si-buy" onclick="buyItem('potion')">₽80</button></div>
    <div class="shop-item"><div class="si-info"><div class="si-name">SUPER POTION</div><div class="si-desc">Restores 100 HP</div></div><button class="si-buy" onclick="buyItem('superpotion')">₽150</button></div>
+   <div class="shop-item" style="border-color:var(--mythic2);background:linear-gradient(90deg,#1a0010,#0d0018)"><div class="si-info"><div class="si-name" style="color:var(--mythic2)">ZA BIG ZOUP 🍲</div><div class="si-desc" style="color:var(--mythic2);opacity:1">Levels active Jayjamon +5!</div></div><button class="si-buy" style="border-color:var(--mythic2);color:var(--mythic2)" onclick="buyItem('bigzoup')">₽999</button></div>
    <button class="back-btn" onclick="showView('world');startWalk()">◂ LEAVE SHOP</button>
   </div>
 
@@ -816,10 +821,10 @@ const JAY={
   alby:{name:'ALBY',type:'Tiny/Speedy',baseHp:55,baseAtk:58,draw:sAlby,mythic:false,
     desc:'Incredibly small. Hard to hit. Surprisingly fierce.',
     moves:[{name:'MICRO BITE',pwr:55},{name:'TINY TACKLE',pwr:42}]},
-  sonny:{name:'SONNY G.B.',type:'UNSTOPPABLE',baseHp:999,baseAtk:9999,draw:sSonny,mythic:false,
-    desc:'Sonny Gordon Beasly. One-shots JAYJ. No exceptions.',
-    moves:[{name:'THE BEASLY SPECIAL',pwr:9999},{name:"GORDON'S WRATH",pwr:9999}],
-    specialVs:{jayj:'oneshot'}},
+  sonny:{name:'SONNY G.B.',type:'ULTRA GOD BEAST MYTHICAL LEGEND',baseHp:9999,baseAtk:99999,draw:sSonny,mythic:true,ultraGod:true,spawnOnce:true,
+    desc:'Sonny Gordon Beasly transcended all known tiers. Only reachable after conquering ALL mythicals. One-shots JAYJ and OMEGA JAYJ. The Fields are his domain.',
+    moves:[{name:'THE BEASLY SPECIAL',pwr:99999},{name:"GORDON'S WRATH",pwr:88888}],
+    specialVs:{jayj:'oneshot',omegajayj:'oneshot'}},
   googspice:{name:'GOOG SPICE',type:'MYTHIC/Volcano',baseHp:380,baseAtk:220,draw:sGoogSpice,mythic:true,spawnOnce:true,
     desc:'Born from the volcano\'s core. Made of pure condensed spice and magma. Only ONE exists.',
     moves:[{name:'SPICE ERUPTION',pwr:200},{name:'MAGMA SURGE',pwr:180}]},
@@ -848,7 +853,7 @@ const G={
   phase:'starter',party:[],activeIdx:0,
   caught:new Set(),seen:new Set(),
   battles:0,wins:0,money:500,
-  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0},
+  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0},
   enemy:null,locked:false,over:false,
   peer:null,conn:null,mpMyTurn:false,mpPeerPos:null,
 };
@@ -856,8 +861,43 @@ function newInst(key,lv){
   lv=lv||(Math.floor(Math.random()*5)+3);
   const d=JAY[key];
   if(d.mythic)lv=Math.max(lv,45)+Math.floor(Math.random()*10);
-  const hp=Math.floor(d.baseHp+lv*4+Math.random()*8);
-  return{key,hp,maxHp:hp,lv};
+  const hp=calcMaxHp(key,lv);
+  return{key,hp,maxHp:hp,lv,exp:0,expToNext:expNeeded(lv)};
+}
+function calcMaxHp(key,lv){
+  return Math.floor(JAY[key].baseHp+lv*5);
+}
+function expNeeded(lv){return Math.floor(lv*lv*1.5+50);}
+
+// Level up a party member N times, updating stats
+function levelUpInst(inst,times=1){
+  const d=JAY[inst.key];
+  let levelled=false;
+  for(let i=0;i<times;i++){
+    inst.lv=Math.min(100,inst.lv+1);
+    const newMax=calcMaxHp(inst.key,inst.lv);
+    const hpGain=newMax-inst.maxHp;
+    inst.maxHp=newMax;
+    inst.hp=Math.min(inst.maxHp,inst.hp+hpGain);
+    inst.exp=0;
+    inst.expToNext=expNeeded(inst.lv);
+    levelled=true;
+  }
+  return levelled;
+}
+
+// Award exp to active jayjamon after winning a battle
+function awardExp(winner, defeatedLv, isMythic){
+  if(!winner)return null;
+  const base=Math.floor(defeatedLv*3*(isMythic?8:1));
+  winner.exp=(winner.exp||0)+base;
+  if(!winner.expToNext)winner.expToNext=expNeeded(winner.lv);
+  if(winner.exp>=winner.expToNext){
+    const oldLv=winner.lv;
+    levelUpInst(winner,1);
+    return{levelled:true,oldLv,newLv:winner.lv,expGained:base};
+  }
+  return{levelled:false,expGained:base};
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -868,14 +908,14 @@ const TILE={COLS:64,ROWS:36};
 const T_GRASS=0,T_TALL=1,T_PATH=2,T_WALL=3,T_WATER=4,
       T_CENTER=5,T_SHOP=6,T_SIGN=7,T_TREE=8,T_FLOWER=9,
       T_LAVA=10,T_ROCK=11,T_SNOW=12,T_ICE=13,T_DARK=14,T_PORTAL=15,
-      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19;
+      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21;
 const TILE_COLORS={[T_GRASS]:'#3a7a3a',[T_TALL]:'#1e5c1e',[T_PATH]:'#a08060',
   [T_WALL]:'#8b4513',[T_WATER]:'#3060a8',[T_CENTER]:'#e03050',[T_SHOP]:'#d0a030',
   [T_SIGN]:'#c08040',[T_TREE]:'#226622',[T_FLOWER]:'#4a9a4a',[T_LAVA]:'#cc3300',
   [T_ROCK]:'#886644',[T_SNOW]:'#ddeeff',[T_ICE]:'#aaccee',[T_DARK]:'#110022',
   [T_PORTAL]:'#660099',[T_MOUNTAIN]:'#887766',[T_CITY]:'#667788',
-  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028'};
-const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR];
+  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a'};
+const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL];
 
 function buildMap(){
   const C=TILE.COLS,R=TILE.ROWS,m=[];
@@ -922,6 +962,14 @@ function buildMap(){
   m[26][13]=T_LAIR_WALL;m[26][14]=T_LAIR_WALL;
   for(let r=17;r<21;r++){m[r][14]=T_PATH;m[r][15]=T_PATH;m[r][16]=T_PATH;}
   for(let r=10;r<20;r++){m[r][45]=T_PATH;m[r][46]=T_PATH;}
+  // THE FIELDS — accessible from east end of path, rows 8-34, cols 60-63
+  for(let r=1;r<TILE.ROWS-1;r++){m[r][61]=T_FIELD;m[r][62]=T_FIELD;m[r][63]=T_WALL;}
+  // Field tall grass for Sonny and mid-level encounters
+  for(let r=3;r<30;r++){m[r][61]=T_FIELD_TALL;m[r][62]=T_FIELD_TALL;}
+  // Connect to path at rows 9-10 col 60
+  m[9][60]=T_PATH;m[9][61]=T_PATH;m[10][60]=T_PATH;m[10][61]=T_PATH;
+  // Wall the top/bottom of fields
+  for(let c=61;c<TILE.COLS-1;c++){m[0][c]=T_WALL;m[TILE.ROWS-1][c]=T_WALL;}
   return m;
 }
 const WORLD_MAP=buildMap();
@@ -937,6 +985,7 @@ const GRASS_ZONES=[
   {r1:28,c1:46,r2:32,c2:58,pool:['jayj','oscar','omegajayj'],mythicKey:'omegajayj'},
   {r1:23,c1:3,r2:31,c2:13, pool:['rotoscoperocco'],mythicKey:'rotoscoperocco'},
   {r1:23,c1:15,r2:31,c2:26,pool:['terry'],         mythicKey:'terry'},
+  {r1:1,c1:61,r2:35,c2:62,  pool:['sonny'],          mythicKey:'sonny', fieldsGate:true, midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby']},
 ];
 const REGION_BOUNDS=[
   {name:'VOLCANO',   r1:1,c1:32,r2:16,c2:61},
@@ -944,6 +993,7 @@ const REGION_BOUNDS=[
   {name:'BIRMINGHAM',r1:19,c1:31,r2:34,c2:61},
   {name:'MYTH.LAIR', r1:19,c1:1,r2:34,c2:29},
   {name:'TOWN',      r1:1,c1:1,r2:18,c2:31},
+  {name:'FIELDS',    r1:1,c1:60,r2:35,c2:63},
 ];
 function getRegion(r,c){for(const b of REGION_BOUNDS)if(r>=b.r1&&r<=b.r2&&c>=b.c1&&c<=b.c2)return b.name;return'WORLD';}
 function getTileZone(r,c){for(const z of GRASS_ZONES)if(r>=z.r1&&r<=z.r2&&c>=z.c1&&c<=z.c2)return z;return null;}
@@ -1061,6 +1111,8 @@ function renderWorld(){
       else if(t===T_LAIR_WALL){ctx.fillStyle='#440055';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);ctx.fillStyle='#220033';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,12,12);}
       else if(t===T_SIGN){ctx.fillStyle='#c0a060';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+3,6,8);ctx.fillStyle='#8b6030';ctx.fillRect(c*RENDER_TILE+7,r*RENDER_TILE+11,2,5);}
       else if(t===T_FLOWER){ctx.fillStyle='#ffdd00';ctx.beginPath();ctx.arc(c*RENDER_TILE+8,r*RENDER_TILE+8,2,0,Math.PI*2);ctx.fill();}
+      else if(t===T_FIELD){ctx.fillStyle='#4a8a1a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+6,2,8);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+4,2,10);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+7,2,7);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+5,2,9);}
+      else if(t===T_FIELD_TALL){ctx.fillStyle='#1a5a0a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+2,2,12);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE,2,14);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,11);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+1,2,13);ctx.fillStyle='#3a9a1a';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,2);ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE,3,2);}
     }
   }
   // peer
@@ -1108,7 +1160,7 @@ function startWalk(){
         const reg=getRegion(nr,nc);
         if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
         document.getElementById('hud-region').textContent=reg;
-        const tallTypes=[T_TALL,T_LAVA,T_DARK];
+        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL];
         if(tallTypes.includes(t)){
           PLAYER.grassSteps++;
           if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
@@ -1132,15 +1184,65 @@ function stopWalk(){
 
 function showRegionBanner(name){
   const b=document.getElementById('region-banner');
-  const labels={'TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR'};
+  const labels={'TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS'};
   b.textContent=labels[name]||name;b.style.display='block';
   setTimeout(()=>b.style.display='none',2500);
+}
+
+const MYTHIC_KEYS=['googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
+
+function allMythicsDone(){
+  return MYTHIC_KEYS.every(k=>G.caught.has(k)||SPAWNED_MYTHICS.has(k)&&G.party.some(p=>p.key===k));
+}
+function allMythicsCaught(){
+  return MYTHIC_KEYS.every(k=>G.caught.has(k));
 }
 
 function triggerEncounter(r,c){
   stopWalk();
   const zone=getTileZone(r,c);
   if(!zone){startWalk();return;}
+
+  // FIELDS GATE: only accessible after all 5 mythicals caught or fainted
+  if(zone.fieldsGate){
+    if(!allMythicsDone()){
+      toast('The Fields are sealed...\nCatch or face all Mythicals first!');
+      startWalk();return;
+    }
+    // Sonny spawn check
+    const sonnyCaught=G.caught.has('sonny');
+    const sonnySpawned=SPAWNED_MYTHICS.has('sonny');
+    // Mix: sometimes Sonny, sometimes mid-level jayjamon
+    const rollForSonny=!sonnyCaught&&Math.random()<0.25;
+    if(rollForSonny){
+      SPAWNED_MYTHICS.add('sonny');G.seen.add('sonny');
+      G.enemy=newInst('sonny',80+Math.floor(Math.random()*20));
+      G.battles++;G.over=false;G.locked=false;
+      document.getElementById('mythic-flash').style.display='block';
+      setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+      setTimeout(()=>{
+        showView('battle');
+        const bf=document.getElementById('bf');
+        bf.classList.add('mythic-bg');
+        bf.style.background='linear-gradient(180deg,#000000 0%,#0a0000 50%,#1a0000 100%)';
+        refreshBattleUI(true);
+        setBT('⚡ SONNY GORDON BEASLY APPEARS! ⚡',false);
+      },300);
+      return;
+    }
+    // Mid-level fields jayjamon
+    const midPool=zone.midPool||['indie','jesse','rohan'];
+    const key=midPool[Math.floor(Math.random()*midPool.length)];
+    G.seen.add(key);
+    const lv=Math.floor(Math.random()*15)+15; // mid-level 15-30
+    G.enemy=newInst(key,lv);
+    G.battles++;G.over=false;G.locked=false;
+    showView('battle');refreshBattleUI(false);
+    setBT(`${JAY[key].name}!`,false);
+    scheduleAutoSave();
+    return;
+  }
+
   if(zone.mythicKey){
     const key=zone.mythicKey;
     if(G.caught.has(key)&&Math.random()<0.75){startWalk();return;}
@@ -1149,7 +1251,7 @@ function triggerEncounter(r,c){
     G.enemy=newInst(key);G.battles++;G.over=false;G.locked=false;
     document.getElementById('mythic-flash').style.display='block';
     setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
-    setTimeout(()=>{showView('battle');refreshBattleUI(true);setBT(`✨ ${JAY[key].name}!`,true);},300);
+    setTimeout(()=>{showView('battle');refreshBattleUI(true);setBT(`✨ ${JAY[key].name}!`,false);},300);
     return;
   }
   const available=zone.pool.filter(k=>!G.caught.has(k)||Math.random()<0.3);
@@ -1257,7 +1359,7 @@ function healAll(){
 }
 function updateShopMoney(){document.getElementById('shop-money').textContent=`₽${G.money}`;}
 function buyItem(item){
-  const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150};
+  const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150,bigzoup:999};
   const cost=prices[item];
   if(G.money<cost){toast('NOT ENOUGH ₽!');return;}
   G.money-=cost;G.bag[item]=(G.bag[item]||0)+1;
@@ -1266,7 +1368,7 @@ function buyItem(item){
 function openBag(){showView('bag');renderBag();}
 function renderBag(){
   const el=document.getElementById('bag-list');el.innerHTML='';
-  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x'};
+  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x'};
   Object.entries(items).forEach(([k,n])=>{
     const div=document.createElement('div');div.className='bag-item';
     div.innerHTML=`<div class="bi-name">${n}${G.bag[k]||0}</div>`;
@@ -1293,7 +1395,8 @@ function renderDex(){
 function refreshBattleUI(isMythic=false){
   const en=G.enemy,pl=G.party[G.activeIdx];
   const ed=JAY[en.key],pd=JAY[pl.key];
-  const mAnim=isMythic?'mythic-idleF 1.6s ease-in-out infinite':'s-idleF 1.4s ease-in-out infinite';
+  const isUltraG=G.enemy&&(JAY[G.enemy.key]?.ultraGod||false);
+  const mAnim=isUltraG?'ultra-idleF 1.8s ease-in-out infinite':isMythic?'mythic-idleF 1.6s ease-in-out infinite':'s-idleF 1.4s ease-in-out infinite';
   const pAnim=isMythic?'mythic-idle 1.6s ease-in-out infinite':'s-idle 1.4s ease-in-out infinite';
   document.getElementById('esp').innerHTML=`<div style="width:100%;height:100%;animation:${mAnim};transform-origin:center">${ed.draw()}</div>`;
   document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:${pAnim}">${pd.draw()}</div>`;
@@ -1308,7 +1411,7 @@ function refreshBattleUI(isMythic=false){
   setHP('e',en.hp,en.maxHp,isMythic);setHP('p',pl.hp,pl.maxHp,false);
   pd.moves.forEach((mv,i)=>{document.getElementById(`bm${i+1}n`).textContent=mv.name;document.getElementById(`bm${i+1}p`).textContent=`PWR:${mv.pwr}`;});
   document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
-  document.getElementById('pot-count').textContent=`x${(G.bag.potion||0)+(G.bag.superpotion||0)}`;
+  document.getElementById('pot-count').textContent=`x${(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)}`;
   document.getElementById('btc').style.display='none';
   lockBtns(false);
 }
@@ -1325,7 +1428,7 @@ function setBT(msg,cursor=false){
 }
 function lockBtns(v){
   G.locked=v;
-  ['bm1','bm2','bmc','bmi','bmf'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
+  ['bm1','bm2','bmc','bmi','bmf','bms'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
 }
 function calcDmg(atk,pwr,lv){return Math.max(1,Math.floor(atk*pwr/100*(0.85+Math.random()*0.15)+lv*0.5));}
 
@@ -1359,8 +1462,18 @@ async function useMove(idx){
     G.wins++;G.over=true;
     if(ew)ew.style.animation='s-faint 0.5s ease forwards';
     await sleep(600);
-    setBT(JAY[en.key].mythic?`${ed.name} vanished!`:`${ed.name} fainted!`,true);
-    await sleep(2000);endBattle(false);return;
+    // Award EXP
+    const winner=G.party[G.activeIdx];
+    const expResult=awardExp(winner,en.lv,JAY[en.key].mythic||JAY[en.key].ultraGod);
+    if(expResult&&expResult.levelled){
+      setBT(`${JAY[en.key].mythic||JAY[en.key].ultraGod?ed.name+' vanished!':ed.name+' fainted!'} ${winner?JAY[winner.key].name:''} grew to Lv.${expResult.newLv}! ✨`);
+      document.getElementById('bfplv').textContent='Lv.'+winner.lv;
+      setHP('p',winner.hp,winner.maxHp);
+    } else {
+      const gained=expResult?expResult.expGained:0;
+      setBT(JAY[en.key].mythic||JAY[en.key].ultraGod?`${ed.name} vanished! +${gained}EXP`:`${ed.name} fainted! +${gained}EXP`,true);
+    }
+    await sleep(2200);endBattle(false);return;
   }
   await sleep(400);await enemyTurn();
 }
@@ -1398,6 +1511,41 @@ async function enemyTurn(){
   setBT('Choose your move!',false);
 }
 
+// MID-BATTLE SWITCH (voluntary)
+function openMidBattleSwitch(){
+  if(G.locked||G.over)return;
+  // Build switch screen — show all living party members except current
+  const list=document.getElementById('sel-list');list.innerHTML='';
+  const others=G.party.filter((p,i)=>i!==G.activeIdx&&p.hp>0);
+  if(others.length===0){setBT("No other Jayjamon to switch to!");return;}
+  // Temporarily set a flag so after switch, enemy gets free turn
+  G._midBattleSwitch=true;
+  const hd=document.createElement('div');
+  hd.style.cssText='font-size:6px;color:var(--gb1);text-align:center;padding:4px';
+  hd.textContent='Switch to which Jayjamon?';
+  list.appendChild(hd);
+  others.forEach(inst=>{
+    const i=G.party.indexOf(inst),d=JAY[inst.key];
+    const card=document.createElement('div');card.className='sel-card';
+    card.innerHTML=`<div class="sc-sw">${d.draw()}</div><div><div class="sc-name">${d.name} Lv.${inst.lv}</div><div class="sc-hp">${inst.hp}/${inst.maxHp} HP</div></div>`;
+    card.onclick=async()=>{
+      G.activeIdx=i;G.over=false;
+      showView('battle');refreshBattleUI(JAY[G.enemy?.key||'indie']?.mythic||false);
+      setBT(`Go, ${d.name}!`,false);
+      // Enemy gets a free attack after switch
+      await sleep(600);
+      await enemyTurn();
+    };
+    list.appendChild(card);
+  });
+  // Add cancel button
+  const cancel=document.createElement('button');
+  cancel.className='back-btn';cancel.textContent='◂ CANCEL';cancel.style.marginTop='8px';
+  cancel.onclick=()=>{G._midBattleSwitch=false;showView('battle');};
+  list.appendChild(cancel);
+  showView('select');
+}
+
 function checkNextFighter(){
   const alive=G.party.filter(p=>p.hp>0);
   if(alive.length===0){showView('gameover');document.getElementById('go-text').textContent=`All fainted after ${G.battles} battles!`;return;}
@@ -1406,7 +1554,7 @@ function checkNextFighter(){
     const i=G.party.indexOf(inst),d=JAY[inst.key];
     const card=document.createElement('div');card.className='sel-card';
     card.innerHTML=`<div class="sc-sw">${d.draw()}</div><div><div class="sc-name">${d.name} Lv.${inst.lv}</div><div class="sc-hp">${inst.hp}/${inst.maxHp} HP</div></div>`;
-    card.onclick=()=>{G.activeIdx=i;G.over=false;showView('battle');refreshBattleUI(JAY[G.enemy?.key||'indie']?.mythic||false);setBT(`Go, ${d.name}!`,true);lockBtns(false);};
+    card.onclick=()=>{G.activeIdx=i;G.over=false;showView('battle');refreshBattleUI(JAY[G.enemy?.key||'indie']?.mythic||false);setBT(`Go, ${d.name}!`,false);lockBtns(false);setBT('Choose your move!',false);};
     list.appendChild(card);
   });
   showView('select');
@@ -1449,10 +1597,20 @@ async function tryBall(){
 
 async function usePotionInBattle(){
   if(G.locked||G.over)return;
-  if(!(G.bag.potion||0)&&!(G.bag.superpotion||0)){setBT('No potions!');return;}
+  const hasPot=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)>0;
+  if(!hasPot){setBT('No potions!');return;}
   lockBtns(true);
   const pl=G.party[G.activeIdx],pd=JAY[pl.key];
   let heal=30;
+  if(G.bag.bigzoup>0){
+    G.bag.bigzoup--;
+    levelUpInst(pl,5);
+    setHP('p',pl.hp,pl.maxHp);
+    document.getElementById('bfplv').textContent='Lv.'+pl.lv;
+    document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0));
+    setBT(`Za Big Zoup! ${pd.name} grew to Lv.${pl.lv}! 🍲`);
+    await sleep(1200);lockBtns(false);setBT('Choose your move!',false);return;
+  }
   if(G.bag.superpotion>0){G.bag.superpotion--;heal=100;}else G.bag.potion--;
   pl.hp=Math.min(pl.maxHp,pl.hp+heal);
   setHP('p',pl.hp,pl.maxHp);
@@ -1471,7 +1629,7 @@ function endBattle(caught){
   updateHUD();
   if(G.caught.size>=TOTAL){
     showView('win');
-    document.getElementById('win-txt').innerHTML=`Battles:${G.battles} · Wins:${G.wins}<br>All ${TOTAL} caught!`;
+    document.getElementById('win-txt').innerHTML=`Battles:${G.battles} · Wins:${G.wins}<br>All ${TOTAL} Jayjamon caught!<br>Even Sonny G.B. himself!`;
     doSave();return;
   }
   showView('world');startWalk();scheduleAutoSave();
@@ -2095,7 +2253,7 @@ function devExec(cmd){
           const reg=getRegion(nr,nc);
           if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
           document.getElementById('hud-region').textContent=reg;
-          const tallTypes=[T_TALL,T_LAVA,T_DARK];
+          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL];
           if(tallTypes.includes(t)&&!window._noEncounters){
             PLAYER.grassSteps++;
             if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
