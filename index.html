@@ -235,10 +235,31 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 <!-- ACCOUNT BAR -->
 <div id="acct-bar">
   <span id="acct-name">Not signed in</span>
-  <button id="btn-signin" onclick="doSignIn()">🔑 SIGN IN WITH GOOGLE</button>
+  <button id="btn-signin" onclick="showLoginModal()">🔑 SIGN IN</button>
   <button id="btn-signout" style="display:none" onclick="doSignOut()">SIGN OUT</button>
   <button id="btn-save" style="display:none" onclick="doSave()">💾 SAVE</button>
   <span id="save-indicator"></span>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="login-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;padding:10px;">
+  <div style="background:var(--gb0);border:3px solid var(--gb2);padding:20px 18px;max-width:310px;width:100%;border-radius:4px;font-family:'Press Start 2P',monospace;">
+    <div style="font-size:9px;color:var(--gb2);margin-bottom:14px;text-align:center" id="login-title">SIGN IN</div>
+    <div style="font-size:6px;color:var(--gb4);margin-bottom:5px">USERNAME</div>
+    <input id="login-user" type="text" maxlength="20" autocomplete="username"
+      style="width:100%;background:var(--gb4);border:2px solid var(--gb1);font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gb0);padding:7px 8px;border-radius:2px;outline:none;margin-bottom:10px;display:block">
+    <div style="font-size:6px;color:var(--gb4);margin-bottom:5px">PASSWORD</div>
+    <input id="login-pass" type="password" maxlength="40" autocomplete="current-password"
+      style="width:100%;background:var(--gb4);border:2px solid var(--gb1);font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gb0);padding:7px 8px;border-radius:2px;outline:none;margin-bottom:6px;display:block"
+      onkeydown="if(event.key==='Enter')loginSubmit()">
+    <div id="login-err" style="font-size:5px;color:var(--red);min-height:14px;margin-bottom:8px;text-align:center"></div>
+    <div style="display:flex;gap:8px">
+      <button onclick="loginSubmit()" style="flex:1;background:var(--gb2);border:2px solid var(--gb0);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb0);padding:8px 4px;cursor:pointer;border-radius:2px" id="login-btn">SIGN IN</button>
+      <button onclick="loginToggleMode()" style="flex:1;background:var(--gb1);border:2px solid var(--gb0);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb4);padding:8px 4px;cursor:pointer;border-radius:2px" id="login-toggle">REGISTER</button>
+      <button onclick="hideLoginModal()" style="background:none;border:2px solid var(--red);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);padding:8px 10px;cursor:pointer;border-radius:2px">X</button>
+    </div>
+    <div style="font-size:5px;color:var(--gb1);text-align:center;margin-top:10px;line-height:1.7">Saves stored on this device.<br>Use same browser to load saves.</div>
+  </div>
 </div>
 
 <div id="shell">
@@ -258,7 +279,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 
   <!-- WORLD -->
   <div class="view" id="view-world">
-   <canvas id="world-canvas" width="512" height="288"></canvas>
+   <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
     <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/14</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
@@ -272,7 +293,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <!-- BATTLE -->
   <div class="view" id="view-battle">
    <div id="bf">
-    <canvas id="battle-fx-canvas" width="512" height="190" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;display:none;"></canvas>
+    <canvas id="battle-fx-canvas" width="480" height="190" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;display:none;"></canvas>
     <div class="ep"><div class="bfi" id="bfi-e"><div class="bfn" id="bfen">???</div><div class="bflv" id="bfelv">Lv.?</div><div class="bfhl">HP</div><div class="bfht"><div class="bfhf" id="bfehf" style="width:100%"></div></div><div class="bfhn" id="bfehn">—</div></div><div class="bsw" id="esp"></div></div>
     <div class="pp"><div class="bsw" id="psp"></div><div class="bfi"><div class="bfn" id="bfpn">???</div><div class="bflv" id="bfplv">Lv.?</div><div class="bfhl">HP</div><div class="bfht"><div class="bfhf" id="bfphf" style="width:100%"></div></div><div class="bfhn" id="bfphn">—</div></div></div>
    </div>
@@ -338,17 +359,60 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
    <button class="back-btn" onclick="showView('world');startWalk()">◂ LEAVE SHOP</button>
   </div>
 
-  <!-- MULTIPLAYER -->
+  <!-- MULTIPLAYER LOBBY -->
   <div class="view" id="view-mp">
-   <div class="panel-title">📡 MULTIPLAYER</div>
-   <div class="mp-status" id="mp-status">Not connected. Get a room code!</div>
-   <div class="mp-label">YOUR CODE:</div>
-   <div class="mp-input" id="my-code" style="background:var(--gb2)">—</div>
-   <button class="menu-btn" onclick="mpInit()">▸ GET MY ROOM CODE</button>
-   <div class="mp-label">JOIN A FRIEND:</div>
-   <input class="mp-input" id="join-code" placeholder="ENTER CODE" maxlength="8" oninput="this.value=this.value.toUpperCase()">
-   <button class="menu-btn" onclick="mpJoin()">▸ CONNECT TO FRIEND</button>
+   <div class="panel-title">📡 MULTIPLAYER 1v1</div>
+   <div class="mp-status" id="mp-status">Share a code to battle a friend!</div>
+   <div class="mp-label" style="margin-top:4px">YOUR ROOM CODE:</div>
+   <div class="mp-input" id="my-code" style="background:var(--gb2);margin-bottom:6px">—</div>
+   <button class="menu-btn" onclick="mpInit()">▸ CREATE ROOM<span class="ms">get a code to share</span></button>
+   <div style="border-top:1px solid var(--gb1);margin:4px 0"></div>
+   <div class="mp-label">JOIN A FRIEND'S ROOM:</div>
+   <input class="mp-input" id="join-code" placeholder="ENTER THEIR CODE" maxlength="8" style="margin-bottom:6px" oninput="this.value=this.value.toUpperCase()">
+   <button class="menu-btn" onclick="mpJoin()">▸ JOIN ROOM<span class="ms">enter a friend's code</span></button>
+   <button class="menu-btn" id="mp-battle-btn" style="display:none;background:#1a4a1a;border-color:var(--gb2)" onclick="mpSendChallenge()">⚔️ BATTLE!<span class="ms">challenge your opponent</span></button>
    <button class="back-btn" onclick="showView('menu')">◂ BACK</button>
+  </div>
+
+  <!-- MP BATTLE VIEW -->
+  <div class="view" id="view-mp-battle">
+   <div id="bf" style="height:185px;position:relative;overflow:hidden">
+    <canvas id="battle-fx-canvas-mp" width="480" height="185" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;display:none;"></canvas>
+    <div class="ep">
+      <div class="bfi">
+        <div class="bfn" id="mp-op-name">???</div>
+        <div class="bflv" id="mp-op-lv">Lv.?</div>
+        <div class="bfhl">HP</div>
+        <div class="bfht"><div class="bfhf" id="mp-op-hp-fill" style="width:100%"></div></div>
+        <div class="bfhn" id="mp-op-hp-num">—</div>
+      </div>
+      <div class="bsw" id="mp-op-sprite"></div>
+    </div>
+    <div class="pp">
+      <div class="bsw" id="mp-my-sprite"></div>
+      <div class="bfi">
+        <div class="bfn" id="mp-my-name">???</div>
+        <div class="bflv" id="mp-my-lv">Lv.?</div>
+        <div class="bfhl">HP</div>
+        <div class="bfht"><div class="bfhf" id="mp-my-hp-fill" style="width:100%"></div></div>
+        <div class="bfhn" id="mp-my-hp-num">—</div>
+      </div>
+    </div>
+   </div>
+   <div style="background:var(--gb4);border-bottom:2px solid var(--gb1);padding:8px 10px;min-height:50px;font-size:7px;color:var(--gb0);line-height:1.9">
+    <span id="mp-btb">Waiting...</span><span id="mp-btc" style="display:none;width:7px;height:7px;background:var(--gb0);display:inline-block;margin-left:4px;animation:blink .7s step-end infinite"></span>
+   </div>
+   <div style="background:var(--scr);display:grid;grid-template-columns:1fr 1fr">
+    <button class="bmb" id="mp-atk1" onclick="mpUseMove(0)" disabled>
+      <span id="mp-mv1-name">MOVE 1</span><span class="bs" id="mp-mv1-pwr">PWR —</span>
+    </button>
+    <button class="bmb" id="mp-atk2" onclick="mpUseMove(1)" disabled>
+      <span id="mp-mv2-name">MOVE 2</span><span class="bs" id="mp-mv2-pwr">PWR —</span>
+    </button>
+    <button class="bmb bflee" id="mp-flee-btn" onclick="mpFlee()" style="grid-column:1/-1" disabled>
+      RUN AWAY<span class="bs">forfeit match</span>
+    </button>
+   </div>
   </div>
 
   <!-- DEV CONSOLE -->
@@ -411,109 +475,103 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 
 <script>
 // ═══════════════════════════════════════════
-//  FIREBASE AUTH / SAVE
+//  LOCAL ACCOUNT SYSTEM (localStorage)
 // ═══════════════════════════════════════════
 let currentUser=null;
 let autoSaveTimer=null;
+let loginIsRegister=false;
 
-async function initFirebase(){
-  try{
-    const{initializeApp}=await import('firebase/app');
-    const{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}=await import('firebase/auth');
-    const{getFirestore,doc,setDoc,getDoc}=await import('firebase/firestore');
-    // ── REPLACE this config with your own Firebase project config ──
-    const cfg={
-      apiKey:"AIzaSyDemo_ReplaceThis",
-      authDomain:"jayjamon-game.firebaseapp.com",
-      projectId:"jayjamon-game"
-    };
-    const app=initializeApp(cfg);
-    const auth=getAuth(app);
-    const db=getFirestore(app);
-    const prov=new GoogleAuthProvider();
-    window._fbSignIn=()=>signInWithPopup(auth,prov).then(r=>fbAuthSuccess(r.user)).catch(e=>toast('Sign-in failed:\n'+e.message));
-    window._fbSignOut=()=>signOut(auth).then(fbAuthSignedOut);
-    window._fbSave=async(uid,data)=>setDoc(doc(db,'saves',uid),data);
-    window._fbLoad=async(uid)=>{const d=await getDoc(doc(db,'saves',uid));return d.exists()?d.data():null;};
-    onAuthStateChanged(auth,user=>{if(user)fbAuthSuccess(user);else fbAuthSignedOut();});
-  }catch(e){
-    window._fbSignIn=()=>toast('Add your Firebase config\nto enable Google login!');
-    window._fbSignOut=()=>{};
-    window._fbSave=async()=>{};
-    window._fbLoad=async()=>null;
+function simpleHash(str){
+  let h=0;for(let i=0;i<str.length;i++)h=Math.imul(31,h)+str.charCodeAt(i)|0;return h.toString(16);
+}
+function showLoginModal(){
+  loginIsRegister=false;
+  document.getElementById('login-title').textContent='SIGN IN';
+  document.getElementById('login-btn').textContent='SIGN IN';
+  document.getElementById('login-toggle').textContent='REGISTER';
+  document.getElementById('login-err').textContent='';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+  document.getElementById('login-modal').style.display='flex';
+  setTimeout(()=>document.getElementById('login-user').focus(),60);
+}
+function hideLoginModal(){document.getElementById('login-modal').style.display='none';}
+function loginToggleMode(){
+  loginIsRegister=!loginIsRegister;
+  document.getElementById('login-title').textContent=loginIsRegister?'REGISTER':'SIGN IN';
+  document.getElementById('login-btn').textContent=loginIsRegister?'CREATE ACCOUNT':'SIGN IN';
+  document.getElementById('login-toggle').textContent=loginIsRegister?'BACK TO LOGIN':'REGISTER';
+  document.getElementById('login-err').textContent='';
+}
+function loginSubmit(){
+  const user=document.getElementById('login-user').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-err');
+  if(!user||user.length<2){err.textContent='Username too short!';return;}
+  if(!pass||pass.length<4){err.textContent='Password min 4 chars!';return;}
+  const key='jayjamon_acct_'+user.toLowerCase();
+  const hash=simpleHash(pass+user.toLowerCase());
+  if(loginIsRegister){
+    if(localStorage.getItem(key)){err.textContent='Username already taken!';return;}
+    localStorage.setItem(key,hash);
+    err.style.color='#8bac0f';err.textContent='Account created! Signing in...';
+    setTimeout(()=>{hideLoginModal();localAuthSuccess(user);},700);
+  } else {
+    const stored=localStorage.getItem(key);
+    if(!stored){err.textContent='User not found!';return;}
+    if(stored!==hash){err.textContent='Wrong password!';return;}
+    hideLoginModal();localAuthSuccess(user);
   }
 }
-initFirebase();
-
-function doSignIn(){if(window._fbSignIn)_fbSignIn();else toast('Loading Firebase...');}
-function doSignOut(){if(window._fbSignOut)_fbSignOut();}
-
-function fbAuthSuccess(user){
-  currentUser=user;
-  document.getElementById('acct-name').textContent='👤 '+user.displayName;
+function localAuthSuccess(username){
+  currentUser={uid:username.toLowerCase(),displayName:username};
+  document.getElementById('acct-name').textContent='👤 '+username;
   document.getElementById('btn-signin').style.display='none';
   document.getElementById('btn-signout').style.display='';
   document.getElementById('btn-save').style.display='';
   document.getElementById('save-indicator').textContent='Loading...';
-  loadProgress(user.uid);
+  loadProgress(username.toLowerCase());
 }
-function fbAuthSignedOut(){
+function doSignIn(){showLoginModal();}
+function doSignOut(){
   currentUser=null;
   document.getElementById('acct-name').textContent='Not signed in';
   document.getElementById('btn-signin').style.display='';
   document.getElementById('btn-signout').style.display='none';
   document.getElementById('btn-save').style.display='none';
   document.getElementById('save-indicator').textContent='';
+  toast('Signed out!');
 }
-
-async function loadProgress(uid){
+function loadProgress(uid){
   try{
-    const data=await _fbLoad(uid);
+    const raw=localStorage.getItem('jayjamon_save_'+uid);
+    if(!raw){document.getElementById('save-indicator').textContent='New save';setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);return;}
+    const data=JSON.parse(raw);
     if(data&&data.party&&data.party.length>0){
-      G.party=data.party;
-      G.caught=new Set(data.caught||[]);
-      G.seen=new Set(data.seen||[]);
-      G.money=data.money||500;
-      G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
-      G.battles=data.battles||0;
-      G.wins=data.wins||0;
-      G.activeIdx=data.activeIdx||0;
-      data.spawned?.forEach(k=>SPAWNED_MYTHICS.add(k));
+      G.party=data.party;G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
+      G.money=data.money||500;G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
+      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;
+      (data.spawned||[]).forEach(k=>SPAWNED_MYTHICS.add(k));
       document.getElementById('save-indicator').textContent='✓ Loaded!';
       setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);
-      // Skip starter, go straight to world
-      if(G.party.length>0&&document.getElementById('view-starter').classList.contains('active')){
-        showView('world');startWalk();
-      }
+      if(document.getElementById('view-starter').classList.contains('active')){showView('world');startWalk();}
     } else {
       document.getElementById('save-indicator').textContent='New save';
       setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);
     }
   }catch(e){document.getElementById('save-indicator').textContent='Load error';}
 }
-
-async function doSave(){
-  if(!currentUser){toast('Sign in with Google\nto save your progress!');return;}
-  const data={
-    party:G.party,
-    caught:[...G.caught],
-    seen:[...G.seen],
-    money:G.money,
-    bag:G.bag,
-    battles:G.battles,
-    wins:G.wins,
-    activeIdx:G.activeIdx,
-    spawned:[...SPAWNED_MYTHICS],
-    savedAt:Date.now()
-  };
-  document.getElementById('save-indicator').textContent='Saving...';
+function doSave(){
+  if(!currentUser){toast('Sign in to save\nyour progress!');return;}
+  const data={party:G.party,caught:[...G.caught],seen:[...G.seen],money:G.money,
+    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,
+    spawned:[...SPAWNED_MYTHICS],savedAt:Date.now()};
   try{
-    await _fbSave(currentUser.uid,data);
+    localStorage.setItem('jayjamon_save_'+currentUser.uid,JSON.stringify(data));
     document.getElementById('save-indicator').textContent='✓ Saved!';
     setTimeout(()=>document.getElementById('save-indicator').textContent='',2500);
   }catch(e){document.getElementById('save-indicator').textContent='Save error';}
 }
-
 function scheduleAutoSave(){
   if(!currentUser)return;
   clearTimeout(autoSaveTimer);
@@ -892,7 +950,7 @@ function getTileZone(r,c){for(const z of GRASS_ZONES)if(r>=z.r1&&r<=z.r2&&c>=z.c
 
 const PLAYER={col:8,row:9,face:'D',moving:{U:false,D:false,L:false,R:false},stepCount:0,grassSteps:0,camCol:0,camRow:0};
 let lastRegion='TOWN';
-const RENDER_TILE=16,CANVAS_W=512,CANVAS_H=288;
+const RENDER_TILE=24,CANVAS_W=480,CANVAS_H=240;
 const VIEW_COLS=Math.floor(CANVAS_W/RENDER_TILE),VIEW_ROWS=Math.floor(CANVAS_H/RENDER_TILE);
 
 function updateCamera(){
@@ -986,44 +1044,45 @@ function renderWorld(){
       if(tr<0||tr>=TILE.ROWS||tc<0||tc>=TILE.COLS)continue;
       const t=WORLD_MAP[tr][tc];
       ctx.fillStyle=TILE_COLORS[t]||'#3a7a3a';
-      ctx.fillRect(c*16,r*16,16,16);
-      if(t===T_TALL){ctx.fillStyle='#155015';ctx.fillRect(c*16+2,r*16+2,3,10);ctx.fillRect(c*16+7,r*16+4,3,8);ctx.fillRect(c*16+12,r*16+2,2,10);}
-      else if(t===T_TREE){ctx.fillStyle='#1a5c1a';ctx.beginPath();ctx.arc(c*16+8,r*16+6,6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5a3a1a';ctx.fillRect(c*16+6,r*16+10,4,6);}
-      else if(t===T_CENTER){ctx.fillStyle='#c02040';ctx.fillRect(c*16,r*16,16,4);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('HC',c*16+3,r*16+11);}
-      else if(t===T_SHOP){ctx.fillStyle='#b08020';ctx.fillRect(c*16,r*16,16,4);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('$',c*16+5,r*16+11);}
-      else if(t===T_LAVA){ctx.fillStyle='#ff6600';ctx.fillRect(c*16+2,r*16+6,3,4);ctx.fillRect(c*16+9,r*16+4,3,6);}
-      else if(t===T_ROCK){ctx.fillStyle='#665533';ctx.fillRect(c*16+2,r*16+4,6,6);ctx.fillRect(c*16+10,r*16+6,4,5);}
-      else if(t===T_SNOW){ctx.fillStyle='#eef5ff';ctx.fillRect(c*16+3,r*16+3,4,3);ctx.fillRect(c*16+10,r*16+8,3,3);}
-      else if(t===T_ICE){ctx.strokeStyle='#99ccff';ctx.strokeRect(c*16+1,r*16+1,14,14);}
-      else if(t===T_MOUNTAIN){ctx.fillStyle='#665544';ctx.beginPath();ctx.moveTo(c*16+8,r*16+1);ctx.lineTo(c*16+15,r*16+15);ctx.lineTo(c*16+1,r*16+15);ctx.closePath();ctx.fill();}
-      else if(t===T_CITY){ctx.fillStyle='#556677';ctx.fillRect(c*16+2,r*16+2,5,8);ctx.fillRect(c*16+9,r*16+4,5,7);}
-      else if(t===T_DARK){ctx.fillStyle='#330055';ctx.fillRect(c*16+4,r*16+4,8,8);}
-      else if(t===T_PORTAL){const p=(Math.sin(Date.now()/300)+1)/2;ctx.globalAlpha=0.6+p*0.4;ctx.fillStyle='#aa00ff';ctx.beginPath();ctx.arc(c*16+8,r*16+8,6,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}
-      else if(t===T_LAIR_FLOOR){ctx.fillStyle='#330044';ctx.fillRect(c*16,r*16,16,16);if((tr+tc)%4===0){ctx.fillStyle='#550066';ctx.fillRect(c*16+4,r*16+4,8,8);}}
-      else if(t===T_LAIR_WALL){ctx.fillStyle='#440055';ctx.fillRect(c*16,r*16,16,16);ctx.fillStyle='#220033';ctx.fillRect(c*16+2,r*16+2,12,12);}
-      else if(t===T_SIGN){ctx.fillStyle='#c0a060';ctx.fillRect(c*16+5,r*16+3,6,8);ctx.fillStyle='#8b6030';ctx.fillRect(c*16+7,r*16+11,2,5);}
-      else if(t===T_FLOWER){ctx.fillStyle='#ffdd00';ctx.beginPath();ctx.arc(c*16+8,r*16+8,2,0,Math.PI*2);ctx.fill();}
+      ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+      if(t===T_TALL){ctx.fillStyle='#155015';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,10);ctx.fillRect(c*RENDER_TILE+7,r*RENDER_TILE+4,3,8);ctx.fillRect(c*RENDER_TILE+12,r*RENDER_TILE+2,2,10);}
+      else if(t===T_TREE){ctx.fillStyle='#1a5c1a';ctx.beginPath();ctx.arc(c*RENDER_TILE+8,r*RENDER_TILE+6,6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5a3a1a';ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE+10,4,6);}
+      else if(t===T_CENTER){ctx.fillStyle='#c02040';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,4);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('HC',c*RENDER_TILE+3,r*RENDER_TILE+11);}
+      else if(t===T_SHOP){ctx.fillStyle='#b08020';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,4);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('$',c*RENDER_TILE+5,r*RENDER_TILE+11);}
+      else if(t===T_LAVA){ctx.fillStyle='#ff6600';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+6,3,4);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+4,3,6);}
+      else if(t===T_ROCK){ctx.fillStyle='#665533';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+4,6,6);ctx.fillRect(c*RENDER_TILE+10,r*RENDER_TILE+6,4,5);}
+      else if(t===T_SNOW){ctx.fillStyle='#eef5ff';ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+3,4,3);ctx.fillRect(c*RENDER_TILE+10,r*RENDER_TILE+8,3,3);}
+      else if(t===T_ICE){ctx.strokeStyle='#99ccff';ctx.strokeRect(c*RENDER_TILE+1,r*RENDER_TILE+1,14,14);}
+      else if(t===T_MOUNTAIN){ctx.fillStyle='#665544';ctx.beginPath();ctx.moveTo(c*RENDER_TILE+8,r*RENDER_TILE+1);ctx.lineTo(c*RENDER_TILE+15,r*RENDER_TILE+15);ctx.lineTo(c*RENDER_TILE+1,r*RENDER_TILE+15);ctx.closePath();ctx.fill();}
+      else if(t===T_CITY){ctx.fillStyle='#556677';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,5,8);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+4,5,7);}
+      else if(t===T_DARK){ctx.fillStyle='#330055';ctx.fillRect(c*RENDER_TILE+4,r*RENDER_TILE+4,8,8);}
+      else if(t===T_PORTAL){const p=(Math.sin(Date.now()/300)+1)/2;ctx.globalAlpha=0.6+p*0.4;ctx.fillStyle='#aa00ff';ctx.beginPath();ctx.arc(c*RENDER_TILE+8,r*RENDER_TILE+8,6,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}
+      else if(t===T_LAIR_FLOOR){ctx.fillStyle='#330044';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);if((tr+tc)%4===0){ctx.fillStyle='#550066';ctx.fillRect(c*RENDER_TILE+4,r*RENDER_TILE+4,8,8);}}
+      else if(t===T_LAIR_WALL){ctx.fillStyle='#440055';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);ctx.fillStyle='#220033';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,12,12);}
+      else if(t===T_SIGN){ctx.fillStyle='#c0a060';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+3,6,8);ctx.fillStyle='#8b6030';ctx.fillRect(c*RENDER_TILE+7,r*RENDER_TILE+11,2,5);}
+      else if(t===T_FLOWER){ctx.fillStyle='#ffdd00';ctx.beginPath();ctx.arc(c*RENDER_TILE+8,r*RENDER_TILE+8,2,0,Math.PI*2);ctx.fill();}
     }
   }
   // peer
   if(G.conn&&G.mpPeerPos){
     const{col:pc,row:pr}=G.mpPeerPos,sx=(pc-cc)*16,sy=(pr-cr)*16;
-    if(sx>=0&&sx<CANVAS_W&&sy>=0&&sy<CANVAS_H){ctx.fillStyle='#f00';ctx.fillRect(sx,sy,16,16);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('P2',sx+2,sy+9);}
+    if(sx>=0&&sx<CANVAS_W&&sy>=0&&sy<CANVAS_H){ctx.fillStyle='#f00';ctx.fillRect(sx,sy,RENDER_TILE,RENDER_TILE);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('P2',sx+2,sy+9);}
   }
   // player
-  const px=(PLAYER.col-cc)*16,py=(PLAYER.row-cr)*16;
-  const bobY=Math.sin(walkAnim*0.3)*1.5;
+  const px=(PLAYER.col-cc)*RENDER_TILE,py=(PLAYER.row-cr)*RENDER_TILE;
+  const T=RENDER_TILE,bobY=Math.sin(walkAnim*0.3)*2;
   const curR=getRegion(PLAYER.row,PLAYER.col);
   const pCol=curR==='VOLCANO'?'#ff6633':curR==='MYTH.LAIR'?'#9900ff':curR==='BIRMINGHAM'?'#5577aa':'#4a7ecc';
-  ctx.fillStyle=pCol;ctx.fillRect(px+3,py+5+bobY,10,8);
-  ctx.fillStyle='#f5c5a3';ctx.fillRect(px+4,py+1+bobY,8,6);
-  ctx.fillStyle='#333';ctx.fillRect(px+4,py+0+bobY,8,3);
+  const s=T/16;
+  ctx.fillStyle=pCol;ctx.fillRect(px+3*s,py+5*s+bobY,10*s,8*s);
+  ctx.fillStyle='#f5c5a3';ctx.fillRect(px+4*s,py+1*s+bobY,8*s,6*s);
+  ctx.fillStyle='#333';ctx.fillRect(px+4*s,py+0*s+bobY,8*s,3*s);
   ctx.fillStyle='#222';
   const lo=Math.sin(walkAnim*0.3)*2;
-  ctx.fillRect(px+4,py+13,4,3-lo);ctx.fillRect(px+8,py+13,4,3+lo);
+  ctx.fillRect(px+4*s,py+13*s,4*s,3*s-lo);ctx.fillRect(px+8*s,py+13*s,4*s,3*s+lo);
   ctx.fillStyle='#fff';
   const dd={U:[7,0],D:[7,15],L:[1,8],R:[14,8]}[PLAYER.face];
-  ctx.fillRect(px+dd[0],py+dd[1]+bobY,2,2);
+  ctx.fillRect(px+dd[0]*s,py+dd[1]*s+bobY,2*s,2*s);
   if(Object.values(PLAYER.moving).some(Boolean))walkAnim++;
 }
 
@@ -1139,6 +1198,7 @@ function showView(id){
   document.getElementById('dpad-act').style.display='none';
   if(vid==='view-world'){showDpad(true);G.phase='walk';updateHUD();}
   else if(['view-dex','view-bag','view-mp'].includes(vid)){showTabs();}
+  else if(vid==='view-mp-battle'){document.getElementById('tabs').style.display='none';}
 }
 function updateHUD(){
   document.getElementById('hud-caught').textContent=`${G.caught.size}/${TOTAL}`;
@@ -1419,48 +1479,243 @@ function endBattle(caught){
 function recoverReturn(){G.party.forEach(p=>p.hp=Math.floor(p.maxHp*0.5));G.activeIdx=0;showView('world');startWalk();}
 
 // ═══════════════════════════════════════════
-//  MULTIPLAYER
+//  MULTIPLAYER — full 1v1 turn-based battle
 // ═══════════════════════════════════════════
+const MP={isHost:false,myTurn:false,opponentName:'???',opponentJamon:null,active:false};
+
 function mpInit(){
   const code=Math.random().toString(36).substr(2,6).toUpperCase();
-  document.getElementById('mp-status').textContent='Connecting...';
+  mpSetStatus('Getting your code...');
   try{
+    if(G.peer)try{G.peer.destroy();}catch(e){}
     G.peer=new Peer('JAY-'+code,{debug:0});
-    G.peer.on('open',id=>{const sc=id.replace('JAY-','');document.getElementById('my-code').textContent=sc;document.getElementById('mp-status').textContent=`Code: ${sc}`;});
-    G.peer.on('connection',conn=>mpSetupConn(conn));
-    G.peer.on('error',e=>document.getElementById('mp-status').textContent=`Error: ${e.type}`);
-  }catch(e){document.getElementById('mp-status').textContent='PeerJS unavailable.';}
+    G.peer.on('open',id=>{
+      const sc=id.replace('JAY-','');
+      document.getElementById('my-code').textContent=sc;
+      mpSetStatus('Your code: '+sc+'\nShare it with your friend!');
+      MP.isHost=true;
+    });
+    G.peer.on('connection',conn=>mpSetupConn(conn,true));
+    G.peer.on('error',e=>mpSetStatus('Error: '+e.type+'. Try again.'));
+  }catch(e){mpSetStatus('PeerJS unavailable.');}
 }
 function mpJoin(){
   const code=document.getElementById('join-code').value.trim().toUpperCase();
-  if(!code||code.length<4){toast('Enter a code!');return;}
-  if(!G.peer){mpInit();setTimeout(()=>doJoin(code),2000);}else doJoin(code);
+  if(!code||code.length<4){mpSetStatus('Enter a valid code!');return;}
+  mpSetStatus('Connecting to '+code+'...');
+  MP.isHost=false;
+  if(!G.peer){
+    const myCode=Math.random().toString(36).substr(2,6).toUpperCase();
+    G.peer=new Peer('JAY-J-'+myCode,{debug:0});
+    G.peer.on('open',()=>doJoin(code));
+    G.peer.on('error',e=>mpSetStatus('Error: '+e.type));
+  }else{doJoin(code);}
 }
 function doJoin(code){
-  try{const conn=G.peer.connect('JAY-'+code,{reliable:true});mpSetupConn(conn);document.getElementById('mp-status').textContent=`Connecting to ${code}...`;}
-  catch(e){document.getElementById('mp-status').textContent='Failed.';}
+  const conn=G.peer.connect('JAY-'+code,{reliable:true,serialization:'json'});
+  mpSetupConn(conn,false);
 }
-function mpSetupConn(conn){
+function mpSetupConn(conn,asHost){
   G.conn=conn;
-  conn.on('open',()=>{document.getElementById('mp-status').textContent='✓ Connected!';toast('FRIEND CONNECTED!');mpSend({type:'hello'});});
+  conn.on('open',()=>{
+    mpSetStatus('Connected! Sending info...');
+    const pl=G.party[G.activeIdx];
+    mpSend({type:'hello',name:currentUser?currentUser.displayName:'Player',
+      jamon:pl.key,hp:pl.hp,maxHp:pl.maxHp,lv:pl.lv});
+  });
   conn.on('data',d=>mpReceive(d));
-  conn.on('close',()=>{G.conn=null;G.mpPeerPos=null;document.getElementById('mp-status').textContent='Disconnected.';});
-  conn.on('error',()=>{G.conn=null;document.getElementById('mp-status').textContent='Error.';});
-}
-function mpSend(data){if(G.conn&&G.conn.open)try{G.conn.send(JSON.stringify(data));}catch(e){}}
-function mpReceive(raw){
-  let d;try{d=JSON.parse(raw);}catch{return;}
-  if(d.type==='pos'){G.mpPeerPos={col:d.col,row:d.row};}
-  else if(d.type==='hello')toast('Friend online!');
-  else if(d.type==='battle-invite'){
-    if(confirm(`Battle with ${JAY[d.jamon]?.name||'???'}?`)){
-      G.enemy={key:d.jamon,hp:d.hp,maxHp:d.maxHp,lv:d.lv,isMP:true};
-      G.battles++;G.over=false;G.locked=false;
-      showView('battle');refreshBattleUI(false);setBT(`VS ${JAY[d.jamon].name}!`,true);
+  conn.on('close',()=>{
+    G.conn=null;G.mpPeerPos=null;MP.active=false;
+    mpSetStatus('Disconnected.');
+    if(document.getElementById('view-mp-battle').classList.contains('active')){
+      showView('world');startWalk();toast('Opponent disconnected!');
     }
+  });
+  conn.on('error',()=>mpSetStatus('Connection error.'));
+}
+function mpSend(data){if(G.conn&&G.conn.open)try{G.conn.send(data);}catch(e){}}
+function mpSetStatus(msg){const el=document.getElementById('mp-status');if(el)el.textContent=msg;}
+
+function mpReceive(d){
+  if(!d||!d.type)return;
+  if(d.type==='pos'){G.mpPeerPos={col:d.col,row:d.row};}
+  else if(d.type==='hello'){
+    MP.opponentName=d.name||'Opponent';
+    MP.opponentJamon={key:d.jamon,hp:d.hp,maxHp:d.maxHp,lv:d.lv};
+    mpSetStatus('Connected to '+MP.opponentName+'!');
+    if(!MP.isHost){
+      const pl=G.party[G.activeIdx];
+      mpSend({type:'hello-ack',name:currentUser?currentUser.displayName:'Player',
+        jamon:pl.key,hp:pl.hp,maxHp:pl.maxHp,lv:pl.lv});
+    }
+    mpShowChallengePending();
+  } else if(d.type==='hello-ack'){
+    MP.opponentName=d.name||'Opponent';
+    MP.opponentJamon={key:d.jamon,hp:d.hp,maxHp:d.maxHp,lv:d.lv};
+    mpSetStatus('Connected to '+MP.opponentName+'! Hit BATTLE to fight!');
+    mpShowChallengePending();
+  } else if(d.type==='challenge'){
+    MP.opponentJamon={key:d.jamon,hp:d.hp,maxHp:d.maxHp,lv:d.lv};
+    MP.opponentName=d.name||MP.opponentName;
+    MP.myTurn=false;
+    const pl=G.party[G.activeIdx];
+    mpSend({type:'challenge-accept',name:currentUser?currentUser.displayName:'Player',
+      jamon:pl.key,hp:pl.hp,maxHp:pl.maxHp,lv:pl.lv});
+    mpStartBattle(false);
+  } else if(d.type==='challenge-accept'){
+    MP.opponentJamon={key:d.jamon,hp:d.hp,maxHp:d.maxHp,lv:d.lv};
+    MP.opponentName=d.name||MP.opponentName;
+    MP.myTurn=true;
+    mpStartBattle(true);
+  } else if(d.type==='mp-move'){
+    mpReceiveOpponentMove(d);
+  } else if(d.type==='mp-switch'){
+    MP.opponentJamon={key:d.jamon,hp:d.hp,maxHp:d.maxHp,lv:d.lv};
+    mpUpdateOpponentUI();
+    mpSetBattleMsg(MP.opponentName+' sent out '+JAY[d.jamon].name+'!');
+    setTimeout(()=>{MP.myTurn=true;mpSetBattleMsg('Your turn!',true);lockMPBtns(false);},1000);
+  } else if(d.type==='mp-flee'){
+    mpSetBattleMsg(MP.opponentName+' ran away! You win!');
+    setTimeout(()=>mpEndBattle('win'),1800);
+  } else if(d.type==='mp-fainted'){
+    mpSetBattleMsg(JAY[MP.opponentJamon.key]?.name+' fainted!');
   }
 }
 
+function mpShowChallengePending(){
+  const btn=document.getElementById('mp-battle-btn');
+  if(btn)btn.style.display='';
+  mpSetStatus('Connected to '+MP.opponentName+'! Hit BATTLE to fight!');
+}
+function mpSendChallenge(){
+  const pl=G.party[G.activeIdx];
+  mpSend({type:'challenge',name:currentUser?currentUser.displayName:'Player',
+    jamon:pl.key,hp:pl.hp,maxHp:pl.maxHp,lv:pl.lv});
+  mpSetStatus('Challenge sent! Waiting...');
+}
+function mpStartBattle(iGoFirst){
+  stopWalk();MP.active=true;MP.myTurn=iGoFirst;G.over=false;G.locked=false;
+  showView('mp-battle');
+  mpRenderBattle();
+  if(iGoFirst){mpSetBattleMsg('Your turn! Choose a move.',true);lockMPBtns(false);}
+  else{mpSetBattleMsg(MP.opponentName+' goes first...',false);lockMPBtns(true);}
+}
+function mpRenderBattle(){
+  const myPl=G.party[G.activeIdx],op=MP.opponentJamon;
+  if(!myPl||!op)return;
+  const myD=JAY[myPl.key],opD=JAY[op.key];
+  document.getElementById('mp-op-sprite').innerHTML=`<div style="width:100%;height:100%;animation:s-idleF 1.4s ease-in-out infinite;transform-origin:center">${opD.draw()}</div>`;
+  document.getElementById('mp-op-name').textContent=opD.name;
+  document.getElementById('mp-op-lv').textContent='Lv.'+op.lv;
+  mpSetHPBar('op',op.hp,op.maxHp);
+  document.getElementById('mp-my-sprite').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${myD.draw()}</div>`;
+  document.getElementById('mp-my-name').textContent=myD.name;
+  document.getElementById('mp-my-lv').textContent='Lv.'+myPl.lv;
+  mpSetHPBar('my',myPl.hp,myPl.maxHp);
+  myD.moves.forEach((mv,i)=>{
+    const nb=document.getElementById('mp-mv'+(i+1)+'-name');
+    const pb=document.getElementById('mp-mv'+(i+1)+'-pwr');
+    if(nb)nb.textContent=mv.name;
+    if(pb)pb.textContent='PWR:'+mv.pwr;
+  });
+}
+function mpUpdateOpponentUI(){
+  const op=MP.opponentJamon;if(!op)return;
+  const opD=JAY[op.key];
+  document.getElementById('mp-op-sprite').innerHTML=`<div style="width:100%;height:100%;animation:s-idleF 1.4s ease-in-out infinite;transform-origin:center">${opD.draw()}</div>`;
+  document.getElementById('mp-op-name').textContent=opD.name;
+  document.getElementById('mp-op-lv').textContent='Lv.'+op.lv;
+  mpSetHPBar('op',op.hp,op.maxHp);
+}
+function mpSetHPBar(who,hp,max){
+  const pct=Math.max(0,Math.round(hp/max*100));
+  const f=document.getElementById('mp-'+who+'-hp-fill');
+  if(!f)return;
+  f.style.width=pct+'%';f.className='bfhf'+(pct>50?'':pct>20?' mid':' low');
+  document.getElementById('mp-'+who+'-hp-num').textContent=Math.max(0,hp)+'/'+max;
+}
+function mpSetBattleMsg(msg,cursor=false){
+  document.getElementById('mp-btb').textContent=msg;
+  document.getElementById('mp-btc').style.display=cursor?'inline-block':'none';
+}
+function lockMPBtns(v){
+  ['mp-atk1','mp-atk2','mp-flee-btn'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
+}
+async function mpUseMove(idx){
+  if(!MP.myTurn)return;
+  MP.myTurn=false;lockMPBtns(true);
+  const myPl=G.party[G.activeIdx],myD=JAY[myPl.key];
+  const move=myD.moves[idx];
+  const dmg=calcDmg(myD.baseAtk,move.pwr,MP.opponentJamon.lv);
+  mpSetBattleMsg(myD.name+' used '+move.name+'! ('+dmg+' dmg)');
+  ensureFxCanvas();
+  if(fxCanvas)playMoveFX(move.name,false);
+  const mySpr=document.getElementById('mp-my-sprite')?.firstChild;
+  if(mySpr)mySpr.style.animation='s-atk 0.32s ease';
+  await sleep(200);
+  const opSpr=document.getElementById('mp-op-sprite')?.firstChild;
+  if(opSpr)opSpr.style.animation='s-hurt 0.35s ease';
+  await sleep(420);
+  if(opSpr)opSpr.style.animation='s-idleF 1.4s ease-in-out infinite';
+  if(mySpr)mySpr.style.animation='s-idle 1.4s ease-in-out infinite';
+  mpSend({type:'mp-move',moveIdx:idx,dmg:dmg,moveName:move.name});
+  MP.opponentJamon.hp=Math.max(0,MP.opponentJamon.hp-dmg);
+  mpSetHPBar('op',MP.opponentJamon.hp,MP.opponentJamon.maxHp);
+  if(MP.opponentJamon.hp<=0){
+    mpSetBattleMsg(JAY[MP.opponentJamon.key].name+' fainted! Waiting...');
+    mpSend({type:'mp-fainted'});
+    MP._faintTimer=setTimeout(()=>mpEndBattle('win'),8000);
+    return;
+  }
+  mpSetBattleMsg(MP.opponentName+"'s turn...",false);
+}
+async function mpReceiveOpponentMove(d){
+  const opD=JAY[MP.opponentJamon.key];
+  mpSetBattleMsg(opD.name+' used '+d.moveName+'! ('+d.dmg+' dmg)');
+  ensureFxCanvas();
+  if(fxCanvas)playMoveFX(d.moveName,true);
+  const opSpr=document.getElementById('mp-op-sprite')?.firstChild;
+  if(opSpr)opSpr.style.animation='s-atkF 0.32s ease';
+  await sleep(200);
+  const mySpr=document.getElementById('mp-my-sprite')?.firstChild;
+  if(mySpr)mySpr.style.animation='s-hurt 0.35s ease';
+  const myPl=G.party[G.activeIdx];
+  myPl.hp=Math.max(0,myPl.hp-d.dmg);
+  mpSetHPBar('my',myPl.hp,myPl.maxHp);
+  await sleep(420);
+  if(opSpr)opSpr.style.animation='s-idleF 1.4s ease-in-out infinite';
+  if(mySpr)mySpr.style.animation='s-idle 1.4s ease-in-out infinite';
+  if(myPl.hp<=0){
+    myPl.hp=0;mpSetBattleMsg(JAY[myPl.key].name+' fainted!');
+    mpSend({type:'mp-fainted'});
+    await sleep(1200);
+    const nextIdx=G.party.findIndex((p,i)=>i!==G.activeIdx&&p.hp>0);
+    if(nextIdx===-1){mpSetBattleMsg('All your Jayjamon fainted! You lose!');await sleep(1500);mpEndBattle('lose');return;}
+    G.activeIdx=nextIdx;
+    const next=G.party[G.activeIdx];
+    mpSend({type:'mp-switch',jamon:next.key,hp:next.hp,maxHp:next.maxHp,lv:next.lv});
+    mpRenderBattle();
+    mpSetBattleMsg('Go, '+JAY[next.key].name+'!');
+    await sleep(800);MP.myTurn=true;mpSetBattleMsg('Your turn!',true);lockMPBtns(false);
+    return;
+  }
+  MP.myTurn=true;mpSetBattleMsg('Your turn!',true);lockMPBtns(false);
+}
+function mpFlee(){
+  mpSend({type:'mp-flee'});
+  mpSetBattleMsg('You ran away!');
+  setTimeout(()=>mpEndBattle('flee'),1200);
+}
+function mpEndBattle(result){
+  clearTimeout(MP._faintTimer);MP.active=false;G.battles++;
+  if(result==='win'){G.wins++;toast('You won! 🏆');}
+  else if(result==='lose'){toast('You lost...');}
+  else{toast('You fled.');}
+  G.party.forEach(p=>{if(p.hp>0)p.hp=Math.min(p.maxHp,p.hp+Math.floor(p.maxHp*0.1));});
+  showView('mp');mpSetStatus('Battle ended. '+MP.opponentName+' still connected.');
+  const btn=document.getElementById('mp-battle-btn');
+  if(btn)btn.style.display='';
+}
 // ═══════════════════════════════════════════
 //  UTILS
 // ═══════════════════════════════════════════
