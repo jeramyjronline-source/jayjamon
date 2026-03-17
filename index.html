@@ -326,7 +326,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/20</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/23</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -373,6 +373,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
     <button id="imb-superpotion" onclick="applyItemToSelected('superpotion')" style="flex:1;background:none;border:1px solid var(--gb2);font-family:'Press Start 2P',monospace;font-size:5px;color:var(--gb4);padding:6px 2px;cursor:pointer" disabled>S.POTION<br><span style="font-size:4px;color:var(--gb1)" id="imb-superpotion-ct">x0</span></button>
     <button id="imb-bigzoup" onclick="applyItemToSelected('bigzoup')" style="flex:1;background:none;border:1px solid var(--mythic2);font-family:'Press Start 2P',monospace;font-size:5px;color:var(--mythic2);padding:6px 2px;cursor:pointer" disabled>ZA ZOUP 🍲<br><span style="font-size:4px" id="imb-bigzoup-ct">x0</span></button>
     <button id="imb-mythorb" onclick="applyItemToSelected('mythorb')" style="flex:1;background:none;border:1px solid #cc44ff;font-family:'Press Start 2P',monospace;font-size:5px;color:#cc44ff;padding:6px 2px;cursor:pointer" disabled>MYTH ORB 🔮<br><span style="font-size:4px" id="imb-mythorb-ct">x0</span></button>
+    <button id="imb-chillidrop" onclick="applyItemToSelected('chillidrop')" style="flex:1;background:none;border:1px solid #ff4400;font-family:'Press Start 2P',monospace;font-size:5px;color:#ff4400;padding:6px 2px;cursor:pointer" disabled>CHILLI 🌶️<br><span style="font-size:4px" id="imb-chillidrop-ct">x0</span></button>
    </div>
    <button onclick="closeItemMenu()" style="background:none;border:1px solid var(--red);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);padding:5px;cursor:pointer">✕ CANCEL</button>
   </div>
@@ -391,7 +392,16 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
    <button class="menu-btn" onclick="showView('dex');renderDex()">▸ JAYDEX<span class="ms">17 Jayjamon to catch</span></button>
    <button class="menu-btn" onclick="openBag()">▸ BAG<span class="ms">items &amp; jayballs</span></button>
    <button class="menu-btn" onclick="showView('mp')">▸ MULTIPLAYER<span class="ms">battle online</span></button>
+   <button class="menu-btn" onclick="openLeaderboard()">▸ LEADERBOARD<span class="ms">playtime hall of fame</span></button>
    <button class="menu-btn" onclick="doSave()">▸ SAVE GAME<span class="ms">saves to your account</span></button>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="view" id="view-lb">
+   <div class="panel-title">🏆 PLAYTIME LEADERBOARD</div>
+   <div style="font-size:5px;color:var(--gb1);text-align:center;padding-bottom:4px">Scores stored on this device</div>
+   <div id="lb-list" style="display:flex;flex-direction:column;gap:4px;overflow-y:auto;flex:1"></div>
+   <button class="back-btn" onclick="showView('menu')">◂ BACK</button>
   </div>
 
   <!-- DEX -->
@@ -649,7 +659,7 @@ function loadProgress(uid){
     if(data&&data.party&&data.party.length>0){
       G.party=data.party;G.box=data.box||[];G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
       G.money=data.money||500;G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
-      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;
+      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;G.playtime=data.playtime||0;
       (data.spawned||[]).forEach(k=>SPAWNED_MYTHICS.add(k));
       document.getElementById('save-indicator').textContent='✓ Loaded!';
       setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);
@@ -663,7 +673,7 @@ function loadProgress(uid){
 function doSave(){
   if(!currentUser){toast('Sign in to save\nyour progress!');return;}
   const data={party:G.party,box:G.box||[],caught:[...G.caught],seen:[...G.seen],money:G.money,
-    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,
+    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,
     spawned:[...SPAWNED_MYTHICS],savedAt:Date.now()};
   try{
     localStorage.setItem('jayjamon_save_'+currentUser.uid,JSON.stringify(data));
@@ -772,6 +782,17 @@ const MOVE_FX={
   'STATIC OVERLOAD':   {type:'glitch',  color:'#ff00ff'},
   'COAT SLASH':        {type:'slash',   color:'#6600ff'},
   'FINAL RECKONING':   {type:'mega',    color:'#440088'},
+  'GOLD RECORD SMASH': {type:'light',   color:'#c8a020'},
+  'PLATINUM HIT':      {type:'slam',    color:'#dddddd'},
+  'RICH CHORD':        {type:'sound',   color:'#c8a020'},
+  'CHILLI RAGE':       {type:'fire',    color:'#ff2200'},
+  'SPICE SLAM':        {type:'stomp',   color:'#ff4400'},
+  'HANGRY WHEEZE':     {type:'gas',     color:'#ff6600'},
+  'VOLCANIC BODY ROLL':{type:'mega',    color:'#ff3300'},
+  'BLIZZARD CRUNCH':   {type:'slam',    color:'#88ccff'},
+  'ICE BEAR HUG':      {type:'vines',   color:'#aaddff'},
+  'ARCTIC SURGE':      {type:'scatter', color:'#6699ff'},
+  'FROZEN FURY':       {type:'mega',    color:'#4488ff'},
   'MEGA THIRD EYE BLAST':{type:'light',  color:'#ff00ff'},
   'MYTH ABSORB':         {type:'mega',   color:'#cc44ff'},
   'CHAOS FRENZY':        {type:'scatter',color:'#ff00ff'},
@@ -1096,17 +1117,113 @@ function sRatOscar(){return svg([
   [14,11,'#888',1,1],[15,10,'#888',1,1],[15,9,'#888',1,1],[15,8,'#888',1,1],
   [15,7,'#777',1,1],[14,6,'#777',1,1],
 ])}
+
+// RICHIE INDIE — evolved at lv15, still blonde but more confident, richer vibe
+function sRichieIndie(){return svg([
+  // slicked-back blonde hair — richer, styled
+  [3,0,'#f0c800',10,1],[2,1,'#f0c800',12,2],[2,2,'#f0c800',3,3],[11,2,'#f0c800',3,3],
+  [4,1,'#ffe060',8,1],[5,2,'#ffe060',6,2],
+  // face — slightly more confident
+  [4,3,'#f5c5a3',8,5],[5,4,'#f5c5a3',6,3],
+  // smirk instead of pout
+  [6,6,'#c07060',5,1],[7,6,'#d08070',2,1],
+  // eyes — half-lidded cool look
+  [5,4,'#222',2,1],[9,4,'#222',2,1],
+  [5,5,'#3a2a10',1,1],[9,5,'#3a2a10',1,1],
+  // small beard hint
+  [6,7,'#c8a020',4,1],
+  // neck
+  [7,8,'#f5c5a3',2,2],
+  // NICE jacket — dark with gold collar, upgrade from plain tee
+  [3,10,'#1a1a2a',10,6],[2,10,'#1a1a2a',1,5],[13,10,'#1a1a2a',1,5],
+  // gold lapels
+  [6,10,'#c8a020',2,3],[8,10,'#c8a020',2,3],
+  // arms
+  [1,10,'#1a1a2a',2,5],[13,10,'#1a1a2a',2,5],
+  // hands
+  [1,15,'#f5c5a3',2,1],[13,15,'#f5c5a3',2,1],
+  // black jeans
+  [5,15,'#111',3,1],[8,15,'#111',3,1],
+  // sunglasses on hair
+  [4,3,'#111',2,1],[10,3,'#111',2,1],
+  [4,3,'#1a88cc',1,1],[10,3,'#1a88cc',1,1],
+])}
+
+// HANGRY JAYJ — post-chilli, angry, steaming, even bigger, spicy red tinge
+function sHangryJayj(){return svg([
+  // same big hair but now also spiky with anger
+  [4,0,'#8b6914',8,1],[3,1,'#c07030',10,5],[2,2,'#c07030',12,4],
+  [3,2,'#c07030',2,3],[11,2,'#c07030',2,3],
+  // face — flushed deep red with anger
+  [4,3,'#e87040',8,5],[5,4,'#e87040',6,4],[3,3,'#e87040',2,2],[11,3,'#e87040',2,2],
+  // ANGRY eyebrows
+  [5,3,'#5a2000',3,1],[8,3,'#5a2000',3,1],
+  // angry narrow eyes
+  [6,4,'#1a0000',1,1],[9,4,'#1a0000',1,1],
+  [5,4,'#3a1000',2,1],[9,4,'#3a1000',2,1],
+  // steam from nostrils (white wisps)
+  [7,6,'#cc3000',2,1],
+  [6,2,'#fff',1,2],[9,2,'#fff',1,2],[5,1,'#fff',1,1],[10,1,'#fff',1,1],
+  // chilli hanging from mouth
+  [7,7,'#ff2200',2,3],[7,8,'#228800',2,1],
+  // massive body — even bigger than regular jayj, orange-red tinge
+  [0,8,'#e85020',16,8],[1,9,'#d04010',14,7],[2,10,'#cc3a0a',12,5],
+  // spicy aura spots
+  [1,8,'#ff4400',1,2],[14,8,'#ff4400',1,2],[0,11,'#ff6600',2,1],[14,11,'#ff6600',2,1],
+  // arms still tiny
+  [0,9,'#e85020',2,4],[14,9,'#e85020',2,4],
+  // hands
+  [0,13,'#e07040',2,1],[14,13,'#e07040',2,1],
+  // feet
+  [4,15,'#3a1a00',3,1],[9,15,'#3a1a00',3,1],
+  // anger mark on forehead
+  [6,3,'#ff0000',1,1],[8,3,'#ff0000',1,1],
+])}
+
+// POLAR BEAR GOOG — googspice evolved at lv55, cold climate form, white/blue
+function sPolarGoog(){return svg([
+  // big round polar bear head
+  [3,0,'#eeeeff',10,3],[2,1,'#eeeeff',12,5],[1,2,'#eeeeff',14,5],
+  // small round ears
+  [2,0,'#ccccee',3,3],[11,0,'#ccccee',3,3],[3,1,'#eeeeff',2,2],[11,1,'#eeeeff',2,2],
+  // ICY blue eyes (was fiery red for googspice)
+  [5,4,'#2266cc',2,2],[9,4,'#2266cc',2,2],[6,4,'#001144',1,1],[10,4,'#001144',1,1],
+  // icy cold snout
+  [6,6,'#ccddff',4,2],[5,6,'#ccddff',2,2],[9,6,'#ccddff',2,2],
+  // cute little cold nose
+  [7,7,'#4488cc',2,1],
+  // big white round body
+  [1,8,'#eeeeff',14,8],[0,9,'#ddeeff',16,7],[0,10,'#ddeeff',16,6],
+  // icy blue belly
+  [4,9,'#aaccff',8,5],[5,10,'#bbddff',6,4],
+  // chunky paws
+  [0,14,'#eeeeff',4,2],[12,14,'#eeeeff',4,2],[0,15,'#ccddff',4,1],[12,15,'#ccddff',4,1],
+  // ice crystals on body
+  [2,10,'#88aaff',1,2],[13,10,'#88aaff',1,2],[1,12,'#aaccff',1,2],[14,12,'#aaccff',1,2],
+  [7,8,'#88ccff',2,1],[8,13,'#aaddff',2,1],
+  // frosty breath
+  [3,7,'#cceeff',1,1],[12,7,'#cceeff',1,1],[4,6,'#ddeeff',1,1],[11,6,'#ddeeff',1,1],
+])}
 // ═══════════════════════════════════════════
 //  JAYJAMON DATA
 // ═══════════════════════════════════════════
 const JAY={
   indie:{name:'INDIE',type:'Indie/Vibes',baseHp:90,baseAtk:62,draw:sIndie,mythic:false,
-    desc:'Brooding blonde Jayjamon. Knows bands you\'ve never heard of. Sighs constantly.',
+    desc:'Brooding blonde Jayjamon. Knows bands you\'ve never heard of. Sighs constantly. Evolves into Richie Indie at Lv.15.',
+    evolvesAt:15,evolvesInto:'richieIndie',
     moves:[{name:'ACOUSTIC BLAST',pwr:44},{name:'EMOTIONAL DAMAGE',pwr:58},{name:'MOPE ATTACK',pwr:52},{name:'SAD CHORD',pwr:66}]},
+  richieIndie:{name:'RICHIE INDIE',type:'Indie/Rich',baseHp:115,baseAtk:82,draw:sRichieIndie,mythic:false,
+    desc:'Indie grew up and got a bit richer. Still knows bands you never heard of. Now wears a jacket. Smirks instead of sighing.',
+    evolvedFrom:'indie',
+    moves:[{name:'GOLD RECORD SMASH',pwr:80},{name:'EMOTIONAL DAMAGE',pwr:72},{name:'PLATINUM HIT',pwr:88},{name:'RICH CHORD',pwr:65}]},
   jayj:{name:'JAYJ',type:'Heavy/Stout',baseHp:145,baseAtk:72,draw:sJayj,mythic:false,
-    desc:'Morbidly obese. Every footstep registers on the Richter scale. Evolves into OMEGA JAYJ at Lv.50.',
-    evolvesAt:50,evolvesInto:'omegajayj',
+    desc:'Morbidly obese. Evolves into OMEGA JAYJ at Lv.50. Use the Chilli Drop on him for a different path.',
+    evolvesAt:50,evolvesInto:'omegajayj',itemEvolvesInto:'hangryjayj',itemKey:'chillidrop',
     moves:[{name:'BODY SLAM',pwr:82},{name:'GRAVITON WHEEZE',pwr:54},{name:'FAT ROLL',pwr:68},{name:'SEISMIC STOMP',pwr:90}]},
+  hangryjayj:{name:'HANGRY JAYJ',type:'Spicy/Furious',baseHp:200,baseAtk:115,draw:sHangryJayj,mythic:false,
+    desc:'Jayj ate Goog Spice chilli drop. He is now furious, steaming, and somehow even larger. Do not approach.',
+    evolvedFrom:'jayj',itemEvo:true,
+    moves:[{name:'CHILLI RAGE',pwr:110},{name:'SPICE SLAM',pwr:98},{name:'HANGRY WHEEZE',pwr:88},{name:'VOLCANIC BODY ROLL',pwr:125}]},
   jesse:{name:'JESSE',type:'Fire/Chaos',baseHp:84,baseAtk:82,draw:sJesse,mythic:false,
     desc:'Ginger-haired chaos engine. Evolves into Leprechaun Jesse at Lv.10.',
     evolvesAt:10,evolvesInto:'leprechaun',
@@ -1146,15 +1263,20 @@ const JAY={
     moves:[{name:'THE BEASLY SPECIAL',pwr:99999},{name:"GORDON'S WRATH",pwr:88888},{name:'ULTRA GOD STOMP',pwr:77777},{name:'TRANSCENDENT SLAM',pwr:99000}],
     specialVs:{jayj:'oneshot',omegajayj:'oneshot'}},
   googspice:{name:'GOOG SPICE',type:'MYTHIC/Volcano',baseHp:380,baseAtk:220,draw:sGoogSpice,mythic:true,spawnOnce:true,
-    desc:'Born from the volcano\'s core. Made of pure condensed spice and magma. Only ONE exists.',
+    desc:'Born from the volcano\'s core. Evolves into Polar Goog at Lv.55.',
+    evolvesAt:55,evolvesInto:'polargoog',
     moves:[{name:'SPICE ERUPTION',pwr:200},{name:'MAGMA SURGE',pwr:180},{name:'LAVA PILLAR',pwr:165},{name:'VOLCANIC FURY',pwr:215}]},
+  polargoog:{name:'POLAR GOOG',type:'MYTHIC/Arctic',baseHp:500,baseAtk:235,draw:sPolarGoog,mythic:true,
+    desc:'Goog Spice wandered too far north and transformed. Ice runs through his veins now. All the heat is gone but none of the power.',
+    evolvedFrom:'googspice',evolvesAt:55,
+    moves:[{name:'BLIZZARD CRUNCH',pwr:210},{name:'ICE BEAR HUG',pwr:195},{name:'ARCTIC SURGE',pwr:220},{name:'FROZEN FURY',pwr:205}]},
   freakypratiky:{name:'FREAKY PRATIKY',type:'MYTHIC/Mountain',baseHp:350,baseAtk:240,draw:sFreakyPratiky,mythic:true,spawnOnce:true,
     desc:'A wildly freaky entity from Nepal. Three eyes. Only ONE exists.',
     moves:[{name:'NEPAL FRENZY',pwr:220},{name:'THIRD EYE BLAST',pwr:200},{name:'HIMALAYAN STRIKE',pwr:190},{name:'FREAKY DANCE',pwr:175}]},
-  megafreakypratiky:{name:'MEGA FREAKY PRATIKY',type:'MEGA MYTHIC',baseHp:700,baseAtk:420,draw:sMegaFreakyPratiky,mythic:true,ultraGod:false,
+  megafreakypratiky:{name:'MEGA FREAKY PRATIKY',type:'MEGA MYTHIC',baseHp:480,baseAtk:280,draw:sMegaFreakyPratiky,mythic:true,ultraGod:false,
     desc:'Freaky Pratiky absorbed the power of a fallen mythical. All three eyes now glow. The hat is gone. The freakiness is maximum.',
     evolvedFrom:'freakypratiky',
-    moves:[{name:'MEGA THIRD EYE BLAST',pwr:380},{name:'MYTH ABSORB',pwr:350},{name:'CHAOS FRENZY',pwr:320},{name:'ABSOLUTE FREAKOUT',pwr:400}]},
+    moves:[{name:'MEGA THIRD EYE BLAST',pwr:240},{name:'MYTH ABSORB',pwr:220},{name:'CHAOS FRENZY',pwr:200},{name:'ABSOLUTE FREAKOUT',pwr:260}]},
   omegajayj:{name:'OMEGA JAYJ',type:'MYTHIC/Birmingham',baseHp:420,baseAtk:210,draw:sOmegaJayj,mythic:true,spawnOnce:true,canEvolveFrom:'jayj',
     desc:'The ultimate evolution of JAYJ, forged in Birmingham. Only ONE exists.',
     moves:[{name:'OMEGA SLAM',pwr:210},{name:'BRUMMIE CRUSH',pwr:190},{name:'OMEGA WHEEZE',pwr:180},{name:'FULL MASS DROP',pwr:230}]},
@@ -1165,7 +1287,7 @@ const JAY={
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','jayj','jesse','leprechaun','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry'];
+const ALL_KEYS=['indie','richieIndie','jayj','hangryjayj','jesse','leprechaun','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -1177,8 +1299,8 @@ const G={
   phase:'starter',party:[],activeIdx:0,
   box:[],  // PC storage — unlimited
   caught:new Set(),seen:new Set(),
-  battles:0,wins:0,money:500,
-  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0,mythorb:0},
+  battles:0,wins:0,money:500,playtime:0,
+  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0,mythorb:0,chillidrop:0},
   enemy:null,locked:false,over:false,
   peer:null,conn:null,mpMyTurn:false,mpPeerPos:null,
 };
@@ -1851,7 +1973,7 @@ function buyItem(item){
 function openBag(){showView('bag');renderBag();}
 function renderBag(){
   const el=document.getElementById('bag-list');el.innerHTML='';
-  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x',mythorb:'MYTH ORB 🔮 x'};
+  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x',mythorb:'MYTH ORB 🔮 x',chillidrop:'CHILLI DROP 🌶️ x'};
   Object.entries(items).forEach(([k,n])=>{
     const div=document.createElement('div');div.className='bag-item';
     div.innerHTML=`<div class="bi-name">${n}${G.bag[k]||0}</div>`;
@@ -1906,7 +2028,7 @@ function refreshBattleUI(isMythic=false){
   // Reset to fight tab
   battleTab('fight');
   document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
-  document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0));
+  document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0));
   document.getElementById('btc').style.display='none';
   lockBtns(false);
 }
@@ -1987,12 +2109,21 @@ async function useMove(idx){
       const gained=expResult?expResult.expGained:0;
       setBT(JAY[en.key].mythic||JAY[en.key].ultraGod?`${ed.name} vanished! +${gained}EXP`:`${ed.name} fainted! +${gained}EXP`,true);
     }
-    // MYTH ORB DROP — 50% chance when a mythic faints (not caught)
-    if((JAY[en.key].mythic||JAY[en.key].ultraGod)&&Math.random()<0.5){
-      G.bag.mythorb=(G.bag.mythorb||0)+1;
-      await sleep(400);
-      setBT('A MYTH ORB dropped! 🔮\nUse it on Freaky Pratiky to evolve!',true);
-      await sleep(2000);
+    // ITEM DROPS when mythics are KO'd
+    if(JAY[en.key].mythic||JAY[en.key].ultraGod){
+      if(en.key==='googspice'){
+        // Chilli Drop — guaranteed from Goog Spice
+        G.bag.chillidrop=(G.bag.chillidrop||0)+1;
+        await sleep(400);
+        setBT('🌶️ CHILLI DROP fell out of Goog Spice!\nUse it on JAYJ for a fiery evolution!',true);
+        await sleep(2200);
+      } else if(Math.random()<0.5){
+        // Myth Orb — 50% from other mythics
+        G.bag.mythorb=(G.bag.mythorb||0)+1;
+        await sleep(400);
+        setBT('A MYTH ORB dropped! 🔮\nUse it on Freaky Pratiky to evolve!',true);
+        await sleep(2000);
+      }
     }
     await sleep(1800);endBattle(false);return;
   }
@@ -2160,7 +2291,7 @@ function openItemMenu(){
     el.appendChild(row);
   });
   // Update button counts
-  ['potion','superpotion','bigzoup','mythorb'].forEach(k=>{
+  ['potion','superpotion','bigzoup','mythorb','chillidrop'].forEach(k=>{
     const ct=document.getElementById('imb-'+k+'-ct');
     if(ct)ct.textContent='x'+(G.bag[k]||0);
     const btn=document.getElementById('imb-'+k);
@@ -2180,7 +2311,7 @@ function itemMenuSelectJay(idx,rowEl){
   document.getElementById('item-menu-selected').textContent=JAY[inst.key].name+' selected';
   // Enable applicable buttons
   const isFP=inst.key==='freakypratiky';
-  ['potion','superpotion','bigzoup','mythorb'].forEach(k=>{
+  ['potion','superpotion','bigzoup','mythorb','chillidrop'].forEach(k=>{
     const btn=document.getElementById('imb-'+k);
     if(!btn)return;
     const qty=G.bag[k]||0;
@@ -2229,6 +2360,30 @@ async function applyItemToSelected(itemKey){
     await sleep(1400);await enemyTurn();return;
   }
 
+  if(itemKey==='chillidrop'){
+    if(inst.key!=='jayj'){setBT('Chilli Drop only works on JAYJ!');lockBtns(false);return;}
+    if(!(G.bag.chillidrop||0)){setBT('No Chilli Drops!');lockBtns(false);return;}
+    G.bag.chillidrop--;
+    inst.key='hangryjayj';
+    const newD=JAY['hangryjayj'];
+    const newMax=calcMaxHp('hangryjayj',inst.lv);
+    inst.maxHp=newMax;inst.hp=newMax;
+    G.caught.add('hangryjayj');G.seen.add('hangryjayj');
+    if(itemMenuSelectedIdx===G.activeIdx){
+      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${newD.draw()}</div>`;
+      document.getElementById('bfpn').textContent=newD.name;
+      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      setHP('p',inst.hp,inst.maxHp);
+      newD.moves.forEach((mv,i)=>{
+        const nb=document.getElementById(`bm${i+1}n`);const pb=document.getElementById(`bm${i+1}p`);
+        if(nb)nb.textContent=mv.name;if(pb)pb.textContent=`PWR:${mv.pwr}`;
+      });
+    }
+    updateItemCount();
+    setBT('🌶️ JAYJ ate the Chilli Drop!\nHANGRY JAYJ AWAKENED!! 🔥',true);
+    await sleep(2500);lockBtns(false);setBT('Choose your move!',false);return;
+  }
+
   if(itemKey==='mythorb'){
     if(inst.key!=='freakypratiky'){setBT('Myth Orb only works on Freaky Pratiky!');lockBtns(false);return;}
     if(!(G.bag.mythorb||0)){setBT('No Myth Orbs! Defeat mythicals to get them.');lockBtns(false);return;}
@@ -2260,7 +2415,7 @@ async function applyItemToSelected(itemKey){
 }
 
 function updateItemCount(){
-  const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0);
+  const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0);
   document.getElementById('pot-count').textContent='x'+total;
 }
 
@@ -3259,7 +3414,75 @@ function boxRelease(){
   scheduleAutoSave();
 }
 
+
+// ═══════════════════════════════════════════
+//  PLAYTIME TRACKER + LEADERBOARD
+// ═══════════════════════════════════════════
+let _ptInterval=null;
+function startPlaytimeTracker(){
+  if(_ptInterval)return;
+  _ptInterval=setInterval(()=>{G.playtime=(G.playtime||0)+1;},1000);
+}
+function stopPlaytimeTracker(){
+  if(_ptInterval){clearInterval(_ptInterval);_ptInterval=null;}
+}
+function fmtTime(secs){
+  const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60;
+  if(h>0)return `${h}h ${m}m`;
+  if(m>0)return `${m}m ${s}s`;
+  return `${s}s`;
+}
+function submitLBScore(){
+  if(!currentUser)return;
+  const uid=currentUser.uid;
+  const name=currentUser.displayName||uid;
+  const entry={name,caught:G.caught.size,battles:G.battles,wins:G.wins,playtime:G.playtime||0,savedAt:Date.now()};
+  try{localStorage.setItem('jayjamon_lb_'+uid,JSON.stringify(entry));}catch(e){}
+}
+function openLeaderboard(){
+  showView('lb');
+  const el=document.getElementById('lb-list');el.innerHTML='';
+  // Gather all lb_ entries
+  const entries=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k||!k.startsWith('jayjamon_lb_'))continue;
+    try{const e=JSON.parse(localStorage.getItem(k));if(e)entries.push(e);}catch(e){}
+  }
+  // Also add current session even if not saved
+  if(currentUser){
+    const uid=currentUser.uid;
+    const existing=entries.find(e=>e.name===(currentUser.displayName||uid));
+    if(!existing)entries.push({name:currentUser.displayName||uid,caught:G.caught.size,battles:G.battles,wins:G.wins,playtime:G.playtime||0,savedAt:Date.now()});
+  }
+  if(entries.length===0){
+    const empty=document.createElement('div');
+    empty.style.cssText='font-size:6px;color:var(--gb1);text-align:center;padding:20px';
+    empty.textContent='No scores yet! Sign in and save your game.';
+    el.appendChild(empty);return;
+  }
+  // Sort by playtime desc
+  entries.sort((a,b)=>b.playtime-a.playtime);
+  entries.forEach((e,i)=>{
+    const row=document.createElement('div');
+    const medal=['🥇','🥈','🥉'][i]||`${i+1}.`;
+    const isMe=currentUser&&(e.name===(currentUser.displayName||currentUser.uid));
+    row.style.cssText=`display:flex;align-items:center;gap:8px;background:${isMe?'#1a3a0a':'#0d1a08'};border:1px solid ${isMe?'var(--gb2)':'var(--gb1)'};border-radius:2px;padding:6px 8px;`;
+    row.innerHTML=`
+      <span style="font-size:10px;flex-shrink:0">${medal}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:6px;color:${isMe?'var(--gb2)':'var(--gb4)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.name}${isMe?' ★':''}</div>
+        <div style="font-size:5px;color:var(--gb1);margin-top:2px">⏱ ${fmtTime(e.playtime||0)} · ${e.caught||0}/${TOTAL} caught · ${e.wins||0} wins</div>
+      </div>`;
+    el.appendChild(row);
+  });
+}
+// Submit score on every save
+const _origDoSave=doSave;
+function doSave(){submitLBScore();_origDoSave();}
+
 buildStarters();
+startPlaytimeTracker();
 </script>
 
 </body>
