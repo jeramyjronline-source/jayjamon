@@ -958,7 +958,7 @@ function loadProgress(uid){
     }
   }catch(e){(document.getElementById('save-indicator')||{}).textContent='Load error';}
 }
-function doSave(){
+function _doSaveCore(){
   if(!currentUser){toast('Sign in to save\nyour progress!');return;}
   const data={party:G.party,box:G.box||[],caught:[...G.caught],seen:[...G.seen],money:G.money,
     bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,megaKey:G.megaKey||false,ratsDefeated:G._ratsDefeated||false,gymsBeaten:G.gymsBeaten||[],councilBeaten:G.councilBeaten||[],councilTeams:G._councilTeams||null,trainerBeaten:G.trainerBeaten||[],finalBossDefeated:G._finalBossDefeated||false,
@@ -2429,11 +2429,14 @@ function buildMap(){
 
   // ── SECRET TILE — single tile behind lair south wall ──
   // Row 53 is just outside the lair's south wall (row 52)
-  m[53][36]=T_SECRET; // The infamous tile — Three Rats spawn here
-  m[53][35]=T_LAIR_FLOOR; // approach path
-  m[53][37]=T_LAIR_FLOOR;
-  m[53][34]=T_LAIR_FLOOR;
-  m[53][38]=T_LAIR_FLOOR;
+  // Gap in south lair wall to reach secret tile
+  m[52][35]=T_LAIR_FLOOR;m[52][36]=T_LAIR_FLOOR;m[52][37]=T_LAIR_FLOOR;
+  // Approach corridor south of lair wall
+  m[53][34]=T_LAIR_FLOOR;m[53][35]=T_LAIR_FLOOR;
+  m[53][37]=T_LAIR_FLOOR;m[53][38]=T_LAIR_FLOOR;
+  // THE INFAMOUS TILE — slightly hidden at row 54 (past the initial floor)
+  m[54][36]=T_SECRET;
+  m[53][36]=T_LAIR_FLOOR; // walkable approach to it
 
   // ── VOID DOOR — gate tile left of secret tile, needs megaKey ──
   m[53][25]=T_VOID_DOOR; // door to void zone
@@ -2698,13 +2701,13 @@ function renderWorld(){
       } else if(t===T_FIELD_TALL){ctx.fillStyle='#1a5a0a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+2,2,12);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE,2,14);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,11);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+1,2,13);ctx.fillStyle='#3a9a1a';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,2);ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE,3,2);}
       else if(t===T_SECRET){
         // Secret tile: void-tall ones just use base color; only the infamous rats tile pulses red
-        if(tr===53&&tc===36&&!G._ratsDefeated&&!G.caught.has('threerats')){
+        if(tr===54&&tc===36&&!G._ratsDefeated&&!G.caught.has('threerats')){
           const p=(Math.sin(Date.now()/600)+1)/2;
           ctx.fillStyle='#1a0000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
           ctx.globalAlpha=0.3+p*0.5;ctx.fillStyle='#ff2200';
           ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+3,RENDER_TILE-6,RENDER_TILE-6);
           ctx.globalAlpha=1;
-        } else if(tr!==53||tc!==36){
+        } else if(tr!==54||tc!==36){
           // void-zone tall grass — dark with faint purple wisp
           ctx.fillStyle='#0a000a';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
           if((tr*7+tc*13)%9===0){ctx.globalAlpha=0.4;ctx.fillStyle='#550077';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+5,6,6);ctx.globalAlpha=1;}
@@ -2834,7 +2837,7 @@ function startWalk(){
           }
         }
         // SECRET TILE — trigger Three Rats encounter when stepped on
-        if(t===T_SECRET&&nr===53&&nc===36){
+        if(t===T_SECRET&&nr===54&&nc===36){
           if(!G._ratsDefeated&&!G.caught.has('threerats')){
             triggerRatsEncounter();return;
           }
@@ -4742,8 +4745,8 @@ function openLeaderboard(){
   });
 }
 // Submit score on every save
-const _origDoSave=doSave;
-function doSave(){submitLBScore();_origDoSave();}
+// doSave calls submitLBScore then _doSaveCore
+function doSave(){submitLBScore();_doSaveCore();}
 
 
 // ═══════════════════════════════════════════
