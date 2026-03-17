@@ -52,6 +52,48 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 .s-type{font-size:5px;color:var(--gb0);opacity:.7;margin-bottom:3px;}
 .s-mv{font-size:5px;color:var(--gb0);opacity:.6;line-height:1.6;}
 
+/* PC BOX */
+#view-box{padding:8px;gap:0;overflow:hidden;flex-direction:column;}
+.box-tabs{display:flex;gap:0;margin-bottom:6px;flex-shrink:0;}
+.box-tab{flex:1;background:var(--gb1);border:1px solid var(--gb0);font-family:'Press Start 2P',monospace;
+  font-size:6px;color:var(--gb4);padding:6px 4px;cursor:pointer;text-align:center;transition:background .1s;}
+.box-tab.active-tab{background:var(--gb2);color:var(--gb0);}
+.box-section{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;}
+.box-legend{font-size:5px;color:var(--gb1);text-align:center;padding:3px 0;flex-shrink:0;}
+/* Party slot */
+.pslot{background:var(--gb2);border:2px solid var(--gb0);border-radius:2px;padding:6px 8px;
+  display:flex;align-items:center;gap:8px;cursor:pointer;transition:background .1s,border-color .1s;}
+.pslot:hover{background:var(--gb3);}
+.pslot.selected{border-color:var(--yel);background:#2a3a10;}
+.pslot.empty{background:#0d1a08;border-style:dashed;opacity:.5;cursor:default;}
+.pslot-sprite{width:32px;height:32px;flex-shrink:0;}
+.pslot-info{flex:1;min-width:0;}
+.pslot-name{font-size:6px;color:var(--gb0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pslot-sub{font-size:5px;color:var(--gb1);margin-top:2px;}
+.pslot-hp{height:4px;background:var(--gb0);border-radius:1px;overflow:hidden;margin-top:3px;}
+.pslot-hpf{height:100%;border-radius:1px;}
+/* Box grid */
+.box-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+.bslot{background:#0d1a08;border:1px solid var(--gb1);border-radius:2px;
+  padding:4px 2px;text-align:center;cursor:pointer;transition:background .1s,border-color .1s;
+  display:flex;flex-direction:column;align-items:center;}
+.bslot:hover{background:var(--gb2);border-color:var(--gb2);}
+.bslot.selected{border-color:var(--yel);background:#1a2a08;}
+.bslot.empty{opacity:.25;cursor:default;}
+.bslot-sprite{width:28px;height:28px;}
+.bslot-name{font-size:4px;color:var(--gb4);margin-top:2px;white-space:nowrap;overflow:hidden;width:100%;text-overflow:ellipsis;}
+.bslot-lv{font-size:4px;color:var(--gb1);}
+/* Action bar */
+.box-actions{display:flex;gap:4px;margin-top:6px;flex-shrink:0;}
+.box-act-btn{flex:1;background:var(--gb1);border:2px solid var(--gb0);border-radius:2px;
+  font-family:'Press Start 2P',monospace;font-size:5px;color:var(--gb4);
+  padding:6px 4px;cursor:pointer;transition:background .1s;text-align:center;}
+.box-act-btn:hover:not(:disabled){background:var(--gb2);color:var(--gb0);}
+.box-act-btn:disabled{opacity:.35;cursor:not-allowed;}
+.box-act-btn.danger{border-color:var(--red);color:var(--red);}
+.box-act-btn.danger:hover:not(:disabled){background:var(--red);color:var(--gb4);}
+.box-status{font-size:5px;color:var(--gb2);text-align:center;padding:3px;flex-shrink:0;min-height:14px;}
+
 /* WORLD */
 #view-world{padding:0;position:relative;line-height:0;}
 #world-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:none;}
@@ -284,7 +326,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/18</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/19</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -357,7 +399,35 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
    <p style="font-size:5px;color:var(--gb1);line-height:1.8;text-align:center">Welcome! We restore your Jayjamon to full health!</p>
    <div id="center-party"></div>
    <button class="menu-btn" onclick="healAll()">✚ HEAL ALL JAYJAMON<span class="ms">fully restores HP</span></button>
+   <button class="menu-btn" onclick="openBox()" style="background:#1a3a2a;border-color:var(--gb2)">📦 JAY PC<span class="ms">store &amp; manage your Jayjamon</span></button>
    <button class="back-btn" onclick="showView('world');startWalk()">◂ LEAVE CENTER</button>
+  </div>
+
+  <!-- PC BOX -->
+  <div class="view" id="view-box">
+   <div style="flex-shrink:0">
+    <div class="panel-title" style="margin-bottom:4px">📦 JAY PC — POKEMON STORAGE</div>
+    <div class="box-tabs">
+     <button class="box-tab active-tab" id="boxtab-party" onclick="boxTab('party')">👥 PARTY</button>
+     <button class="box-tab" id="boxtab-box" onclick="boxTab('box')">📦 BOX</button>
+    </div>
+   </div>
+   <div class="box-status" id="box-status">Select a Jayjamon to move it</div>
+   <div class="box-section" id="box-party-section">
+    <div class="box-legend">YOUR PARTY — up to 6 · click to select</div>
+    <div id="box-party-slots"></div>
+   </div>
+   <div class="box-section" id="box-box-section" style="display:none">
+    <div class="box-legend">STORAGE BOX — unlimited · click to select</div>
+    <div id="box-box-grid" class="box-grid"></div>
+   </div>
+   <div class="box-actions">
+    <button class="box-act-btn" id="box-btn-deposit" onclick="boxDeposit()" disabled>DEPOSIT ▸</button>
+    <button class="box-act-btn" id="box-btn-withdraw" onclick="boxWithdraw()" disabled>◂ WITHDRAW</button>
+    <button class="box-act-btn" id="box-btn-swap" onclick="boxSwap()" disabled>⇄ SWAP</button>
+    <button class="box-act-btn danger" id="box-btn-release" onclick="boxRelease()" disabled>RELEASE</button>
+   </div>
+   <button class="back-btn" onclick="showView('center');renderCenter()" style="margin-top:6px">◂ BACK TO CENTER</button>
   </div>
 
   <!-- SHOP -->
@@ -562,7 +632,7 @@ function loadProgress(uid){
     if(!raw){document.getElementById('save-indicator').textContent='New save';setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);return;}
     const data=JSON.parse(raw);
     if(data&&data.party&&data.party.length>0){
-      G.party=data.party;G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
+      G.party=data.party;G.box=data.box||[];G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
       G.money=data.money||500;G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
       G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;
       (data.spawned||[]).forEach(k=>SPAWNED_MYTHICS.add(k));
@@ -577,7 +647,7 @@ function loadProgress(uid){
 }
 function doSave(){
   if(!currentUser){toast('Sign in to save\nyour progress!');return;}
-  const data={party:G.party,caught:[...G.caught],seen:[...G.seen],money:G.money,
+  const data={party:G.party,box:G.box||[],caught:[...G.caught],seen:[...G.seen],money:G.money,
     bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,
     spawned:[...SPAWNED_MYTHICS],savedAt:Date.now()};
   try{
@@ -687,6 +757,10 @@ const MOVE_FX={
   'STATIC OVERLOAD':   {type:'glitch',  color:'#ff00ff'},
   'COAT SLASH':        {type:'slash',   color:'#6600ff'},
   'FINAL RECKONING':   {type:'mega',    color:'#440088'},
+  'POTATO BASH':       {type:'slam',    color:'#8b5e3c'},
+  'LUCKY CLOVER SLAM': {type:'scatter', color:'#2acc50'},
+  'SHAMROCK STORM':    {type:'vines',   color:'#1a6600'},
+  'POT O GOLD SMASH':  {type:'mega',    color:'#ffcc00'},
 };
 
 let fxParticles=[];
@@ -872,6 +946,46 @@ function sNick(){return svg([
   [4,0,'#b07a30',4,1],[8,0,'#b07a30',3,1],
 ])}
 
+
+// LEPRECHAUN JESSE — Jesse evolved at lv10, full Irish leprechaun transformation
+function sLeprechaun(){return svg([
+  // Tall green top hat
+  [5,0,'#1a6600',6,1],[4,1,'#1a6600',8,1],[4,0,'#1a6600',8,2],
+  [3,2,'#1a6600',10,4],[3,2,'#226600',10,3],
+  // gold hat band
+  [3,5,'#ffcc00',10,1],
+  // hat brim
+  [2,6,'#1a6600',12,2],
+  // wild ginger hair sticking out from hat
+  [2,7,'#c0300a',2,3],[12,7,'#c0300a',2,3],
+  [1,8,'#c0300a',2,2],[13,8,'#c0300a',2,2],
+  // face — freckles galore
+  [4,8,'#f2c09a',8,4],[5,9,'#f2c09a',6,3],
+  [5,9,'#c06050',1,1],[7,9,'#c06050',1,1],[9,9,'#c06050',1,1],[11,9,'#c06050',1,1],
+  // cheeky grin
+  [5,11,'#222',6,1],[6,11,'#fff',1,1],[8,11,'#fff',1,1],[10,11,'#fff',1,1],
+  // twinkling mischievous eyes
+  [5,9,'#2a8a2a',1,1],[10,9,'#2a8a2a',1,1],
+  [5,8,'#111',1,1],[10,8,'#111',1,1],
+  // green coat/suit
+  [3,12,'#1a6600',10,4],[2,12,'#1a6600',1,3],[13,12,'#1a6600',1,3],
+  // gold buttons on coat
+  [7,13,'#ffcc00',2,1],
+  // white shirt underneath
+  [6,12,'#ffffff',4,2],
+  // arms with coat sleeves
+  [1,12,'#1a6600',2,4],[13,12,'#1a6600',2,4],
+  // tiny hands holding a potato
+  [0,15,'#f2c09a',2,1],[14,15,'#f2c09a',2,1],
+  // potato (brown lump)
+  [0,14,'#8b5e3c',2,2],
+  // green trousers (knee-length)
+  [5,15,'#226600',3,1],[8,15,'#226600',3,1],
+  // buckled shoes hint
+  [4,15,'#222',2,1],[10,15,'#222',2,1],
+  // lucky clover on hat
+  [7,0,'#2acc50',2,1],[6,1,'#2acc50',1,1],[9,1,'#2acc50',1,1],[7,2,'#2acc50',1,1],
+],16,16)}
 // ELLIOT — sharp, intense, neat medium glasses, determined look
 function sElliot(){return svg([
   // neat dark hair, short and tidy
@@ -941,8 +1055,13 @@ const JAY={
     evolvesAt:50,evolvesInto:'omegajayj',
     moves:[{name:'BODY SLAM',pwr:82},{name:'GRAVITON WHEEZE',pwr:54},{name:'FAT ROLL',pwr:68},{name:'SEISMIC STOMP',pwr:90}]},
   jesse:{name:'JESSE',type:'Fire/Chaos',baseHp:84,baseAtk:82,draw:sJesse,mythic:false,
-    desc:'Ginger-haired chaos engine. Do not let near open flames.',
+    desc:'Ginger-haired chaos engine. Evolves into Leprechaun Jesse at Lv.10.',
+    evolvesAt:10,evolvesInto:'leprechaun',
     moves:[{name:'GINGER SNAP',pwr:72},{name:'FRECKLE STORM',pwr:50},{name:'HEAT WAVE',pwr:64},{name:'COMBUSTION',pwr:88}]},
+  leprechaun:{name:'LEPRECHAUN JESSE',type:'Irish/Chaos',baseHp:110,baseAtk:105,draw:sLeprechaun,mythic:false,
+    desc:'Jesse evolved at Lv.10 into a full leprechaun. Still ginger. Now has a hat. Extremely Irish. Will bonk you with a potato.',
+    evolvedFrom:'jesse',
+    moves:[{name:'POTATO BASH',pwr:85},{name:'LUCKY CLOVER SLAM',pwr:78},{name:'SHAMROCK STORM',pwr:92},{name:'POT O GOLD SMASH',pwr:100}]},
   rohan:{name:'ROHAN',type:'Dreads/Chill',baseHp:100,baseAtk:70,draw:sRohan,mythic:false,
     desc:'Dreadlocked Jayjamon. Hair so long it contains its own ecosystem.',
     moves:[{name:'DREAD WHIP',pwr:66},{name:'TANGLE TRAP',pwr:52},{name:'KNOT LOCK',pwr:60},{name:'ROOTS WRATH',pwr:78}]},
@@ -989,7 +1108,7 @@ const JAY={
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','jayj','jesse','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
+const ALL_KEYS=['indie','jayj','jesse','leprechaun','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -999,6 +1118,7 @@ const SPAWNED_MYTHICS=new Set();
 // ═══════════════════════════════════════════
 const G={
   phase:'starter',party:[],activeIdx:0,
+  box:[],  // PC storage — unlimited
   caught:new Set(),seen:new Set(),
   battles:0,wins:0,money:500,
   bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0},
@@ -1066,6 +1186,19 @@ function awardExp(winner, defeatedLv, isMythic){
     return{levelled:true,oldLv,newLv:winner.lv,expGained:base,evolution:evo};
   }
   return{levelled:false,expGained:base};
+}
+
+// Add a jayjamon instance to party if space, otherwise box
+function addToPartyOrBox(inst){
+  if(!inst)return;
+  if(G.party.filter(p=>p).length<6){
+    G.party.push(inst);
+    return 'party';
+  } else {
+    if(!G.box)G.box=[];
+    G.box.push(inst);
+    return 'box';
+  }
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -1165,19 +1298,22 @@ function buildMap(){
 const WORLD_MAP=buildMap();
 
 const GRASS_ZONES=[
-  {r1:2,c1:2,r2:7,c2:11,  pool:['indie','arlie','alby','nick']},
+  {r1:2,c1:2,r2:7,c2:11,   pool:['indie','arlie','alby','nick']},
   {r1:12,c1:2,r2:16,c2:11, pool:['jesse','rohan','rocco','elliot']},
   {r1:2,c1:19,r2:7,c2:27,  pool:['oscar','alby']},
   {r1:12,c1:19,r2:16,c2:27,pool:['jayj','rocco','arlie']},
   {r1:2,c1:33,r2:14,c2:59, pool:['googspice'],     mythicKey:'googspice'},
-  {r1:1,c1:45,r2:14,c2:63, pool:['freakypratiky'], mythicKey:'freakypratiky'},
-  {r1:10,c1:50,r2:14,c2:60, pool:['freakypratiky','indie','alby'], mythicKey:'freakypratiky'},  // ice rink also spawns FP
-  {r1:16,c1:30,r2:18,c2:43, pool:['jayj','indie','nick','elliot','alby'], lv:20},  // Jayj's Nose lv20
+  // ICE RINK — must come BEFORE the broad mountain zone so its tighter bounds match first
+  // No mythicKey here — Freaky Pratiky always spawns on the rink (not gated by spawn-once)
+  {r1:10,c1:50,r2:14,c2:60, pool:['freakypratiky'], iceRink:true},
+  // Mountain zone (main) — Freaky Pratiky mythic encounter here
+  {r1:1,c1:45,r2:9,c2:63,  pool:['freakypratiky'], mythicKey:'freakypratiky'},
+  {r1:16,c1:30,r2:18,c2:43, pool:['jayj','indie','nick','elliot','alby'], lv:20},
   {r1:21,c1:33,r2:25,c2:42,pool:['omegajayj'],     mythicKey:'omegajayj'},
   {r1:28,c1:46,r2:32,c2:58,pool:['jayj','oscar','omegajayj'],mythicKey:'omegajayj'},
   {r1:23,c1:3,r2:31,c2:13, pool:['rotoscoperocco'],mythicKey:'rotoscoperocco'},
   {r1:23,c1:15,r2:31,c2:26,pool:['terry'],         mythicKey:'terry'},
-  {r1:1,c1:61,r2:35,c2:62,  pool:['sonny'],          mythicKey:'sonny', fieldsGate:true, midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
+  {r1:1,c1:61,r2:35,c2:62,  pool:['sonny'], mythicKey:'sonny', fieldsGate:true, midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
 ];
 const REGION_BOUNDS=[
   {name:'VOLCANO',   r1:1,c1:32,r2:16,c2:61},
@@ -1461,6 +1597,25 @@ function triggerEncounter(r,c){
     setTimeout(()=>{showView('battle');refreshBattleUI(true);setBT(`✨ ${JAY[key].name}!`,false);},300);
     return;
   }
+  // ICE RINK zone — Freaky Pratiky always lurks here
+  if(zone.iceRink){
+    const key='freakypratiky';
+    // 40% chance encounter, skip if already caught unless 20% chance
+    if(G.caught.has(key)&&Math.random()<0.8){startWalk();return;}
+    if(!G.caught.has(key)&&Math.random()<0.5){startWalk();return;}
+    G.seen.add(key);
+    SPAWNED_MYTHICS.add(key);
+    G.enemy=newInst(key,50+Math.floor(Math.random()*10));
+    G.battles++;G.over=false;G.locked=false;
+    document.getElementById('mythic-flash').style.display='block';
+    setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+    setTimeout(()=>{
+      showView('battle');refreshBattleUI(true);
+      setBT('✨ FREAKY PRATIKY glides onto the ice!',false);
+    },300);
+    return;
+  }
+
   const available=zone.pool.filter(k=>!G.caught.has(k)||Math.random()<0.3);
   if(available.length===0){startWalk();return;}
   const key=available[Math.floor(Math.random()*available.length)];
@@ -1826,7 +1981,18 @@ async function tryBall(){
   document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
   if(success){
     G.caught.add(en.key);
-    if(!G.party.find(p=>p.key===en.key))G.party.push({...en});
+    const alreadyOwned=G.party.find(p=>p.key===en.key)||(G.box||[]).find(p=>p.key===en.key);
+    if(!alreadyOwned){
+      if(G.party.filter(p=>p).length<6){
+        G.party.push({...en});
+      } else {
+        if(!G.box)G.box=[];
+        G.box.push({...en});
+        setBT(`${ed.name} caught! Party full — sent to Box! 📦`);
+        G.over=true;if(isMythic)toast(`✨ ${ed.name.toUpperCase()}\nCAUGHT → BOX! ✨`);
+        await sleep(2200);endBattle(true);return;
+      }
+    }
     G.over=true;
     if(isMythic)toast(`✨ ${ed.name.toUpperCase()}\nCAUGHT! ✨`);
     setBT(`${ed.name} caught! 🎉`);await sleep(2000);endBattle(true);
@@ -2278,7 +2444,7 @@ function devExec(cmd){
     if(parts[1]==='all'){
       ALL_KEYS.forEach(k=>{
         G.caught.add(k);G.seen.add(k);
-        if(!G.party.find(p=>p.key===k)) G.party.push(newInst(k));
+        if(!G.party.find(p=>p.key===k)&&!(G.box||[]).find(p=>p.key===k)) addToPartyOrBox(newInst(k));
       });
       devOk('Caught all '+TOTAL+' Jayjamon!');
       updateHUD();return;
@@ -2289,8 +2455,8 @@ function devExec(cmd){
     if(!key){devErr(`Unknown: "${nameRaw}"`);return;}
     G.caught.add(key);G.seen.add(key);
     if(JAY[key].mythic) SPAWNED_MYTHICS.add(key);
-    if(!G.party.find(p=>p.key===key)) G.party.push(newInst(key));
-    devOk(`${JAY[key].name} caught and added to party!`);
+    const alreadyHave=G.party.find(p=>p.key===key)||(G.box||[]).find(p=>p.key===key);
+    if(!alreadyHave){const dest=addToPartyOrBox(newInst(key));devOk(`${JAY[key].name} caught → ${dest}!`);}else{devOk(`${JAY[key].name} already owned!`);}
     updateHUD();return;
   }
 
@@ -2343,9 +2509,9 @@ function devExec(cmd){
     let key=ALL_KEYS.find(k=>k===nameRaw)||ALL_KEYS.find(k=>k.startsWith(nameRaw))||ALL_KEYS.find(k=>JAY[k].name.toLowerCase().replace(/\s/g,'').includes(nameRaw));
     if(!key){devErr(`Unknown: "${nameRaw}"`);return;}
     const lv=parseInt(parts[2])||5;
-    G.party.push(newInst(key,lv));
     G.seen.add(key);
-    devOk(`${JAY[key].name} Lv.${lv} added to party!`);return;
+    const apDest=addToPartyOrBox(newInst(key,lv));
+    devOk(`${JAY[key].name} Lv.${lv} → ${apDest}!`);return;
   }
 
   // ── SETLEVEL ──
@@ -2527,7 +2693,7 @@ function devExec(cmd){
   // ── SKIP STARTER ──
   if(base==='skipstarter'){
     if(G.party.length===0){
-      G.party.push(newInst('indie',5));
+      addToPartyOrBox(newInst('indie',5));
       G.caught.add('indie');G.seen.add('indie');
     }
     G.phase='walk';
@@ -2571,6 +2737,258 @@ function devExec(cmd){
   }
 
   devErr(`Unknown command: "${base}". Type HELP for commands.`);
+}
+
+
+// ═══════════════════════════════════════════
+//  PC BOX SYSTEM
+// ═══════════════════════════════════════════
+const BOX = {
+  selectedFrom: null,  // 'party' | 'box'
+  selectedIdx: -1,
+  activeTab: 'party',
+};
+
+function openBox(){
+  BOX.selectedFrom=null;BOX.selectedIdx=-1;
+  showView('box');
+  boxTab('party');
+}
+
+function boxTab(tab){
+  BOX.activeTab=tab;
+  BOX.selectedFrom=null;BOX.selectedIdx=-1;
+  document.getElementById('box-party-section').style.display=tab==='party'?'flex':'none';
+  document.getElementById('box-box-section').style.display=tab==='box'?'flex':'none';
+  document.getElementById('boxtab-party').classList.toggle('active-tab',tab==='party');
+  document.getElementById('boxtab-box').classList.toggle('active-tab',tab==='box');
+  boxUpdateActions();
+  if(tab==='party') renderBoxParty();
+  else renderBoxGrid();
+}
+
+function renderBoxParty(){
+  const el=document.getElementById('box-party-slots');el.innerHTML='';
+  const MAX=6;
+  for(let i=0;i<MAX;i++){
+    const inst=G.party[i];
+    const div=document.createElement('div');
+    if(!inst){
+      div.className='pslot empty';
+      div.innerHTML='<div class="pslot-sprite"></div><div class="pslot-info"><div class="pslot-name">— empty —</div></div>';
+    } else {
+      const d=JAY[inst.key];
+      const pct=Math.round(inst.hp/inst.maxHp*100);
+      const hc=pct>50?'#8bac0f':pct>20?'#f4d03f':'#e63946';
+      const sel=BOX.selectedFrom==='party'&&BOX.selectedIdx===i;
+      div.className='pslot'+(sel?' selected':'');
+      div.innerHTML=`<div class="pslot-sprite">${d.draw()}</div>
+        <div class="pslot-info">
+          <div class="pslot-name">${d.name}</div>
+          <div class="pslot-sub">Lv.${inst.lv} · ${inst.hp}/${inst.maxHp} HP</div>
+          <div class="pslot-hp"><div class="pslot-hpf" style="width:${pct}%;background:${hc}"></div></div>
+        </div>
+        ${i===G.activeIdx?'<span style="font-size:6px;color:var(--yel)">★</span>':''}`;
+      div.onclick=()=>boxSelectParty(i);
+    }
+    el.appendChild(div);
+  }
+}
+
+function renderBoxGrid(){
+  const el=document.getElementById('box-box-grid');el.innerHTML='';
+  const box=G.box||[];
+  const SLOTS=Math.max(30,Math.ceil((box.length+1)/5)*5);
+  for(let i=0;i<SLOTS;i++){
+    const inst=box[i];
+    const div=document.createElement('div');
+    if(!inst){
+      div.className='bslot empty';
+      div.innerHTML='<div class="bslot-sprite"></div><div class="bslot-name">—</div>';
+    } else {
+      const d=JAY[inst.key];
+      const sel=BOX.selectedFrom==='box'&&BOX.selectedIdx===i;
+      div.className='bslot'+(sel?' selected':'');
+      div.innerHTML=`<div class="bslot-sprite">${d.draw()}</div>
+        <div class="bslot-name">${d.name}</div>
+        <div class="bslot-lv">Lv.${inst.lv}</div>`;
+      div.onclick=()=>boxSelectBox(i);
+    }
+    el.appendChild(div);
+  }
+}
+
+function boxSelectParty(idx){
+  if(!G.party[idx])return;
+  if(BOX.selectedFrom==='party'&&BOX.selectedIdx===idx){
+    // deselect
+    BOX.selectedFrom=null;BOX.selectedIdx=-1;
+  } else {
+    BOX.selectedFrom='party';BOX.selectedIdx=idx;
+  }
+  boxUpdateActions();
+  renderBoxParty();
+}
+
+function boxSelectBox(idx){
+  if(!(G.box||[])[idx])return;
+  if(BOX.selectedFrom==='box'&&BOX.selectedIdx===idx){
+    BOX.selectedFrom=null;BOX.selectedIdx=-1;
+  } else {
+    BOX.selectedFrom='box';BOX.selectedIdx=idx;
+  }
+  boxUpdateActions();
+  renderBoxGrid();
+}
+
+function boxUpdateActions(){
+  const hasSel=BOX.selectedFrom!==null&&BOX.selectedIdx>=0;
+  const fromParty=BOX.selectedFrom==='party';
+  const fromBox=BOX.selectedFrom==='box';
+  // DEPOSIT: selected party member → box (party must keep ≥1 alive)
+  const depBtn=document.getElementById('box-btn-deposit');
+  const wdBtn=document.getElementById('box-btn-withdraw');
+  const swpBtn=document.getElementById('box-btn-swap');
+  const relBtn=document.getElementById('box-btn-release');
+  if(!hasSel){
+    depBtn.disabled=true;wdBtn.disabled=true;swpBtn.disabled=true;relBtn.disabled=true;
+    boxStatus('Select a Jayjamon to manage it');return;
+  }
+  if(fromParty){
+    const inst=G.party[BOX.selectedIdx];
+    const aliveCount=G.party.filter(p=>p&&p.hp>0).length;
+    const isLast=G.party.filter(p=>p).length===1;
+    depBtn.disabled=isLast; // can't deposit last party member
+    wdBtn.disabled=G.party.filter(p=>p).length>=6||!(G.box||[]).length;
+    swpBtn.disabled=!(G.box||[]).length;
+    relBtn.disabled=isLast;
+    boxStatus(isLast?'Cannot deposit — last member!':'Selected: '+JAY[inst.key].name+' (party)');
+  } else {
+    const inst=(G.box||[])[BOX.selectedIdx];
+    depBtn.disabled=true;
+    wdBtn.disabled=G.party.filter(p=>p).length>=6;
+    swpBtn.disabled=G.party.filter(p=>p).length===0;
+    relBtn.disabled=false;
+    boxStatus('Selected: '+JAY[inst.key].name+' (box)');
+  }
+}
+
+function boxStatus(msg){
+  const el=document.getElementById('box-status');
+  if(el)el.textContent=msg;
+}
+
+// DEPOSIT: move party member → box
+function boxDeposit(){
+  if(BOX.selectedFrom!=='party'||BOX.selectedIdx<0)return;
+  const idx=BOX.selectedIdx;
+  const inst=G.party[idx];
+  if(!inst)return;
+  if(G.party.filter(p=>p).length<=1){boxStatus('Cannot deposit last party member!');return;}
+  // Remove from party (splice to keep order)
+  G.party.splice(idx,1);
+  if(!G.box)G.box=[];
+  G.box.push(inst);
+  // Fix active idx
+  if(G.activeIdx>=G.party.length)G.activeIdx=Math.max(0,G.party.length-1);
+  if(G.party[G.activeIdx]?.hp<=0){
+    const ai=G.party.findIndex(p=>p&&p.hp>0);
+    if(ai>=0)G.activeIdx=ai;
+  }
+  BOX.selectedFrom=null;BOX.selectedIdx=-1;
+  boxStatus(JAY[inst.key].name+' sent to box!');
+  renderBoxParty();boxUpdateActions();
+  scheduleAutoSave();
+}
+
+// WITHDRAW: move box member → party
+function boxWithdraw(){
+  const fromParty=BOX.selectedFrom==='party';
+  const fromBox=BOX.selectedFrom==='box';
+  if(!fromBox&&!fromParty)return;
+  if(G.party.filter(p=>p).length>=6){boxStatus('Party is full! Deposit first.');return;}
+  let inst,boxIdx;
+  if(fromBox){
+    boxIdx=BOX.selectedIdx;
+    inst=(G.box||[])[boxIdx];
+    if(!inst)return;
+    G.box.splice(boxIdx,1);
+    G.party.push(inst);
+    BOX.selectedFrom=null;BOX.selectedIdx=-1;
+    boxStatus(JAY[inst.key].name+' added to party!');
+    boxTab('box');
+  }
+  scheduleAutoSave();
+}
+
+// SWAP: exchange selected party member ↔ selected box member
+// If one is selected from party, open box tab and prompt to pick box slot
+// If one is selected from box, swap with active party slot choice
+function boxSwap(){
+  if(BOX.selectedFrom==='party'){
+    // Switch to box tab so user can pick which box mon to swap with
+    const partyIdx=BOX.selectedIdx;
+    boxStatus('Now pick a box Jayjamon to swap with '+JAY[G.party[partyIdx].key].name);
+    BOX._pendingSwapPartyIdx=partyIdx;
+    boxTab('box');
+    return;
+  }
+  if(BOX.selectedFrom==='box'){
+    // If we have a pending party idx, do the swap
+    if(BOX._pendingSwapPartyIdx!==undefined){
+      const pi=BOX._pendingSwapPartyIdx;
+      const bi=BOX.selectedIdx;
+      const partyInst=G.party[pi];
+      const boxInst=(G.box||[])[bi];
+      if(!partyInst||!boxInst)return;
+      G.party[pi]=boxInst;
+      G.box[bi]=partyInst;
+      // Fix active idx
+      if(G.activeIdx===pi&&boxInst.hp<=0){
+        const ai=G.party.findIndex(p=>p&&p.hp>0);
+        if(ai>=0)G.activeIdx=ai;
+      }
+      delete BOX._pendingSwapPartyIdx;
+      BOX.selectedFrom=null;BOX.selectedIdx=-1;
+      boxStatus('Swapped '+JAY[partyInst.key].name+' ↔ '+JAY[boxInst.key].name+'!');
+      boxTab('box');
+      scheduleAutoSave();
+    } else {
+      // No pending party, go back to party to pick
+      boxStatus('Pick a party Jayjamon to swap out first');
+      boxTab('party');
+    }
+  }
+}
+
+// RELEASE: permanently remove (with confirmation)
+function boxRelease(){
+  let inst,src;
+  if(BOX.selectedFrom==='party'){
+    if(G.party.filter(p=>p).length<=1){boxStatus('Cannot release last party member!');return;}
+    inst=G.party[BOX.selectedIdx];src='party';
+  } else if(BOX.selectedFrom==='box'){
+    inst=(G.box||[])[BOX.selectedIdx];src='box';
+  }
+  if(!inst)return;
+  const name=JAY[inst.key].name;
+  if(!confirm('Release '+name+' forever? This cannot be undone!')){return;}
+  if(src==='party'){
+    G.party.splice(BOX.selectedIdx,1);
+    if(G.activeIdx>=G.party.length)G.activeIdx=Math.max(0,G.party.length-1);
+    // Remove from caught so they can be recaught
+    G.caught.delete(inst.key);
+  } else {
+    G.box.splice(BOX.selectedIdx,1);
+    G.caught.delete(inst.key);
+  }
+  BOX.selectedFrom=null;BOX.selectedIdx=-1;
+  boxStatus(name+' was released into the wild...');
+  if(BOX.activeTab==='party')renderBoxParty();
+  else renderBoxGrid();
+  boxUpdateActions();
+  updateHUD();
+  scheduleAutoSave();
 }
 
 buildStarters();
