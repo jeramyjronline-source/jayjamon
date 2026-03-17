@@ -1262,7 +1262,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 // ═══════════════════════════════════════════
 //  TILE MAP  (64×36)
 // ═══════════════════════════════════════════
-const TILE={COLS:64,ROWS:36};
+const TILE={COLS:100,ROWS:56};
 const T_GRASS=0,T_TALL=1,T_PATH=2,T_WALL=3,T_WATER=4,
       T_CENTER=5,T_SHOP=6,T_SIGN=7,T_TREE=8,T_FLOWER=9,
       T_LAVA=10,T_ROCK=11,T_SNOW=12,T_ICE=13,T_DARK=14,T_PORTAL=15,
@@ -1278,114 +1278,176 @@ const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK
 function buildMap(){
   const C=TILE.COLS,R=TILE.ROWS,m=[];
   for(let r=0;r<R;r++)m.push(new Array(C).fill(T_GRASS));
+
+  // ── BORDERS ──
   for(let c=0;c<C;c++){m[0][c]=T_WALL;m[R-1][c]=T_WALL;}
   for(let r=0;r<R;r++){m[r][0]=T_WALL;m[r][C-1]=T_WALL;}
-  for(let c=1;c<30;c++){m[9][c]=T_PATH;m[10][c]=T_PATH;}
-  for(let r=1;r<17;r++){m[r][15]=T_PATH;m[r][16]=T_PATH;}
-  for(let r=2;r<8;r++) for(let c=2;c<12;c++) m[r][c]=T_TALL;
-  for(let r=12;r<17;r++) for(let c=2;c<12;c++) m[r][c]=T_TALL;
-  for(let r=2;r<8;r++) for(let c=19;c<28;c++) m[r][c]=T_TALL;
-  for(let r=12;r<17;r++) for(let c=19;c<28;c++) m[r][c]=T_TALL;
-  [[4,14],[5,13],[3,18],[6,17],[7,13],[10,17],[11,14]].forEach(([r,c])=>{if(m[r][c]===T_GRASS)m[r][c]=T_FLOWER;});
-  [[2,13],[2,14],[3,13],[6,13],[7,14],[2,18],[7,18],[3,28],[6,28],[12,13],[15,13],[12,18],[15,18]].forEach(([r,c])=>{if(m[r]&&m[r][c]===T_GRASS)m[r][c]=T_TREE;});
-  for(let c=17;c<20;c++) for(let r=11;r<13;r++) m[r][c]=T_WATER;
-  for(let r=2;r<5;r++) for(let c=22;c<26;c++) m[r][c]=T_CENTER;
-  for(let r=12;r<15;r++) for(let c=22;c<26;c++) m[r][c]=T_SHOP;
-  for(let c=30;c<C-1;c++){m[9][c]=T_PATH;m[10][c]=T_PATH;}
-  for(let r=17;r<R-1;r++){m[r][15]=T_PATH;m[r][16]=T_PATH;}
-  // Volcano path down east side
-  for(let r=1;r<10;r++){m[r][48]=T_PATH;m[r][49]=T_PATH;}
-  // Volcano lava core
-  for(let r=2;r<15;r++) for(let c=33;c<58;c++){
-    if(m[r][c]===T_GRASS){const d=Math.abs(r-8)+Math.abs(c-45);if(d<4)m[r][c]=T_LAVA;else m[r][c]=T_ROCK;}
+
+  // ── TOWN (top-left, cols 1-44, rows 1-26) ──
+  // Main horizontal path
+  for(let c=1;c<46;c++){m[13][c]=T_PATH;m[14][c]=T_PATH;}
+  // Vertical path
+  for(let r=1;r<26;r++){m[r][22]=T_PATH;m[r][23]=T_PATH;}
+  // Tall grass zones — bigger patches
+  for(let r=2;r<11;r++) for(let c=2;c<17;c++) m[r][c]=T_TALL;
+  for(let r=16;r<25;r++) for(let c=2;c<17;c++) m[r][c]=T_TALL;
+  for(let r=2;r<11;r++) for(let c=26;c<40;c++) m[r][c]=T_TALL;
+  for(let r=16;r<25;r++) for(let c=26;c<40;c++) m[r][c]=T_TALL;
+  // Flowers
+  [[5,19],[6,20],[7,18],[8,21],[10,20],[11,19],[4,21],[9,18]].forEach(([r,c])=>{if(m[r][c]===T_GRASS)m[r][c]=T_FLOWER;});
+  // Trees
+  [[2,18],[2,19],[2,20],[3,18],[10,18],[11,18],[2,41],[10,41],[2,24],[11,24]].forEach(([r,c])=>{
+    if(m[r]&&m[r][c]!==undefined&&m[r][c]===T_GRASS)m[r][c]=T_TREE;
+  });
+  // Water lake
+  for(let c=24;c<29;c++) for(let r=12;r<15;r++) m[r][c]=T_WATER;
+  // Buildings
+  for(let r=3;r<7;r++) for(let c=33;c<38;c++) m[r][c]=T_CENTER;
+  for(let r=17;r<21;r++) for(let c=33;c<38;c++) m[r][c]=T_SHOP;
+  // Signs
+  m[13][20]=T_SIGN; m[13][25]=T_SIGN;
+
+  // ── CONNECTOR PATHS ──
+  // East path continues to volcano/mountain
+  for(let c=44;c<C-1;c++){m[13][c]=T_PATH;m[14][c]=T_PATH;}
+  // South path into lair
+  for(let r=26;r<R-1;r++){m[r][22]=T_PATH;m[r][23]=T_PATH;}
+  // North path to mountain (col 75)
+  for(let r=1;r<14;r++){m[r][75]=T_PATH;m[r][76]=T_PATH;}
+  // South-east to Birmingham
+  for(let r=14;r<32;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
+
+  // ── VOLCANO (cols 48-80, rows 2-22) ──
+  for(let r=2;r<22;r++) for(let c=48;c<80;c++){
+    if(m[r][c]===T_GRASS){
+      const d=Math.abs(r-12)+Math.abs(c-64);
+      if(d<6) m[r][c]=T_LAVA; else m[r][c]=T_ROCK;
+    }
   }
-  for(let r=5;r<12;r++) for(let c=40;c<52;c++){if(Math.abs(r-8)+Math.abs(c-46)<5)m[r][c]=T_LAVA;else m[r][c]=T_ROCK;}
-  for(let c=35;c<57;c++){m[1][c]=T_ROCK;m[15][c]=T_ROCK;}
-  for(let r=1;r<16;r++){m[r][32]=T_ROCK;m[r][60]=T_ROCK;}
-  // EXPANDED MOUNTAIN — now covers rows 1-14, cols 44-63
-  for(let r=1;r<15;r++) for(let c=45;c<63;c++){
-    if(m[r][c]===T_GRASS||m[r][c]===T_ICE)
-      m[r][c]=(r<4||(c>57&&r<8))?T_SNOW:(r+c)%4===0?T_ICE:T_MOUNTAIN;
+  // Extra lava ring
+  for(let r=7;r<17;r++) for(let c=58;c<72;c++){
+    if(Math.abs(r-12)+Math.abs(c-65)<7) m[r][c]=T_LAVA; else if(m[r][c]===T_GRASS) m[r][c]=T_ROCK;
   }
-  // Mountain path north
-  for(let r=1;r<9;r++){m[r][48]=T_PATH;m[r][49]=T_PATH;}
-  // Mountain top peak ice
-  for(let c=50;c<62;c++) m[1][c]=T_ICE;
-  for(let c=48;c<62;c++) m[2][c]=T_SNOW;
-  // ICE RINK — rows 10-14, cols 50-60, Freaky Pratiky spawns here
-  for(let r=10;r<15;r++) for(let c=50;c<61;c++) m[r][c]=T_ICE_RINK;
-  // Ice rink border
-  for(let c=49;c<62;c++){m[9][c]=T_ICE;m[15][c]=T_ROCK;}
-  for(let r=10;r<15;r++){m[r][49]=T_ICE;m[r][61]=T_ICE;}
-  // Path to ice rink from volcano path
-  m[9][48]=T_PATH;m[9][49]=T_PATH;m[10][48]=T_PATH;
-  // JAYJ'S NOSE — orange grass zone, rows 16-18, cols 30-43 (between town path and volcano)
-  for(let r=16;r<19;r++) for(let c=30;c<44;c++) m[r][c]=T_NOSE_GRASS;
-  // Connect nose to path
-  m[15][30]=T_PATH;m[16][30]=T_PATH;
-  for(let c=30;c<44;c++) m[15][c]=T_PATH;
-  for(let r=20;r<34;r++) for(let c=32;c<60;c++){if(m[r][c]===T_GRASS)m[r][c]=T_CITY;}
-  for(let c=32;c<60;c++){m[26][c]=T_PATH;m[27][c]=T_PATH;}
-  for(let r=20;r<34;r++){m[r][44]=T_PATH;m[r][45]=T_PATH;}
-  for(let r=21;r<26;r++) for(let c=33;c<43;c++) m[r][c]=T_TALL;
-  for(let r=28;r<33;r++) for(let c=46;c<59;c++) m[r][c]=T_TALL;
-  for(let r=21;r<24;r++) for(let c=47;c<53;c++) m[r][c]=T_CENTER;
-  for(let r=20;r<34;r++) for(let c=1;c<28;c++) m[r][c]=T_LAIR_FLOOR;
-  for(let c=1;c<28;c++){m[20][c]=T_LAIR_WALL;m[33][c]=T_LAIR_WALL;}
-  for(let r=20;r<34;r++){m[r][1]=T_LAIR_WALL;m[r][28]=T_LAIR_WALL;}
-  for(let c=4;c<12;c++){m[22][c]=T_DARK;m[31][c]=T_DARK;}
-  for(let c=16;c<25;c++){m[22][c]=T_DARK;m[31][c]=T_DARK;}
-  m[26][6]=T_PORTAL;m[26][7]=T_PORTAL;m[26][20]=T_PORTAL;m[26][21]=T_PORTAL;
-  for(let r=23;r<32;r++) for(let c=3;c<14;c++) if(m[r][c]===T_LAIR_FLOOR)m[r][c]=T_DARK;
-  for(let r=23;r<32;r++) for(let c=15;c<27;c++) if(m[r][c]===T_LAIR_FLOOR)m[r][c]=T_DARK;
-  for(let c=1;c<28;c++) m[26][c]=T_LAIR_FLOOR;
-  m[26][13]=T_LAIR_WALL;m[26][14]=T_LAIR_WALL;
-  for(let r=17;r<21;r++){m[r][14]=T_PATH;m[r][15]=T_PATH;m[r][16]=T_PATH;}
-  for(let r=10;r<20;r++){m[r][45]=T_PATH;m[r][46]=T_PATH;}
-  // THE FIELDS — accessible from east end of path, rows 8-34, cols 60-63
-  for(let r=1;r<TILE.ROWS-1;r++){m[r][61]=T_FIELD;m[r][62]=T_FIELD;m[r][63]=T_WALL;}
-  // Field tall grass for Sonny and mid-level encounters
-  for(let r=3;r<30;r++){m[r][61]=T_FIELD_TALL;m[r][62]=T_FIELD_TALL;}
-  // Connect to path at rows 9-10 col 60
-  m[9][60]=T_PATH;m[9][61]=T_PATH;m[10][60]=T_PATH;m[10][61]=T_PATH;
-  // Wall the top/bottom of fields
-  for(let c=61;c<TILE.COLS-1;c++){m[0][c]=T_WALL;m[TILE.ROWS-1][c]=T_WALL;}
+  // Volcano borders
+  for(let c=49;c<79;c++){m[1][c]=T_ROCK;m[22][c]=T_ROCK;}
+  for(let r=1;r<23;r++){m[r][48]=T_ROCK;m[r][80]=T_ROCK;}
+  // Sign at volcano entrance
+  m[13][47]=T_SIGN;
+
+  // ── MOUNTAIN (cols 68-98, rows 1-21) ──
+  for(let r=1;r<22;r++) for(let c=70;c<99;c++){
+    if(m[r][c]===T_GRASS||m[r][c]===T_ICE){
+      m[r][c]=(r<5||(c>88&&r<12))?T_SNOW:(r+c)%4===0?T_ICE:T_MOUNTAIN;
+    }
+  }
+  // Mountain path
+  for(let r=1;r<14;r++){m[r][75]=T_PATH;m[r][76]=T_PATH;}
+  // Peak ice
+  for(let c=76;c<96;c++) m[1][c]=T_ICE;
+  for(let c=74;c<96;c++) m[2][c]=T_SNOW;
+  for(let c=72;c<96;c++) m[3][c]=T_SNOW;
+  // ICE RINK — bigger, rows 14-21, cols 76-90
+  for(let r=14;r<22;r++) for(let c=76;c<91;c++) m[r][c]=T_ICE_RINK;
+  // Ice rink borders
+  for(let c=75;c<92;c++){m[13][c]=T_ICE;m[22][c]=T_ROCK;}
+  for(let r=14;r<22;r++){m[r][75]=T_ICE;m[r][91]=T_ICE;}
+  // Connect rink to path
+  m[13][75]=T_PATH;m[14][74]=T_PATH;m[14][75]=T_PATH;
+
+  // ── JAYJ'S NOSE (rows 23-27, cols 46-70) ──
+  for(let r=23;r<28;r++) for(let c=46;c<71;c++) m[r][c]=T_NOSE_GRASS;
+  for(let c=46;c<71;c++) m[22][c]=T_PATH;
+  m[22][45]=T_PATH;m[23][45]=T_PATH;
+
+  // ── BIRMINGHAM (cols 46-92, rows 30-50) ──
+  for(let r=30;r<51;r++) for(let c=46;c<93;c++){if(m[r][c]===T_GRASS)m[r][c]=T_CITY;}
+  // City roads
+  for(let c=46;c<93;c++){m[38][c]=T_PATH;m[39][c]=T_PATH;}
+  for(let r=30;r<51;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
+  // Birmingham tall grass — bigger zones
+  for(let r=31;r<38;r++) for(let c=47;c<67;c++) m[r][c]=T_TALL;
+  for(let r=40;r<50;r++) for(let c=70;c<92;c++) m[r][c]=T_TALL;
+  // Buildings (second center + shops)
+  for(let r=31;r<35;r++) for(let c=72;c<78;c++) m[r][c]=T_CENTER;
+  for(let r=44;r<48;r++) for(let c=48;c<54;c++) m[r][c]=T_SHOP;
+  // Sign
+  m[38][45]=T_SIGN;
+
+  // ── MYTHICAL LAIR (cols 1-42, rows 30-52) ──
+  for(let r=30;r<53;r++) for(let c=1;c<43;c++) m[r][c]=T_LAIR_FLOOR;
+  // Lair walls (border)
+  for(let c=1;c<43;c++){m[30][c]=T_LAIR_WALL;m[52][c]=T_LAIR_WALL;}
+  for(let r=30;r<53;r++){m[r][1]=T_LAIR_WALL;m[r][43]=T_LAIR_WALL;}
+  // Inner dark zones
+  for(let c=4;c<18;c++){m[32][c]=T_DARK;m[50][c]=T_DARK;}
+  for(let c=24;c<40;c++){m[32][c]=T_DARK;m[50][c]=T_DARK;}
+  // Portals (pairs)
+  m[40][8]=T_PORTAL;m[40][9]=T_PORTAL;m[40][10]=T_PORTAL;
+  m[40][32]=T_PORTAL;m[40][33]=T_PORTAL;m[40][34]=T_PORTAL;
+  // Rotoscope territory (left half)
+  for(let r=33;r<50;r++) for(let c=2;c<21;c++) if(m[r][c]===T_LAIR_FLOOR) m[r][c]=T_DARK;
+  // Terry territory (right half)
+  for(let r=33;r<50;r++) for(let c=22;c<42;c++) if(m[r][c]===T_LAIR_FLOOR) m[r][c]=T_DARK;
+  // Main lair path
+  for(let c=1;c<43;c++) m[40][c]=T_LAIR_FLOOR;
+  m[40][21]=T_LAIR_WALL;m[40][22]=T_LAIR_WALL; // rival divider
+  // Sign
+  m[30][21]=T_SIGN;m[30][22]=T_SIGN;
+
+  // ── Paths connecting lair ──
+  for(let r=26;r<31;r++){m[r][21]=T_PATH;m[r][22]=T_PATH;m[r][23]=T_PATH;}
+  for(let r=14;r<32;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
+
+  // ── THE FIELDS (cols 92-98, rows 1-52) ──
+  for(let r=1;r<R-1;r++){m[r][94]=T_FIELD;m[r][95]=T_FIELD;m[r][96]=T_FIELD;m[r][97]=T_FIELD;m[r][98]=T_WALL;}
+  for(let r=3;r<50;r++){m[r][94]=T_FIELD_TALL;m[r][95]=T_FIELD_TALL;m[r][96]=T_FIELD_TALL;m[r][97]=T_FIELD_TALL;}
+  // Connect fields to main east path
+  m[13][92]=T_PATH;m[13][93]=T_PATH;m[13][94]=T_PATH;
+  m[14][92]=T_PATH;m[14][93]=T_PATH;m[14][94]=T_PATH;
+  for(let c=92;c<94;c++){m[0][c]=T_WALL;m[R-1][c]=T_WALL;}
+
   return m;
 }
 const WORLD_MAP=buildMap();
 
 const GRASS_ZONES=[
-  {r1:2,c1:2,r2:7,c2:11,   pool:['indie','arlie','alby','nick']},
-  {r1:12,c1:2,r2:16,c2:11, pool:['jesse','rohan','rocco','elliot']},
-  {r1:2,c1:19,r2:7,c2:27,  pool:['oscar','alby']},
-  {r1:12,c1:19,r2:16,c2:27,pool:['jayj','rocco','arlie']},
-  {r1:2,c1:33,r2:14,c2:59, pool:['googspice'],     mythicKey:'googspice'},
-  // ICE RINK — must come BEFORE the broad mountain zone so its tighter bounds match first
-  // No mythicKey here — Freaky Pratiky always spawns on the rink (not gated by spawn-once)
-  {r1:10,c1:50,r2:14,c2:60, pool:['freakypratiky'], iceRink:true},
-  // Mountain zone (main) — Freaky Pratiky mythic encounter here
-  {r1:1,c1:45,r2:9,c2:63,  pool:['freakypratiky'], mythicKey:'freakypratiky'},
-  {r1:16,c1:30,r2:18,c2:43, pool:['jayj','indie','nick','elliot','alby'], lv:20},
-  {r1:21,c1:33,r2:25,c2:42,pool:['omegajayj'],     mythicKey:'omegajayj'},
-  {r1:28,c1:46,r2:32,c2:58,pool:['jayj','oscar','omegajayj'],mythicKey:'omegajayj'},
-  {r1:23,c1:3,r2:31,c2:13, pool:['rotoscoperocco'],mythicKey:'rotoscoperocco'},
-  {r1:23,c1:15,r2:31,c2:26,pool:['terry'],         mythicKey:'terry'},
-  {r1:1,c1:61,r2:35,c2:62,  pool:['sonny'], mythicKey:'sonny', fieldsGate:true, midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
+  // TOWN grass zones (4 quadrants, bigger)
+  {r1:2,c1:2,r2:10,c2:16,  pool:['indie','arlie','alby','nick']},
+  {r1:16,c1:2,r2:24,c2:16, pool:['jesse','rohan','rocco','elliot']},
+  {r1:2,c1:26,r2:10,c2:39, pool:['oscar','alby','nick']},
+  {r1:16,c1:26,r2:24,c2:39,pool:['jayj','rocco','arlie','elliot']},
+  // VOLCANO — goog spice lurks in the lava
+  {r1:2,c1:48,r2:21,c2:79, pool:['googspice'], mythicKey:'googspice'},
+  // ICE RINK — must come BEFORE mountain zone (tighter bounds match first)
+  {r1:14,c1:76,r2:21,c2:90, pool:['freakypratiky'], iceRink:true},
+  // MOUNTAIN zone (main) — Freaky Pratiky mythic encounter
+  {r1:1,c1:70,r2:13,c2:98,  pool:['freakypratiky'], mythicKey:'freakypratiky'},
+  // JAYJ'S NOSE — level 20 zone
+  {r1:23,c1:46,r2:27,c2:70, pool:['jayj','indie','nick','elliot','alby'], lv:20},
+  // BIRMINGHAM zones
+  {r1:31,c1:47,r2:37,c2:66, pool:['omegajayj'],     mythicKey:'omegajayj'},
+  {r1:40,c1:70,r2:49,c2:91, pool:['jayj','oscar','omegajayj'], mythicKey:'omegajayj'},
+  // MYTHICAL LAIR (split by rival)
+  {r1:33,c1:2,r2:49,c2:20,  pool:['rotoscoperocco'], mythicKey:'rotoscoperocco'},
+  {r1:33,c1:23,r2:49,c2:41, pool:['terry'],           mythicKey:'terry'},
+  // THE FIELDS — Sonny + mid-level
+  {r1:3,c1:94,r2:49,c2:97,  pool:['sonny'], mythicKey:'sonny', fieldsGate:true,
+    midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
 ];
 const REGION_BOUNDS=[
-  {name:'VOLCANO',   r1:1,c1:32,r2:16,c2:61},
-  {name:'MOUNTAIN',  r1:1,c1:44,r2:14,c2:63},
-  {name:'ICE RINK',  r1:10,c1:49,r2:15,c2:62},
-  {name:'JAYJ NOSE', r1:15,c1:29,r2:19,c2:44},
-  {name:'BIRMINGHAM',r1:19,c1:31,r2:34,c2:61},
-  {name:'MYTH.LAIR', r1:19,c1:1,r2:34,c2:29},
-  {name:'TOWN',      r1:1,c1:1,r2:18,c2:31},
-  {name:'FIELDS',    r1:1,c1:60,r2:35,c2:63},
+  {name:'ICE RINK',  r1:13,c1:74,r2:22,c2:92},
+  {name:'MOUNTAIN',  r1:1,c1:69,r2:22,c2:99},
+  {name:'VOLCANO',   r1:1,c1:47,r2:23,c2:81},
+  {name:'JAYJ NOSE', r1:22,c1:44,r2:28,c2:72},
+  {name:'BIRMINGHAM',r1:29,c1:44,r2:52,c2:94},
+  {name:'MYTH.LAIR', r1:29,c1:1,r2:53,c2:44},
+  {name:'FIELDS',    r1:1,c1:92,r2:53,c2:99},
+  {name:'TOWN',      r1:1,c1:1,r2:28,c2:45},
 ];
 function getRegion(r,c){for(const b of REGION_BOUNDS)if(r>=b.r1&&r<=b.r2&&c>=b.c1&&c<=b.c2)return b.name;return'WORLD';}
 function getTileZone(r,c){for(const z of GRASS_ZONES)if(r>=z.r1&&r<=z.r2&&c>=z.c1&&c<=z.c2)return z;return null;}
 
-const PLAYER={col:8,row:9,face:'D',moving:{U:false,D:false,L:false,R:false},stepCount:0,grassSteps:0,camCol:0,camRow:0};
+const PLAYER={col:8,row:13,face:'D',moving:{U:false,D:false,L:false,R:false},stepCount:0,grassSteps:0,camCol:0,camRow:0};
 let lastRegion='TOWN';
 const RENDER_TILE=24,CANVAS_W=480,CANVAS_H=240;
 const VIEW_COLS=Math.floor(CANVAS_W/RENDER_TILE),VIEW_ROWS=Math.floor(CANVAS_H/RENDER_TILE);
@@ -2239,10 +2301,15 @@ function endBattle(caught){
   }
   if(caught||G.enemy?.hp<=0)G.money+=JAY[G.enemy?.key||'indie']?.mythic?200:Math.floor(Math.random()*50)+20;
   updateHUD();
-  if(G.caught.size>=TOTAL){
-    showView('win');
-    document.getElementById('win-txt').innerHTML=`Battles:${G.battles} \u00b7 Wins:${G.wins}<br>All ${TOTAL} caught! Even Sonny G.B.!`;
-    doSave();return;
+  if(G.caught.size>=TOTAL&&!G._completedOnce){
+    G._completedOnce=true;
+    doSave();
+    // Flash celebration then continue playing — don't lock the screen
+    const t=document.getElementById('toast');
+    t.innerHTML='🏆 JAYJAMON MASTER! 🏆<br><span style="font-size:5px">All '+TOTAL+' caught!<br>Keep playing — new game+ mode!</span>';
+    t.style.display='block';t.style.fontSize='8px';t.style.lineHeight='2';
+    setTimeout(()=>{t.style.display='none';t.style.fontSize='7px';t.style.lineHeight='1.8';},5000);
+    updateHUD();
   }
   showView('world');startWalk();scheduleAutoSave();
 }
