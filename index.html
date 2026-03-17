@@ -326,7 +326,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/19</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/20</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -356,10 +356,25 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
    </div>
    <div id="bmen-action" style="display:none;background:var(--scr);display:none;grid-template-columns:1fr 1fr;">
     <button class="bmb bcatch" id="bmc" onclick="tryBall()">JAYBALL<span class="bs" id="ball-count">x0</span></button>
-    <button class="bmb bitem" id="bmi" onclick="usePotionInBattle()">POTION<span class="bs" id="pot-count">x0</span></button>
+    <button class="bmb bitem" id="bmi" onclick="openItemMenu()">ITEMS<span class="bs" id="pot-count">x0</span></button>
     <button class="bmb" id="bms" onclick="openMidBattleSwitch()" style="color:#5577cc">SWITCH<span class="bs">swap</span></button>
     <button class="bmb bflee" id="bmf" onclick="battleFlee()" style="border-right:none">RUN<span class="bs">escape!</span></button>
    </div>
+  </div>
+
+
+  <!-- ITEM MENU OVERLAY (inside battle) -->
+  <div id="item-menu" style="display:none;position:absolute;inset:0;background:rgba(15,56,15,0.97);z-index:80;flex-direction:column;padding:10px;gap:6px;">
+   <div style="font-size:7px;color:var(--gb4);text-align:center;padding-bottom:6px;border-bottom:1px solid var(--gb2)">USE ITEM ON WHICH JAYJAMON?</div>
+   <div id="item-menu-jay" style="display:flex;flex-direction:column;gap:4px;overflow-y:auto;flex:1"></div>
+   <div style="font-size:6px;color:var(--gb2);text-align:center;padding:3px 0;border-top:1px solid var(--gb1)" id="item-menu-selected">— tap a Jayjamon —</div>
+   <div style="display:flex;gap:4px">
+    <button id="imb-potion" onclick="applyItemToSelected('potion')" style="flex:1;background:none;border:1px solid var(--gb2);font-family:'Press Start 2P',monospace;font-size:5px;color:var(--gb4);padding:6px 2px;cursor:pointer" disabled>POTION<br><span style="font-size:4px;color:var(--gb1)" id="imb-potion-ct">x0</span></button>
+    <button id="imb-superpotion" onclick="applyItemToSelected('superpotion')" style="flex:1;background:none;border:1px solid var(--gb2);font-family:'Press Start 2P',monospace;font-size:5px;color:var(--gb4);padding:6px 2px;cursor:pointer" disabled>S.POTION<br><span style="font-size:4px;color:var(--gb1)" id="imb-superpotion-ct">x0</span></button>
+    <button id="imb-bigzoup" onclick="applyItemToSelected('bigzoup')" style="flex:1;background:none;border:1px solid var(--mythic2);font-family:'Press Start 2P',monospace;font-size:5px;color:var(--mythic2);padding:6px 2px;cursor:pointer" disabled>ZA ZOUP 🍲<br><span style="font-size:4px" id="imb-bigzoup-ct">x0</span></button>
+    <button id="imb-mythorb" onclick="applyItemToSelected('mythorb')" style="flex:1;background:none;border:1px solid #cc44ff;font-family:'Press Start 2P',monospace;font-size:5px;color:#cc44ff;padding:6px 2px;cursor:pointer" disabled>MYTH ORB 🔮<br><span style="font-size:4px" id="imb-mythorb-ct">x0</span></button>
+   </div>
+   <button onclick="closeItemMenu()" style="background:none;border:1px solid var(--red);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);padding:5px;cursor:pointer">✕ CANCEL</button>
   </div>
 
   <!-- SELECT -->
@@ -757,6 +772,10 @@ const MOVE_FX={
   'STATIC OVERLOAD':   {type:'glitch',  color:'#ff00ff'},
   'COAT SLASH':        {type:'slash',   color:'#6600ff'},
   'FINAL RECKONING':   {type:'mega',    color:'#440088'},
+  'MEGA THIRD EYE BLAST':{type:'light',  color:'#ff00ff'},
+  'MYTH ABSORB':         {type:'mega',   color:'#cc44ff'},
+  'CHAOS FRENZY':        {type:'scatter',color:'#ff00ff'},
+  'ABSOLUTE FREAKOUT':   {type:'mega',   color:'#cc00ff'},
   'POTATO BASH':       {type:'slam',    color:'#8b5e3c'},
   'LUCKY CLOVER SLAM': {type:'scatter', color:'#2acc50'},
   'SHAMROCK STORM':    {type:'vines',   color:'#1a6600'},
@@ -986,6 +1005,40 @@ function sLeprechaun(){return svg([
   // lucky clover on hat
   [7,0,'#2acc50',2,1],[6,1,'#2acc50',1,1],[9,1,'#2acc50',1,1],[7,2,'#2acc50',1,1],
 ],16,16)}
+
+// MEGA FREAKY PRATIKY — mythic drop evolution, absolutely unhinged
+function sMegaFreakyPratiky(){return svg([
+  // HUGE chaotic hair mass — exploding outward
+  [0,0,'#1a0a00',16,4],[0,1,'#2a1008',3,8],[13,1,'#2a1008',3,8],
+  [0,0,'#3a1808',5,3],[11,0,'#3a1808',5,3],
+  [1,0,'#5a3010',3,1],[12,0,'#5a3010',3,1],
+  // floating effect — gap at bottom
+  [3,3,'#c8905a',10,6],[4,4,'#c8905a',8,5],[5,5,'#d4a06a',6,3],
+  // THREE massive glowing eyes — all open wide
+  [4,5,'#ffffff',3,3],[4,5,'#111',1,2],[5,5,'#ff00ff',1,1], // left
+  [10,5,'#ffffff',3,3],[10,5,'#111',1,2],[11,5,'#ff00ff',1,1], // right
+  [7,4,'#ffffff',2,3],[7,4,'#111',1,2],[7,5,'#ff00ff',1,1], // THIRD EYE centre — bigger
+  // eye glow rings
+  [3,4,'#ff00ff44',5,5],[9,4,'#ff00ff44',5,5],[6,3,'#ff00ff44',4,5],
+  // massive gaping mouth showing all teeth
+  [3,8,'#110022',10,3],[4,8,'#ff00ff',8,1],
+  [4,9,'#ffffff',1,1],[6,9,'#ffffff',1,1],[8,9,'#ffffff',1,1],[10,9,'#ffffff',1,1],
+  // HUGE body with crackling aura
+  [1,10,'#8b0030',14,6],[0,11,'#8b0030',16,5],[0,12,'#6b0020',16,4],
+  // Traditional Nepali colours but warped — gold and dark red
+  [1,10,'#ff6600',14,1],[1,15,'#ff6600',14,1],
+  [2,11,'#ff000044',12,3],
+  // aura wisps around body
+  [0,10,'#ff00ff',1,2],[15,11,'#ff00ff',1,2],
+  [0,13,'#ff6600',1,1],[15,13,'#ff6600',1,1],
+  [2,15,'#ff00ff',2,1],[12,15,'#ff00ff',2,1],
+  // floating arms — extended menacingly
+  [0,11,'#8b0030',1,3],[15,11,'#8b0030',1,3],
+  // glowing fists
+  [0,13,'#ff6600',2,2],[14,13,'#ff6600',2,2],
+  // no legs visible — just hovering
+],16,16)}
+
 // ELLIOT — sharp, intense, neat medium glasses, determined look
 function sElliot(){return svg([
   // neat dark hair, short and tidy
@@ -1098,6 +1151,10 @@ const JAY={
   freakypratiky:{name:'FREAKY PRATIKY',type:'MYTHIC/Mountain',baseHp:350,baseAtk:240,draw:sFreakyPratiky,mythic:true,spawnOnce:true,
     desc:'A wildly freaky entity from Nepal. Three eyes. Only ONE exists.',
     moves:[{name:'NEPAL FRENZY',pwr:220},{name:'THIRD EYE BLAST',pwr:200},{name:'HIMALAYAN STRIKE',pwr:190},{name:'FREAKY DANCE',pwr:175}]},
+  megafreakypratiky:{name:'MEGA FREAKY PRATIKY',type:'MEGA MYTHIC',baseHp:700,baseAtk:420,draw:sMegaFreakyPratiky,mythic:true,ultraGod:false,
+    desc:'Freaky Pratiky absorbed the power of a fallen mythical. All three eyes now glow. The hat is gone. The freakiness is maximum.',
+    evolvedFrom:'freakypratiky',
+    moves:[{name:'MEGA THIRD EYE BLAST',pwr:380},{name:'MYTH ABSORB',pwr:350},{name:'CHAOS FRENZY',pwr:320},{name:'ABSOLUTE FREAKOUT',pwr:400}]},
   omegajayj:{name:'OMEGA JAYJ',type:'MYTHIC/Birmingham',baseHp:420,baseAtk:210,draw:sOmegaJayj,mythic:true,spawnOnce:true,canEvolveFrom:'jayj',
     desc:'The ultimate evolution of JAYJ, forged in Birmingham. Only ONE exists.',
     moves:[{name:'OMEGA SLAM',pwr:210},{name:'BRUMMIE CRUSH',pwr:190},{name:'OMEGA WHEEZE',pwr:180},{name:'FULL MASS DROP',pwr:230}]},
@@ -1108,7 +1165,7 @@ const JAY={
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','jayj','jesse','leprechaun','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
+const ALL_KEYS=['indie','jayj','jesse','leprechaun','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -1121,7 +1178,7 @@ const G={
   box:[],  // PC storage — unlimited
   caught:new Set(),seen:new Set(),
   battles:0,wins:0,money:500,
-  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0},
+  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0,mythorb:0},
   enemy:null,locked:false,over:false,
   peer:null,conn:null,mpMyTurn:false,mpPeerPos:null,
 };
@@ -1532,7 +1589,7 @@ function showRegionBanner(name){
   setTimeout(()=>b.style.display='none',2500);
 }
 
-const MYTHIC_KEYS=['googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
+const MYTHIC_KEYS=['googspice','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry'];
 
 function allMythicsDone(){
   return MYTHIC_KEYS.every(k=>G.caught.has(k)||SPAWNED_MYTHICS.has(k)&&G.party.some(p=>p.key===k));
@@ -1723,7 +1780,7 @@ function healAll(){
 }
 function updateShopMoney(){document.getElementById('shop-money').textContent=`₽${G.money}`;}
 function buyItem(item){
-  const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150,bigzoup:999};
+  const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150,bigzoup:999,mythorb:0};
   const cost=prices[item];
   if(G.money<cost){toast('NOT ENOUGH ₽!');return;}
   G.money-=cost;G.bag[item]=(G.bag[item]||0)+1;
@@ -1732,7 +1789,7 @@ function buyItem(item){
 function openBag(){showView('bag');renderBag();}
 function renderBag(){
   const el=document.getElementById('bag-list');el.innerHTML='';
-  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x'};
+  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x',mythorb:'MYTH ORB 🔮 x'};
   Object.entries(items).forEach(([k,n])=>{
     const div=document.createElement('div');div.className='bag-item';
     div.innerHTML=`<div class="bi-name">${n}${G.bag[k]||0}</div>`;
@@ -1787,7 +1844,7 @@ function refreshBattleUI(isMythic=false){
   // Reset to fight tab
   battleTab('fight');
   document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
-  document.getElementById('pot-count').textContent=`x${(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)}`;
+  document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0));
   document.getElementById('btc').style.display='none';
   lockBtns(false);
 }
@@ -1868,7 +1925,14 @@ async function useMove(idx){
       const gained=expResult?expResult.expGained:0;
       setBT(JAY[en.key].mythic||JAY[en.key].ultraGod?`${ed.name} vanished! +${gained}EXP`:`${ed.name} fainted! +${gained}EXP`,true);
     }
-    await sleep(2200);endBattle(false);return;
+    // MYTH ORB DROP — 50% chance when a mythic faints (not caught)
+    if((JAY[en.key].mythic||JAY[en.key].ultraGod)&&Math.random()<0.5){
+      G.bag.mythorb=(G.bag.mythorb||0)+1;
+      await sleep(400);
+      setBT('A MYTH ORB dropped! 🔮\nUse it on Freaky Pratiky to evolve!',true);
+      await sleep(2000);
+    }
+    await sleep(1800);endBattle(false);return;
   }
   await sleep(400);await enemyTurn();
 }
@@ -1999,6 +2063,143 @@ async function tryBall(){
   } else {
     setBT(`${ed.name} broke free!`);await sleep(900);await enemyTurn();
   }
+}
+
+
+// ═══════════════════════════════════════════
+//  ITEM MENU (in-battle)
+// ═══════════════════════════════════════════
+let itemMenuSelectedIdx = -1;
+
+function openItemMenu(){
+  if(G.locked||G.over)return;
+  const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0);
+  if(!total){setBT('No items!');return;}
+  itemMenuSelectedIdx=-1;
+  // Render party list
+  const el=document.getElementById('item-menu-jay');el.innerHTML='';
+  G.party.forEach((inst,i)=>{
+    if(!inst||!inst.key)return;
+    const d=JAY[inst.key];
+    const pct=Math.round(inst.hp/inst.maxHp*100);
+    const hc=pct>50?'#8bac0f':pct>20?'#f4d03f':'#e63946';
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:8px;background:rgba(15,56,15,.6);border:1px solid var(--gb1);border-radius:2px;padding:5px 7px;cursor:pointer;';
+    row.innerHTML=`<div style="width:28px;height:28px;flex-shrink:0">${d.draw()}</div>
+      <div style="flex:1">
+        <div style="font-size:6px;color:var(--gb4)">${d.name} Lv.${inst.lv}</div>
+        <div style="height:4px;background:var(--gb0);border-radius:1px;margin-top:3px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:${hc}"></div>
+        </div>
+        <div style="font-size:5px;color:var(--gb2);margin-top:2px">${inst.hp}/${inst.maxHp} HP</div>
+      </div>
+      ${i===G.activeIdx?'<span style="font-size:8px;color:var(--yel)">★</span>':''}`;
+    row.onclick=()=>itemMenuSelectJay(i,row);
+    el.appendChild(row);
+  });
+  // Update button counts
+  ['potion','superpotion','bigzoup','mythorb'].forEach(k=>{
+    const ct=document.getElementById('imb-'+k+'-ct');
+    if(ct)ct.textContent='x'+(G.bag[k]||0);
+    const btn=document.getElementById('imb-'+k);
+    if(btn)btn.disabled=true; // enable after selecting a target
+  });
+  document.getElementById('item-menu-selected').textContent='— tap a Jayjamon —';
+  document.getElementById('item-menu').style.display='flex';
+}
+
+function itemMenuSelectJay(idx,rowEl){
+  itemMenuSelectedIdx=idx;
+  // Highlight selected row
+  document.querySelectorAll('#item-menu-jay div').forEach(r=>r.style.borderColor='var(--gb1)');
+  rowEl.style.borderColor='var(--yel)';
+  const inst=G.party[idx];
+  if(!inst)return;
+  document.getElementById('item-menu-selected').textContent=JAY[inst.key].name+' selected';
+  // Enable applicable buttons
+  const isFP=inst.key==='freakypratiky';
+  ['potion','superpotion','bigzoup','mythorb'].forEach(k=>{
+    const btn=document.getElementById('imb-'+k);
+    if(!btn)return;
+    const qty=G.bag[k]||0;
+    if(k==='mythorb') btn.disabled=!isFP||qty<1; // only usable on freaky pratiky
+    else btn.disabled=qty<1;
+  });
+}
+
+function closeItemMenu(){
+  document.getElementById('item-menu').style.display='none';
+  itemMenuSelectedIdx=-1;
+}
+
+async function applyItemToSelected(itemKey){
+  if(itemMenuSelectedIdx<0)return;
+  const inst=G.party[itemMenuSelectedIdx];
+  if(!inst)return;
+  const d=JAY[inst.key];
+  closeItemMenu();
+  lockBtns(true);
+
+  if(itemKey==='potion'||itemKey==='superpotion'){
+    const heal=itemKey==='superpotion'?100:30;
+    G.bag[itemKey]--;
+    inst.hp=Math.min(inst.maxHp,inst.hp+heal);
+    if(itemMenuSelectedIdx===G.activeIdx) setHP('p',inst.hp,inst.maxHp);
+    setBT(`Used ${itemKey==='superpotion'?'Super Potion':'Potion'} on ${d.name}! +${heal} HP`);
+    updateItemCount();
+    await sleep(800);await enemyTurn();return;
+  }
+
+  if(itemKey==='bigzoup'){
+    G.bag.bigzoup--;
+    levelUpInst(inst,5);
+    const bigEvo=checkEvolution(inst);
+    if(itemMenuSelectedIdx===G.activeIdx){
+      setHP('p',inst.hp,inst.maxHp);
+      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      if(bigEvo){
+        document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${JAY[inst.key].draw()}</div>`;
+        document.getElementById('bfpn').textContent=JAY[inst.key].name;
+      }
+    }
+    setBT(bigEvo?`Za Big Zoup! ✨ ${bigEvo.oldName} evolved into ${bigEvo.newName}!`:`Za Big Zoup! ${JAY[inst.key].name} grew to Lv.${inst.lv}! 🍲`);
+    updateItemCount();
+    await sleep(1400);await enemyTurn();return;
+  }
+
+  if(itemKey==='mythorb'){
+    if(inst.key!=='freakypratiky'){setBT('Myth Orb only works on Freaky Pratiky!');lockBtns(false);return;}
+    if(!(G.bag.mythorb||0)){setBT('No Myth Orbs! Defeat mythicals to get them.');lockBtns(false);return;}
+    G.bag.mythorb--;
+    // MEGA EVOLUTION
+    inst.key='megafreakypratiky';
+    const newD=JAY['megafreakypratiky'];
+    const newMax=calcMaxHp('megafreakypratiky',inst.lv);
+    inst.maxHp=newMax;inst.hp=newMax; // full heal on mega evo
+    G.caught.add('megafreakypratiky');G.seen.add('megafreakypratiky');
+    if(itemMenuSelectedIdx===G.activeIdx){
+      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:mythic-idle 1.6s ease-in-out infinite">${newD.draw()}</div>`;
+      document.getElementById('bfpn').textContent=newD.name;
+      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      setHP('p',inst.hp,inst.maxHp);
+      // Update moves
+      newD.moves.forEach((mv,i)=>{
+        const nb=document.getElementById(`bm${i+1}n`);
+        const pb=document.getElementById(`bm${i+1}p`);
+        if(nb)nb.textContent=mv.name;
+        if(pb)pb.textContent=`PWR:${mv.pwr}`;
+      });
+    }
+    updateItemCount();
+    setBT('FREAKY PRATIKY used MYTH ORB! ✨\nMEGA FREAKY PRATIKY AWAKENED!! 🔮',true);
+    await sleep(2500);lockBtns(false);setBT('Choose your move!',false);
+    return;
+  }
+}
+
+function updateItemCount(){
+  const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0);
+  document.getElementById('pot-count').textContent='x'+total;
 }
 
 async function usePotionInBattle(){
