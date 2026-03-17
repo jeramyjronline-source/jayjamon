@@ -14,34 +14,36 @@
   --mythic:#ff6b00;--mythic2:#ff9a3c;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:#111;display:flex;flex-direction:column;align-items:center;
-  min-height:100dvh;padding:4px 3px 10px;font-family:'Press Start 2P',monospace;
+body{background:#111;display:flex;flex-direction:column;align-items:stretch;
+  height:100dvh;overflow:hidden;padding:0;font-family:'Press Start 2P',monospace;
   background-image:radial-gradient(ellipse at 50% 0%,rgba(139,172,15,.1) 0%,transparent 60%);}
-h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(--gb0),5px 5px 0 rgba(0,0,0,.5);
-  letter-spacing:5px;text-align:center;margin-bottom:4px;}
-.subtitle{font-size:6px;color:var(--gb1);letter-spacing:2px;text-align:center;margin-bottom:8px;}
+h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--gb0);
+  letter-spacing:3px;text-align:center;margin:2px 0;line-height:1.2;}
+.subtitle{font-size:5px;color:var(--gb1);letter-spacing:1px;text-align:center;margin-bottom:2px;}
 
 /* ACCOUNT BAR */
-#acct-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;justify-content:center;}
-#acct-bar button{background:var(--gb1);border:2px solid var(--gb0);color:var(--gb4);
-  font-family:'Press Start 2P',monospace;font-size:5px;padding:5px 10px;cursor:pointer;border-radius:2px;}
+#acct-bar{display:flex;align-items:center;gap:4px;margin-bottom:2px;flex-wrap:wrap;justify-content:center;padding:0 4px;}
+#acct-bar button{background:var(--gb1);border:1px solid var(--gb0);color:var(--gb4);
+  font-family:'Press Start 2P',monospace;font-size:4px;padding:3px 6px;cursor:pointer;border-radius:2px;}
 #acct-bar button:hover{background:var(--gb2);color:var(--gb0);}
 #acct-name{font-size:5px;color:var(--gb2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #save-indicator{font-size:5px;color:var(--gb1);}
 
 /* SHELL */
-#shell{width:100%;max-width:500px;background:var(--gb0);border:3px solid var(--gb1);
-  border-radius:6px;padding:3px;box-shadow:0 0 30px rgba(139,172,15,.2),inset 0 0 16px rgba(0,0,0,.4);}
-#screen{background:var(--scr);border:2px solid var(--gb1);border-radius:4px;
-  position:relative;overflow:hidden;}
+#shell{flex:1;min-height:0;background:var(--gb0);border:0;border-top:2px solid var(--gb1);
+  border-radius:0;padding:2px;display:flex;flex-direction:column;
+  box-shadow:0 0 30px rgba(139,172,15,.2),inset 0 0 16px rgba(0,0,0,.4);}
+@media(min-width:520px){#shell{max-width:520px;border:3px solid var(--gb1);border-radius:6px;margin:4px auto;align-self:center;width:100%;}}
+#screen{background:var(--scr);border:1px solid var(--gb1);border-radius:2px;
+  position:relative;overflow:hidden;flex:1;min-height:0;display:flex;flex-direction:column;}
 #screen::after{content:'';position:absolute;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(15,56,15,.04) 3px,rgba(15,56,15,.04) 4px);
   pointer-events:none;z-index:200;}
-.view{display:none;width:100%;flex-direction:column;}
+.view{display:none;width:100%;flex:1;min-height:0;flex-direction:column;}
 .view.active{display:flex;}
 
 /* STARTER */
-#view-starter{padding:10px;gap:6px;overflow-y:auto;max-height:80dvh;}
+#view-starter{padding:8px;gap:5px;overflow-y:auto;flex:1;min-height:0;}
 #view-starter h2{font-size:8px;color:var(--gb0);text-align:center;}
 #view-starter p{font-size:5px;color:var(--gb1);line-height:1.8;text-align:center;}
 .s-opt{background:var(--gb2);border:2px solid var(--gb0);border-radius:2px;padding:8px 10px;
@@ -95,8 +97,8 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 .box-status{font-size:5px;color:var(--gb2);text-align:center;padding:3px;flex-shrink:0;min-height:14px;}
 
 /* WORLD */
-#view-world{padding:0;position:relative;line-height:0;}
-#world-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:none;}
+#view-world{padding:0;position:relative;line-height:0;flex:1;min-height:0;overflow:hidden;}
+#world-canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:none;object-fit:contain;}
 #world-hud{position:absolute;top:6px;left:6px;right:6px;display:flex;justify-content:space-between;
   pointer-events:none;z-index:10;flex-wrap:wrap;gap:3px;}
 .hud-box{background:rgba(15,56,15,.9);border:2px solid var(--gb2);padding:3px 6px;border-radius:2px;}
@@ -136,7 +138,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 
 /* BATTLE */
 #view-battle{flex-direction:column;}
-#bf{height:190px;background:var(--gb4);border-bottom:3px solid var(--gb1);position:relative;overflow:hidden;}
+#bf{flex:1;min-height:120px;max-height:200px;background:var(--gb4);border-bottom:3px solid var(--gb1);position:relative;overflow:hidden;}
 #bf::before{content:'';position:absolute;bottom:48px;left:0;right:0;height:3px;background:var(--gb1);}
 #bf::after{content:'';position:absolute;bottom:16px;left:0;right:0;height:2px;background:var(--gb2);}
 #bf.mythic-bg{background:linear-gradient(180deg,#1a0030 0%,#2d0050 60%,var(--gb4) 100%);}
@@ -604,6 +606,16 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 
 <script>
 // ═══════════════════════════════════════════
+//  SAFE LOCALSTORAGE WRAPPER
+// ═══════════════════════════════════════════
+const _ls={
+  get(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+  set(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}},
+  del(k){try{localStorage.removeItem(k);}catch(e){}},
+  keys(){try{return Array.from({length:localStorage.length},(_,i)=>localStorage.key(i));}catch(e){return [];}}
+};
+
+// ═══════════════════════════════════════════
 //  LOCAL ACCOUNT SYSTEM (localStorage)
 // ═══════════════════════════════════════════
 let currentUser=null;
@@ -615,22 +627,22 @@ function simpleHash(str){
 }
 function showLoginModal(){
   loginIsRegister=false;
-  document.getElementById('login-title').textContent='SIGN IN';
-  document.getElementById('login-btn').textContent='SIGN IN';
-  document.getElementById('login-toggle').textContent='REGISTER';
-  document.getElementById('login-err').textContent='';
-  document.getElementById('login-user').value='';
-  document.getElementById('login-pass').value='';
-  document.getElementById('login-modal').style.display='flex';
+  (document.getElementById('login-title')||{}).textContent='SIGN IN';
+  (document.getElementById('login-btn')||{}).textContent='SIGN IN';
+  (document.getElementById('login-toggle')||{}).textContent='REGISTER';
+  (document.getElementById('login-err')||{}).textContent='';
+  (document.getElementById('login-user')||{}).value='';
+  (document.getElementById('login-pass')||{}).value='';
+  (document.getElementById('login-modal')||{style:{}}).style.display='flex';
   setTimeout(()=>document.getElementById('login-user').focus(),60);
 }
-function hideLoginModal(){document.getElementById('login-modal').style.display='none';}
+function hideLoginModal(){(document.getElementById('login-modal')||{style:{}}).style.display='none';}
 function loginToggleMode(){
   loginIsRegister=!loginIsRegister;
-  document.getElementById('login-title').textContent=loginIsRegister?'REGISTER':'SIGN IN';
-  document.getElementById('login-btn').textContent=loginIsRegister?'CREATE ACCOUNT':'SIGN IN';
-  document.getElementById('login-toggle').textContent=loginIsRegister?'BACK TO LOGIN':'REGISTER';
-  document.getElementById('login-err').textContent='';
+  (document.getElementById('login-title')||{}).textContent=loginIsRegister?'REGISTER':'SIGN IN';
+  (document.getElementById('login-btn')||{}).textContent=loginIsRegister?'CREATE ACCOUNT':'SIGN IN';
+  (document.getElementById('login-toggle')||{}).textContent=loginIsRegister?'BACK TO LOGIN':'REGISTER';
+  (document.getElementById('login-err')||{}).textContent='';
 }
 function loginSubmit(){
   const user=document.getElementById('login-user').value.trim();
@@ -640,55 +652,68 @@ function loginSubmit(){
   if(!pass||pass.length<4){err.textContent='Password min 4 chars!';return;}
   const key='jayjamon_acct_'+user.toLowerCase();
   const hash=simpleHash(pass+user.toLowerCase());
-  if(loginIsRegister){
-    if(localStorage.getItem(key)){err.textContent='Username already taken!';return;}
-    localStorage.setItem(key,hash);
-    err.style.color='#8bac0f';err.textContent='Account created! Signing in...';
-    setTimeout(()=>{hideLoginModal();localAuthSuccess(user);},700);
-  } else {
-    const stored=localStorage.getItem(key);
-    if(!stored){err.textContent='User not found!';return;}
-    if(stored!==hash){err.textContent='Wrong password!';return;}
-    hideLoginModal();localAuthSuccess(user);
+  try{
+    if(loginIsRegister){
+      if(_ls.get(key)){err.textContent='Username already taken!';return;}
+      _ls.set(key,hash);
+      err.style.color='#8bac0f';err.textContent='Account created! Signing in...';
+      setTimeout(()=>{hideLoginModal();localAuthSuccess(user);},700);
+    } else {
+      const stored=_ls.get(key);
+      if(!stored){err.textContent='User not found!';return;}
+      if(stored!==hash){err.textContent='Wrong password!';return;}
+      hideLoginModal();localAuthSuccess(user);
+    }
+  }catch(e){
+    // localStorage unavailable (private browsing, storage full, etc.)
+    // Fall back to session-only mode — no persistence but game still works
+    if(loginIsRegister){
+      err.style.color='#8bac0f';err.textContent='Session only (storage unavailable)';
+      setTimeout(()=>{hideLoginModal();localAuthSuccess(user);},700);
+    } else {
+      // Can't verify password without storage — allow sign-in as session user
+      err.style.color='#c8a020';err.textContent='Storage unavailable — session only';
+      setTimeout(()=>{hideLoginModal();localAuthSuccess(user);},700);
+    }
   }
 }
 function localAuthSuccess(username){
   currentUser={uid:username.toLowerCase(),displayName:username};
-  document.getElementById('acct-name').textContent='👤 '+username;
-  document.getElementById('btn-signin').style.display='none';
-  document.getElementById('btn-signout').style.display='';
-  document.getElementById('btn-save').style.display='';
-  document.getElementById('save-indicator').textContent='Loading...';
+  (document.getElementById('acct-name')||{}).textContent='👤 '+username;
+  (document.getElementById('btn-signin')||{style:{}}).style.display='none';
+  (document.getElementById('btn-signout')||{style:{}}).style.display='';
+  (document.getElementById('btn-save')||{style:{}}).style.display='';
+  (document.getElementById('save-indicator')||{}).textContent='Loading...';
   loadProgress(username.toLowerCase());
 }
 function doSignIn(){showLoginModal();}
 function doSignOut(){
   currentUser=null;
-  document.getElementById('acct-name').textContent='Not signed in';
-  document.getElementById('btn-signin').style.display='';
-  document.getElementById('btn-signout').style.display='none';
-  document.getElementById('btn-save').style.display='none';
-  document.getElementById('save-indicator').textContent='';
+  (document.getElementById('acct-name')||{}).textContent='Not signed in';
+  (document.getElementById('btn-signin')||{style:{}}).style.display='';
+  (document.getElementById('btn-signout')||{style:{}}).style.display='none';
+  (document.getElementById('btn-save')||{style:{}}).style.display='none';
+  (document.getElementById('save-indicator')||{}).textContent='';
   toast('Signed out!');
 }
 function loadProgress(uid){
   try{
-    const raw=localStorage.getItem('jayjamon_save_'+uid);
-    if(!raw){document.getElementById('save-indicator').textContent='New save';setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);return;}
+    const raw=_ls.get('jayjamon_save_'+uid);
+    if(!raw){(document.getElementById('save-indicator')||{}).textContent='New save';setTimeout(()=>(document.getElementById('save-indicator')||{}).textContent='',2000);return;}
     const data=JSON.parse(raw);
     if(data&&data.party&&data.party.length>0){
       G.party=data.party;G.box=data.box||[];G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
       G.money=data.money||500;G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
       G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;G.playtime=data.playtime||0;G.megaKey=data.megaKey||false;G._ratsDefeated=data.ratsDefeated||false;G.gymsBeaten=data.gymsBeaten||[false,false,false,false,false,false,false];G.councilBeaten=data.councilBeaten||[false,false,false,false];
       (data.spawned||[]).forEach(k=>SPAWNED_MYTHICS.add(k));
-      document.getElementById('save-indicator').textContent='✓ Loaded!';
-      setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);
+      (document.getElementById('save-indicator')||{}).textContent='✓ Loaded!';
+      setTimeout(()=>(document.getElementById('save-indicator')||{}).textContent='',2000);
       if(document.getElementById('view-starter').classList.contains('active')){showView('world');startWalk();}
     } else {
-      document.getElementById('save-indicator').textContent='New save';
-      setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);
+      (document.getElementById('save-indicator')||{}).textContent='New save';
+      setTimeout(()=>(document.getElementById('save-indicator')||{}).textContent='',2000);
     }
-  }catch(e){document.getElementById('save-indicator').textContent='Load error';}
+  }catch(e){(document.getElementById('save-indicator')||{}).textContent='Load error';}
 }
 function doSave(){
   if(!currentUser){toast('Sign in to save\nyour progress!');return;}
@@ -696,10 +721,21 @@ function doSave(){
     bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,megaKey:G.megaKey||false,ratsDefeated:G._ratsDefeated||false,gymsBeaten:G.gymsBeaten||[],councilBeaten:G.councilBeaten||[],councilTeams:G._councilTeams||null,
     spawned:[...SPAWNED_MYTHICS],savedAt:Date.now()};
   try{
-    localStorage.setItem('jayjamon_save_'+currentUser.uid,JSON.stringify(data));
-    document.getElementById('save-indicator').textContent='✓ Saved!';
-    setTimeout(()=>document.getElementById('save-indicator').textContent='',2500);
-  }catch(e){document.getElementById('save-indicator').textContent='Save error';}
+    let saveStr=JSON.stringify(data);
+    // If save is too large, drop council teams (they regenerate)
+    if(saveStr.length>400000){
+      const slim={...data,councilTeams:null};
+      saveStr=JSON.stringify(slim);
+    }
+    _ls.set('jayjamon_save_'+currentUser.uid,saveStr);
+    (document.getElementById('save-indicator')||{}).textContent='✓ Saved!';
+    setTimeout(()=>(document.getElementById('save-indicator')||{}).textContent='',2500);
+    toast('Game saved! ✓');
+  }catch(e){
+    // QuotaExceededError on iOS/private mode
+    (document.getElementById('save-indicator')||{}).textContent='Save failed: storage full';
+    toast('Storage full or unavailable!\nTry clearing browser data.');
+  }
 }
 function scheduleAutoSave(){
   if(!currentUser)return;
@@ -1918,8 +1954,8 @@ const JOY_DEAD=8,JOY_MAX=48;
 
 function toggleJoystick(){
   joyShowing=!joyShowing;
-  document.getElementById('joystick-zone').style.display=joyShowing?'block':'none';
-  document.getElementById('joy-toggle').textContent=joyShowing?'❌':'🕹️';
+  (document.getElementById('joystick-zone')||{style:{}}).style.display=joyShowing?'block':'none';
+  (document.getElementById('joy-toggle')||{}).textContent=joyShowing?'❌':'🕹️';
   if(!joyShowing){
     Object.keys(PLAYER.moving).forEach(k=>PLAYER.moving[k]=false);
   }
@@ -2072,7 +2108,7 @@ function startWalk(){
         if(G.conn)mpSend({type:'pos',col:nc,row:nr});
         const reg=getRegion(nr,nc);
         if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
-        document.getElementById('hud-region').textContent=reg;
+        (document.getElementById('hud-region')||{}).textContent=reg;
         const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID];
         if(tallTypes.includes(t)){
           PLAYER.grassSteps++;
@@ -2161,8 +2197,8 @@ function triggerEncounter(r,c){
       SPAWNED_MYTHICS.add('sonny');G.seen.add('sonny');
       G.enemy=newInst('sonny',80+Math.floor(Math.random()*20));
       G.battles++;G.over=false;G.locked=false;
-      document.getElementById('mythic-flash').style.display='block';
-      setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+      (document.getElementById('mythic-flash')||{style:{}}).style.display='block';
+      setTimeout(()=>(document.getElementById('mythic-flash')||{style:{}}).style.display='none',800);
       setTimeout(()=>{
         showView('battle');
         const bf=document.getElementById('bf');
@@ -2206,8 +2242,8 @@ function triggerEncounter(r,c){
     if(SPAWNED_MYTHICS.has(key)&&!G.caught.has(key)&&Math.random()<0.5){startWalk();return;}
     SPAWNED_MYTHICS.add(key);G.seen.add(key);
     G.enemy=newInst(key);G.battles++;G.over=false;G.locked=false;
-    document.getElementById('mythic-flash').style.display='block';
-    setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+    (document.getElementById('mythic-flash')||{style:{}}).style.display='block';
+    setTimeout(()=>(document.getElementById('mythic-flash')||{style:{}}).style.display='none',800);
     setTimeout(()=>{showView('battle');refreshBattleUI(true);setBT(`✨ ${JAY[key].name}!`,false);},300);
     return;
   }
@@ -2221,8 +2257,8 @@ function triggerEncounter(r,c){
     SPAWNED_MYTHICS.add(key);
     G.enemy=newInst(key,50+Math.floor(Math.random()*10));
     G.battles++;G.over=false;G.locked=false;
-    document.getElementById('mythic-flash').style.display='block';
-    setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+    (document.getElementById('mythic-flash')||{style:{}}).style.display='block';
+    setTimeout(()=>(document.getElementById('mythic-flash')||{style:{}}).style.display='none',800);
     setTimeout(()=>{
       showView('battle');refreshBattleUI(true);
       setBT('✨ FREAKY PRATIKY glides onto the ice!',false);
@@ -2273,22 +2309,22 @@ function showView(id){
   const vid=id.startsWith('view-')?id:'view-'+id;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const el=document.getElementById(vid);if(el)el.classList.add('active');
-  document.getElementById('tabs').style.display='none';
-  document.getElementById('dpad').style.display='none';
-  document.getElementById('dpad-act').style.display='none';
+  (document.getElementById('tabs')||{style:{}}).style.display='none';
+  (document.getElementById('dpad')||{style:{}}).style.display='none';
+  (document.getElementById('dpad-act')||{style:{}}).style.display='none';
   if(vid==='view-world'){showDpad(true);G.phase='walk';updateHUD();}
   else if(['view-dex','view-bag','view-mp'].includes(vid)){showTabs();}
-  else if(vid==='view-mp-battle'){document.getElementById('tabs').style.display='none';}
+  else if(vid==='view-mp-battle'){(document.getElementById('tabs')||{style:{}}).style.display='none';}
 }
 function updateHUD(){
-  document.getElementById('hud-caught').textContent=`${G.caught.size}/${TOTAL}`;
-  document.getElementById('hud-money').textContent=G.money;
+  (document.getElementById('hud-caught')||{}).textContent=`${G.caught.size}/${TOTAL}`;
+  (document.getElementById('hud-money')||{}).textContent=G.money;
 }
 function showDpad(v){
-  document.getElementById('dpad').style.display=v?'grid':'none';
-  document.getElementById('dpad-act').style.display=v?'flex':'none';
+  (document.getElementById('dpad')||{style:{}}).style.display=v?'grid':'none';
+  (document.getElementById('dpad-act')||{style:{}}).style.display=v?'flex':'none';
 }
-function showTabs(){document.getElementById('tabs').style.display='flex';}
+function showTabs(){(document.getElementById('tabs')||{style:{}}).style.display='flex';}
 function tabGo(t){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.getElementById('tab-'+t)?.classList.add('on');
@@ -2331,11 +2367,11 @@ function renderCenter(){
 }
 function healAll(){
   G.party.forEach(p=>p.hp=p.maxHp);
-  document.getElementById('heal-flash').style.display='block';
-  setTimeout(()=>document.getElementById('heal-flash').style.display='none',400);
+  (document.getElementById('heal-flash')||{style:{}}).style.display='block';
+  setTimeout(()=>(document.getElementById('heal-flash')||{style:{}}).style.display='none',400);
   toast('ALL HEALED! ✚');renderCenter();scheduleAutoSave();
 }
-function updateShopMoney(){document.getElementById('shop-money').textContent=`₽${G.money}`;}
+function updateShopMoney(){(document.getElementById('shop-money')||{}).textContent=`₽${G.money}`;}
 function buyItem(item){
   const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150,bigzoup:999,mythorb:0,mythstone:2000};
   const cost=prices[item];
@@ -2355,7 +2391,7 @@ function renderBag(){
 }
 function renderDex(){
   const el=document.getElementById('dex-list');el.innerHTML='';
-  document.getElementById('dex-count').textContent=`(${G.caught.size}/${TOTAL})`;
+  (document.getElementById('dex-count')||{}).textContent=`(${G.caught.size}/${TOTAL})`;
   ALL_KEYS.forEach(key=>{
     if(JAY[key]&&JAY[key].hidden)return; // secret - don't show in dex
     const d=JAY[key],c=G.caught.has(key),s=G.seen.has(key),im=d.mythic;
@@ -2377,16 +2413,16 @@ function refreshBattleUI(isMythic=false){
   const isUltraG=G.enemy&&(JAY[G.enemy.key]?.ultraGod||false);
   const mAnim=isUltraG?'ultra-idleF 1.8s ease-in-out infinite':isMythic?'mythic-idleF 1.6s ease-in-out infinite':'s-idleF 1.4s ease-in-out infinite';
   const pAnim=isMythic?'mythic-idle 1.6s ease-in-out infinite':'s-idle 1.4s ease-in-out infinite';
-  document.getElementById('esp').innerHTML=`<div style="width:100%;height:100%;animation:${mAnim};transform-origin:center">${ed.draw()}</div>`;
-  document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:${pAnim}">${pd.draw()}</div>`;
+  (document.getElementById('esp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:${mAnim};transform-origin:center">${ed.draw()}</div>`;
+  (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:${pAnim}">${pd.draw()}</div>`;
   const bf=document.getElementById('bf'),btb=document.getElementById('btb'),bfiE=document.getElementById('bfi-e');
   if(isMythic){bf.classList.add('mythic-bg');btb.classList.add('mythic-text');bfiE.classList.add('mythic-info');}
   else{bf.classList.remove('mythic-bg');btb.classList.remove('mythic-text');bfiE.classList.remove('mythic-info');}
-  document.getElementById('bfen').className='bfn'+(isMythic?' mythic-name':'');
-  document.getElementById('bfen').textContent=ed.name+(isMythic?' ✨':'');
-  document.getElementById('bfelv').textContent=`Lv.${en.lv}`;
-  document.getElementById('bfpn').textContent=pd.name;
-  document.getElementById('bfplv').textContent=`Lv.${pl.lv}`;
+  (document.getElementById('bfen')||{}).className='bfn'+(isMythic?' mythic-name':'');
+  (document.getElementById('bfen')||{}).textContent=ed.name+(isMythic?' ✨':'');
+  (document.getElementById('bfelv')||{}).textContent=`Lv.${en.lv}`;
+  (document.getElementById('bfpn')||{}).textContent=pd.name;
+  (document.getElementById('bfplv')||{}).textContent=`Lv.${pl.lv}`;
   setHP('e',en.hp,en.maxHp,isMythic);setHP('p',pl.hp,pl.maxHp,false);
   pd.moves.forEach((mv,i)=>{
     const nb=document.getElementById(`bm${i+1}n`);
@@ -2401,30 +2437,32 @@ function refreshBattleUI(isMythic=false){
   }
   // Reset to fight tab
   battleTab('fight');
-  document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
-  document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0)+(G.bag.mythstone||0));
-  document.getElementById('btc').style.display='none';
+  (document.getElementById('ball-count')||{}).textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
+  (document.getElementById('pot-count')||{}).textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0)+(G.bag.mythstone||0));
+  (document.getElementById('btc')||{}).style.display='none';
   lockBtns(false);
 }
 function setHP(w,hp,max,mythic=false){
   const pct=Math.max(0,Math.round(hp/max*100));
   const f=document.getElementById(`bf${w}hf`);
+  if(!f)return;
   f.style.width=pct+'%';
   f.className='bfhf'+(mythic?' mythic-bar':pct>50?'':pct>20?' mid':' low');
-  document.getElementById(`bf${w==='e'?'e':'p'}hn`).textContent=`${Math.max(0,hp)}/${max}`;
+  const hn=document.getElementById(`bf${w==='e'?'e':'p'}hn`);
+  if(hn)hn.textContent=`${Math.max(0,hp)}/${max}`;
 }
 function setBT(msg,cursor=false){
-  document.getElementById('bt').textContent=msg;
-  document.getElementById('btc').style.display=cursor?'inline-block':'none';
+  (document.getElementById('bt')||{}).textContent=msg;
+  (document.getElementById('btc')||{}).style.display=cursor?'inline-block':'none';
 }
 function battleTab(tab){
   const isFight=tab==='fight';
-  document.getElementById('bmen').style.display=isFight?'grid':'none';
-  document.getElementById('bmen-action').style.display=isFight?'none':'grid';
-  document.getElementById('btab-fight').style.background=isFight?'var(--gb2)':'var(--gb1)';
-  document.getElementById('btab-fight').style.color=isFight?'var(--gb0)':'var(--gb4)';
-  document.getElementById('btab-action').style.background=isFight?'var(--gb1)':'var(--gb2)';
-  document.getElementById('btab-action').style.color=isFight?'var(--gb4)':'var(--gb0)';
+  (document.getElementById('bmen')||{style:{}}).style.display=isFight?'grid':'none';
+  (document.getElementById('bmen-action')||{style:{}}).style.display=isFight?'none':'grid';
+  (document.getElementById('btab-fight')||{style:{}}).style.background=isFight?'var(--gb2)':'var(--gb1)';
+  (document.getElementById('btab-fight')||{style:{}}).style.color=isFight?'var(--gb0)':'var(--gb4)';
+  (document.getElementById('btab-action')||{style:{}}).style.background=isFight?'var(--gb1)':'var(--gb2)';
+  (document.getElementById('btab-action')||{style:{}}).style.color=isFight?'var(--gb4)':'var(--gb0)';
 }
 function lockBtns(v){
   G.locked=v;
@@ -2472,12 +2510,12 @@ async function useMove(idx){
         setBT(`${ed.name} fainted! ✨ ${expResult.evolution.oldName} evolved into ${expResult.evolution.newName}!`,true);
         // Update player sprite in battle
         const newPd=JAY[winner.key];
-        document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${newPd.draw()}</div>`;
-        document.getElementById('bfpn').textContent=newPd.name;
+        (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${newPd.draw()}</div>`;
+        (document.getElementById('bfpn')||{}).textContent=newPd.name;
       } else {
         setBT(`${ed.name} fainted! ${winner?JAY[winner.key].name:''} ➜ Lv.${expResult.newLv}! ✨`);
       }
-      document.getElementById('bfplv').textContent='Lv.'+winner.lv;
+      (document.getElementById('bfplv')||{}).textContent='Lv.'+winner.lv;
       setHP('p',winner.hp,winner.maxHp);
     } else {
       const gained=expResult?expResult.expGained:0;
@@ -2585,7 +2623,7 @@ function openMidBattleSwitch(){
 
 function checkNextFighter(){
   const alive=G.party.filter(p=>p.hp>0);
-  if(alive.length===0){showView('gameover');document.getElementById('go-text').textContent=`All fainted after ${G.battles} battles!`;return;}
+  if(alive.length===0){showView('gameover');(document.getElementById('go-text')||{}).textContent=`All fainted after ${G.battles} battles!`;return;}
   const list=document.getElementById('sel-list');list.innerHTML='';
   alive.forEach(inst=>{
     const i=G.party.indexOf(inst),d=JAY[inst.key];
@@ -2620,7 +2658,7 @@ async function tryBall(){
   ball.textContent=isMythic?'💜':'🔵';ball.style.animation='co-shake 0.38s ease-in-out infinite';
   for(let i=0;i<3;i++){await sleep(isMythic?600:480);if(i<3)dots[i].classList.add('lit');txt.textContent=`${['one...','two...','three...'][i]}`;}
   await sleep(600);ov.classList.remove('show');ball.style.animation='';
-  document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
+  (document.getElementById('ball-count')||{}).textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
   if(success){
     G.caught.add(en.key);
     const alreadyOwned=G.party.find(p=>p.key===en.key)||(G.box||[]).find(p=>p.key===en.key);
@@ -2682,8 +2720,8 @@ function openItemMenu(){
     const btn=document.getElementById('imb-'+k);
     if(btn)btn.disabled=true; // enable after selecting a target
   });
-  document.getElementById('item-menu-selected').textContent='— tap a Jayjamon —';
-  document.getElementById('item-menu').style.display='flex';
+  (document.getElementById('item-menu-selected')||{}).textContent='— tap a Jayjamon —';
+  (document.getElementById('item-menu')||{style:{}}).style.display='flex';
 }
 
 function itemMenuSelectJay(idx,rowEl){
@@ -2693,7 +2731,7 @@ function itemMenuSelectJay(idx,rowEl){
   rowEl.style.borderColor='var(--yel)';
   const inst=G.party[idx];
   if(!inst)return;
-  document.getElementById('item-menu-selected').textContent=JAY[inst.key].name+' selected';
+  (document.getElementById('item-menu-selected')||{}).textContent=JAY[inst.key].name+' selected';
   // Enable applicable buttons
   const isFP=inst.key==='freakypratiky';
   ['potion','superpotion','bigzoup','mythorb','chillidrop'].forEach(k=>{
@@ -2706,7 +2744,7 @@ function itemMenuSelectJay(idx,rowEl){
 }
 
 function closeItemMenu(){
-  document.getElementById('item-menu').style.display='none';
+  (document.getElementById('item-menu')||{style:{}}).style.display='none';
   itemMenuSelectedIdx=-1;
 }
 
@@ -2734,10 +2772,10 @@ async function applyItemToSelected(itemKey){
     const bigEvo=checkEvolution(inst);
     if(itemMenuSelectedIdx===G.activeIdx){
       setHP('p',inst.hp,inst.maxHp);
-      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      (document.getElementById('bfplv')||{}).textContent='Lv.'+inst.lv;
       if(bigEvo){
-        document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${JAY[inst.key].draw()}</div>`;
-        document.getElementById('bfpn').textContent=JAY[inst.key].name;
+        (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${JAY[inst.key].draw()}</div>`;
+        (document.getElementById('bfpn')||{}).textContent=JAY[inst.key].name;
       }
     }
     setBT(bigEvo?`Za Big Zoup! ✨ ${bigEvo.oldName} evolved into ${bigEvo.newName}!`:`Za Big Zoup! ${JAY[inst.key].name} grew to Lv.${inst.lv}! 🍲`);
@@ -2755,9 +2793,9 @@ async function applyItemToSelected(itemKey){
     inst.maxHp=newMax;inst.hp=newMax;
     G.caught.add('hangryjayj');G.seen.add('hangryjayj');
     if(itemMenuSelectedIdx===G.activeIdx){
-      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${newD.draw()}</div>`;
-      document.getElementById('bfpn').textContent=newD.name;
-      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${newD.draw()}</div>`;
+      (document.getElementById('bfpn')||{}).textContent=newD.name;
+      (document.getElementById('bfplv')||{}).textContent='Lv.'+inst.lv;
       setHP('p',inst.hp,inst.maxHp);
       newD.moves.forEach((mv,i)=>{
         const nb=document.getElementById(`bm${i+1}n`);const pb=document.getElementById(`bm${i+1}p`);
@@ -2779,9 +2817,9 @@ async function applyItemToSelected(itemKey){
     inst.maxHp=newMax;inst.hp=newMax;
     G.caught.add('almond');G.seen.add('almond');
     if(itemMenuSelectedIdx===G.activeIdx){
-      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:mythic-idle 1.6s ease-in-out infinite">${newD.draw()}</div>`;
-      document.getElementById('bfpn').textContent=newD.name;
-      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:mythic-idle 1.6s ease-in-out infinite">${newD.draw()}</div>`;
+      (document.getElementById('bfpn')||{}).textContent=newD.name;
+      (document.getElementById('bfplv')||{}).textContent='Lv.'+inst.lv;
       setHP('p',inst.hp,inst.maxHp);
       newD.moves.forEach((mv,i)=>{
         const nb=document.getElementById(`bm${i+1}n`);const pb=document.getElementById(`bm${i+1}p`);
@@ -2804,9 +2842,9 @@ async function applyItemToSelected(itemKey){
     inst.maxHp=newMax;inst.hp=newMax; // full heal on mega evo
     G.caught.add('megafreakypratiky');G.seen.add('megafreakypratiky');
     if(itemMenuSelectedIdx===G.activeIdx){
-      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:mythic-idle 1.6s ease-in-out infinite">${newD.draw()}</div>`;
-      document.getElementById('bfpn').textContent=newD.name;
-      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:mythic-idle 1.6s ease-in-out infinite">${newD.draw()}</div>`;
+      (document.getElementById('bfpn')||{}).textContent=newD.name;
+      (document.getElementById('bfplv')||{}).textContent='Lv.'+inst.lv;
       setHP('p',inst.hp,inst.maxHp);
       // Update moves
       newD.moves.forEach((mv,i)=>{
@@ -2825,7 +2863,7 @@ async function applyItemToSelected(itemKey){
 
 function updateItemCount(){
   const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0)+(G.bag.mythstone||0);
-  document.getElementById('pot-count').textContent='x'+total;
+  (document.getElementById('pot-count')||{}).textContent='x'+total;
 }
 
 async function usePotionInBattle(){
@@ -2840,19 +2878,19 @@ async function usePotionInBattle(){
     levelUpInst(pl,5);
     const bigEvo=checkEvolution(pl);
     setHP('p',pl.hp,pl.maxHp);
-    document.getElementById('bfplv').textContent='Lv.'+pl.lv;
+    (document.getElementById('bfplv')||{}).textContent='Lv.'+pl.lv;
     if(bigEvo){
-      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${JAY[pl.key].draw()}</div>`;
-      document.getElementById('bfpn').textContent=JAY[pl.key].name;
+      (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${JAY[pl.key].draw()}</div>`;
+      (document.getElementById('bfpn')||{}).textContent=JAY[pl.key].name;
     }
-    document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0));
+    (document.getElementById('pot-count')||{}).textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0));
     setBT(bigEvo?`Za Big Zoup! ✨ ${bigEvo.oldName} evolved into ${bigEvo.newName}!`:`Za Big Zoup! ${JAY[pl.key].name} grew to Lv.${pl.lv}! 🍲`);
     await sleep(1200);lockBtns(false);setBT('Choose your move!',false);return;
   }
   if(G.bag.superpotion>0){G.bag.superpotion--;heal=100;}else G.bag.potion--;
   pl.hp=Math.min(pl.maxHp,pl.hp+heal);
   setHP('p',pl.hp,pl.maxHp);
-  document.getElementById('pot-count').textContent=`x${(G.bag.potion||0)+(G.bag.superpotion||0)}`;
+  (document.getElementById('pot-count')||{}).textContent=`x${(G.bag.potion||0)+(G.bag.superpotion||0)}`;
   setBT(`${pd.name} +${heal} HP`);
   await sleep(800);await enemyTurn();
 }
@@ -2881,7 +2919,17 @@ function _endBattleCore(caught){
   }
   showView('world');startWalk();scheduleAutoSave();
 }
-function recoverReturn(){G.party.forEach(p=>p.hp=Math.floor(p.maxHp*0.5));G.activeIdx=0;showView('world');startWalk();}
+function recoverReturn(){
+  G.party.forEach(p=>p.hp=Math.floor(p.maxHp*0.5));
+  G.activeIdx=0;
+  // Clear trainer battle state completely on blackout
+  G._gymBattleContext=null;
+  G._councilBattleContext=null;
+  G.noFlee=false;
+  const runBtn=document.getElementById('bmf');
+  if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';runBtn.title='';}
+  showView('world');startWalk();
+}
 
 // ═══════════════════════════════════════════
 //  MULTIPLAYER — full 1v1 turn-based battle
@@ -2896,7 +2944,7 @@ function mpInit(){
     G.peer=new Peer('JAY-'+code,{debug:0});
     G.peer.on('open',id=>{
       const sc=id.replace('JAY-','');
-      document.getElementById('my-code').textContent=sc;
+      (document.getElementById('my-code')||{}).textContent=sc;
       mpSetStatus('Your code: '+sc+'\nShare it with your friend!');
       MP.isHost=true;
     });
@@ -3009,13 +3057,13 @@ function mpRenderBattle(){
   const myPl=G.party[G.activeIdx],op=MP.opponentJamon;
   if(!myPl||!op)return;
   const myD=JAY[myPl.key],opD=JAY[op.key];
-  document.getElementById('mp-op-sprite').innerHTML=`<div style="width:100%;height:100%;animation:s-idleF 1.4s ease-in-out infinite;transform-origin:center">${opD.draw()}</div>`;
-  document.getElementById('mp-op-name').textContent=opD.name;
-  document.getElementById('mp-op-lv').textContent='Lv.'+op.lv;
+  (document.getElementById('mp-op-sprite')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idleF 1.4s ease-in-out infinite;transform-origin:center">${opD.draw()}</div>`;
+  (document.getElementById('mp-op-name')||{}).textContent=opD.name;
+  (document.getElementById('mp-op-lv')||{}).textContent='Lv.'+op.lv;
   mpSetHPBar('op',op.hp,op.maxHp);
-  document.getElementById('mp-my-sprite').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${myD.draw()}</div>`;
-  document.getElementById('mp-my-name').textContent=myD.name;
-  document.getElementById('mp-my-lv').textContent='Lv.'+myPl.lv;
+  (document.getElementById('mp-my-sprite')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${myD.draw()}</div>`;
+  (document.getElementById('mp-my-name')||{}).textContent=myD.name;
+  (document.getElementById('mp-my-lv')||{}).textContent='Lv.'+myPl.lv;
   mpSetHPBar('my',myPl.hp,myPl.maxHp);
   myD.moves.forEach((mv,i)=>{
     const nb=document.getElementById('mp-mv'+(i+1)+'-name');
@@ -3027,9 +3075,9 @@ function mpRenderBattle(){
 function mpUpdateOpponentUI(){
   const op=MP.opponentJamon;if(!op)return;
   const opD=JAY[op.key];
-  document.getElementById('mp-op-sprite').innerHTML=`<div style="width:100%;height:100%;animation:s-idleF 1.4s ease-in-out infinite;transform-origin:center">${opD.draw()}</div>`;
-  document.getElementById('mp-op-name').textContent=opD.name;
-  document.getElementById('mp-op-lv').textContent='Lv.'+op.lv;
+  (document.getElementById('mp-op-sprite')||{}).innerHTML=`<div style="width:100%;height:100%;animation:s-idleF 1.4s ease-in-out infinite;transform-origin:center">${opD.draw()}</div>`;
+  (document.getElementById('mp-op-name')||{}).textContent=opD.name;
+  (document.getElementById('mp-op-lv')||{}).textContent='Lv.'+op.lv;
   mpSetHPBar('op',op.hp,op.maxHp);
 }
 function mpSetHPBar(who,hp,max){
@@ -3040,8 +3088,8 @@ function mpSetHPBar(who,hp,max){
   document.getElementById('mp-'+who+'-hp-num').textContent=Math.max(0,hp)+'/'+max;
 }
 function mpSetBattleMsg(msg,cursor=false){
-  document.getElementById('mp-btb').textContent=msg;
-  document.getElementById('mp-btc').style.display=cursor?'inline-block':'none';
+  (document.getElementById('mp-btb')||{}).textContent=msg;
+  (document.getElementById('mp-btc')||{}).style.display=cursor?'inline-block':'none';
 }
 function lockMPBtns(v){
   ['mp-atk1','mp-atk2','mp-flee-btn'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
@@ -3165,7 +3213,7 @@ function devToggle(){
 }
 function devClose(){
   devOpen=false;
-  document.getElementById('dev-console').style.display='none';
+  (document.getElementById('dev-console')||{style:{}}).style.display='none';
   // Resume walking if we were in world
   if(document.getElementById('view-world').classList.contains('active')) startWalk();
 }
@@ -3174,11 +3222,11 @@ function devKey(e){
   else if(e.key==='ArrowUp'){
     if(devHistory.length>0){
       devHistIdx=Math.min(devHistIdx+1,devHistory.length-1);
-      document.getElementById('dev-input').value=devHistory[devHistIdx];
+      (document.getElementById('dev-input')||{}).value=devHistory[devHistIdx];
     }
   } else if(e.key==='ArrowDown'){
     devHistIdx=Math.max(devHistIdx-1,-1);
-    document.getElementById('dev-input').value=devHistIdx<0?'':devHistory[devHistIdx];
+    (document.getElementById('dev-input')||{}).value=devHistIdx<0?'':devHistory[devHistIdx];
   }
 }
 function devRun(){
@@ -3499,7 +3547,7 @@ function devExec(cmd){
           if(G.conn)mpSend({type:'pos',col:nc,row:nr});
           const reg=getRegion(nr,nc);
           if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
-          document.getElementById('hud-region').textContent=reg;
+          (document.getElementById('hud-region')||{}).textContent=reg;
           const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID];
           if(tallTypes.includes(t)&&!window._noEncounters){
             PLAYER.grassSteps++;
@@ -3562,7 +3610,7 @@ function devExec(cmd){
 
   // ── CLEAR OUTPUT ──
   if(base==='clear'||base==='cls'){
-    document.getElementById('dev-output').innerHTML='';
+    (document.getElementById('dev-output')||{}).innerHTML='';
     devPrint('Console cleared.','#444');return;
   }
 
@@ -3594,8 +3642,8 @@ function openBox(){
 function boxTab(tab){
   BOX.activeTab=tab;
   BOX.selectedFrom=null;BOX.selectedIdx=-1;
-  document.getElementById('box-party-section').style.display=tab==='party'?'flex':'none';
-  document.getElementById('box-box-section').style.display=tab==='box'?'flex':'none';
+  (document.getElementById('box-party-section')||{style:{}}).style.display=tab==='party'?'flex':'none';
+  (document.getElementById('box-box-section')||{style:{}}).style.display=tab==='box'?'flex':'none';
   document.getElementById('boxtab-party').classList.toggle('active-tab',tab==='party');
   document.getElementById('boxtab-box').classList.toggle('active-tab',tab==='box');
   boxUpdateActions();
@@ -3850,17 +3898,16 @@ function submitLBScore(){
   const uid=currentUser.uid;
   const name=currentUser.displayName||uid;
   const entry={name,caught:G.caught.size,battles:G.battles,wins:G.wins,playtime:G.playtime||0,savedAt:Date.now()};
-  try{localStorage.setItem('jayjamon_lb_'+uid,JSON.stringify(entry));}catch(e){}
+  try{_ls.set('jayjamon_lb_'+uid,JSON.stringify(entry));}catch(e){}
 }
 function openLeaderboard(){
   showView('lb');
   const el=document.getElementById('lb-list');el.innerHTML='';
   // Gather all lb_ entries
   const entries=[];
-  for(let i=0;i<localStorage.length;i++){
-    const k=localStorage.key(i);
+  for(const k of _ls.keys()){
     if(!k||!k.startsWith('jayjamon_lb_'))continue;
-    try{const e=JSON.parse(localStorage.getItem(k));if(e)entries.push(e);}catch(e){}
+    try{const e=JSON.parse(_ls.get(k));if(e)entries.push(e);}catch(e){}
   }
   // Also add current session even if not saved
   if(currentUser){
@@ -3906,8 +3953,8 @@ function triggerRatsEncounter(){
   G.enemy=newInst('threerats',70+Math.floor(Math.random()*15));
   G.battles++;G.over=false;G.locked=false;
   G.noFlee=true; // can NOT run
-  document.getElementById('mythic-flash').style.display='block';
-  setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+  (document.getElementById('mythic-flash')||{style:{}}).style.display='block';
+  setTimeout(()=>(document.getElementById('mythic-flash')||{style:{}}).style.display='none',800);
   setTimeout(()=>{
     showView('battle');
     const bf=document.getElementById('bf');
@@ -4024,9 +4071,9 @@ function openGym(gymId){
   const gym=GYMS[gymId];
   const beaten=G.gymsBeaten[gymId];
 
-  document.getElementById('gym-title').textContent=gym.emoji+' '+gym.name;
-  document.getElementById('gym-desc').textContent=gym.desc;
-  document.getElementById('gym-badge-row').textContent=beaten?'✓ '+gym.badge+' earned!':'Badge: '+gym.badge+' (not yet earned)';
+  (document.getElementById('gym-title')||{}).textContent=gym.emoji+' '+gym.name;
+  (document.getElementById('gym-desc')||{}).textContent=gym.desc;
+  (document.getElementById('gym-badge-row')||{}).textContent=beaten?'✓ '+gym.badge+' earned!':'Badge: '+gym.badge+' (not yet earned)';
 
   // Leader card
   const card=document.getElementById('gym-leader-card');
@@ -4069,6 +4116,9 @@ function startGymBattle(){
 }
 
 function launchTrainerBattle(teamPairs,msg,isLeader){
+  // Clear any stale previous battle context
+  G._gymBattleContext=null;
+  G._councilBattleContext=null;
   // Build enemy queue from team
   const first=teamPairs[0];
   const key=Array.isArray(first)?first[0]:first.key;
@@ -4101,6 +4151,15 @@ function launchTrainerBattle(teamPairs,msg,isLeader){
 function _handleTrainerChain(caught){
   const isTrainerBattle=G.enemy&&G.enemy._trainerBattle===true;
   const enemyWasKO=G.enemy&&G.enemy.hp<=0;
+  // If it was a trainer battle but player fled or lost (enemy NOT ko'd), clear context
+  if(isTrainerBattle&&!enemyWasKO){
+    G._gymBattleContext=null;
+    G._councilBattleContext=null;
+    G.noFlee=false;
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';runBtn.title='';}
+    return false; // fall through to normal endBattle (world/gameover)
+  }
 
   // ── GYM trainer chain ──
   const ctx=G._gymBattleContext;
@@ -4227,7 +4286,7 @@ function startCouncilBattle(memberIdx){
   },100);
 
   showView('battle');
-  document.getElementById('bf').style.background='linear-gradient(180deg,#1a0000 0%,#2a0000 60%,var(--gb4) 100%)';
+  (document.getElementById('bf')||{style:{}}).style.background='linear-gradient(180deg,#1a0000 0%,#2a0000 60%,var(--gb4) 100%)';
   refreshBattleUI(false);
   setBT(`COUNCIL MEMBER: ${member.name}! Lv.100 ${JAY[first.key]?.name}!`,false);
 }
