@@ -511,10 +511,8 @@ h1{
 <!-- TEMPLE PROMPT -->
 <div id="temple-prompt" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;padding:12px;">
   <div style="background:linear-gradient(180deg,#0a0800,#1a1000);border:3px solid #c8a020;border-top:2px solid #ffee44;padding:18px;max-width:320px;width:100%;border-radius:6px;font-family:'Press Start 2P',monospace;text-align:center;box-shadow:0 0 40px rgba(200,160,0,.4);">
-    <div style="font-size:7px;color:#ffee44;margin-bottom:8px;letter-spacing:2px">⛩️ TEMPLE OF GODS</div>
-    <div style="font-size:6px;color:#c8a020;margin-bottom:12px;line-height:2">The statue pulses with ancient energy.<br>You have earned the right to face<br>the final trial.</div>
-    <div style="font-size:5px;color:#ff8800;margin-bottom:6px;line-height:2">WARNING: You cannot flee.<br>Defeat both phases to win.<br>Phase 2 is Jayj's true cosmic form.</div>
-    <div style="font-size:5px;color:#888;margin-bottom:16px;line-height:2">Make sure your party is ready.</div>
+    <div style="font-size:7px;color:#ffee44;margin-bottom:16px;letter-spacing:2px">⛩️</div>
+    <div style="font-size:8px;color:#c8a020;margin-bottom:20px;line-height:2.2">Are you ready for<br>the final boss?</div>
     <div style="display:flex;gap:8px;">
       <button onclick="acceptFinalBoss()" style="flex:1;background:linear-gradient(135deg,#8a6000,#c8a020);border:2px solid #ffee44;font-family:'Press Start 2P',monospace;font-size:6px;color:#000;padding:10px;cursor:pointer;border-radius:3px;">⚔️ I AM READY</button>
       <button onclick="declineFinalBoss()" style="flex:1;background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #444;font-family:'Press Start 2P',monospace;font-size:6px;color:#888;padding:10px;cursor:pointer;border-radius:3px;">◂ NOT YET</button>
@@ -947,7 +945,9 @@ function loadProgress(uid){
     if(data&&data.party&&data.party.length>0){
       G.party=data.party;G.box=data.box||[];G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
       G.money=data.money||500;G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
-      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;G.playtime=data.playtime||0;G.megaKey=data.megaKey||false;G._ratsDefeated=data.ratsDefeated||false;G.gymsBeaten=data.gymsBeaten||[false,false,false,false,false,false,false];G.councilBeaten=data.councilBeaten||[false,false,false,false];
+      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;G.playtime=data.playtime||0;G.megaKey=data.megaKey||false;G._ratsDefeated=data.ratsDefeated||false;
+      // If rats were caught/defeated in a previous save, ensure megaKey is set
+      if(G.caught.has('threerats')||G._ratsDefeated){G.megaKey=true;}G.gymsBeaten=data.gymsBeaten||[false,false,false,false,false,false,false];G.councilBeaten=data.councilBeaten||[false,false,false,false];
       (data.spawned||[]).forEach(k=>SPAWNED_MYTHICS.add(k));
       (document.getElementById('save-indicator')||{}).textContent='✓ Loaded!';
       setTimeout(()=>(document.getElementById('save-indicator')||{}).textContent='',2000);
@@ -1001,7 +1001,6 @@ function sOscar(){return svg([[2,0,'#a0a0a0',4,4],[10,0,'#a0a0a0',4,4],[3,1,'#d4
 function sArlie(){return svg([[0,1,'#1a1a1a',7,7],[1,2,'#4090d0',5,5],[9,1,'#1a1a1a',7,7],[10,2,'#4090d0',5,5],[7,3,'#1a1a1a',2,3],[0,4,'#1a1a1a',1,2],[15,4,'#1a1a1a',1,2],[1,2,'#a0d4f5',2,1],[10,2,'#a0d4f5',2,1],[5,2,'#f5e0c8',6,6],[6,4,'#222',1,1],[9,4,'#222',1,1],[7,7,'#c07060',2,1],[7,8,'#f5e0c8',2,2],[4,10,'#3090b8',8,5],[4,10,'#1a70a0',1,5],[11,10,'#1a70a0',1,5],[7,9,'#2080a8',2,2],[2,10,'#3090b8',2,4],[12,10,'#3090b8',2,4],[2,14,'#f5e0c8',2,1],[12,14,'#f5e0c8',2,1],[5,15,'#444',3,1],[8,15,'#444',3,1]]);}
 function sRocco(){return svg([[4,0,'#e8d0a0',8,1],[3,1,'#e8d0a0',10,5],[3,4,'#e8d0a0',10,3],[5,0,'#f5f0e0',6,1],[4,1,'#f5f0e0',8,1],[5,4,'#222',2,1],[9,4,'#222',2,1],[7,6,'#b06050',2,1],[6,6,'#e8d0a0',4,2],[4,8,'#8a6030',8,5],[3,8,'#8a6030',1,4],[12,8,'#8a6030',1,4],[2,8,'#8a6030',1,3],[13,8,'#8a6030',1,3],[2,11,'#e8d0a0',1,1],[13,11,'#e8d0a0',1,1],[5,13,'#4a3020',3,3],[8,13,'#4a3020',3,3],[4,15,'#333',4,1],[8,15,'#333',4,1],[6,2,'#fff',1,1],[10,2,'#fff',1,1]]);}
 function sAlby(){return svg([[5,4,'#ffccaa',6,1],[4,5,'#ffccaa',8,5],[4,6,'#ffccaa',8,4],[6,6,'#222',1,1],[9,6,'#222',1,1],[7,7,'#c07060',2,1],[4,9,'#60a0e0',8,4],[3,9,'#60a0e0',1,3],[12,9,'#60a0e0',1,3],[3,12,'#ffccaa',1,1],[12,12,'#ffccaa',1,1],[6,13,'#333',2,3],[8,13,'#333',2,3],[5,15,'#222',3,1],[8,15,'#222',3,1]]);}
-function sSonny(){return svg([[1,0,'#8b4513',14,8],[0,1,'#8b4513',16,6],[0,3,'#8b4513',16,5],[2,1,'#c0804a',12,6],[2,2,'#c0804a',12,5],[4,3,'#111',3,2],[9,3,'#111',3,2],[5,2,'#ff0000',1,1],[10,2,'#ff0000',1,1],[6,6,'#7a3520',4,2],[3,6,'#c0804a',2,2],[11,6,'#c0804a',2,2],[0,8,'#e8e0d8',16,8],[1,9,'#d8d0c8',14,6],[0,11,'#c0b8b0',3,4],[13,11,'#c0b8b0',3,4],[5,8,'#ffffff',6,1],[5,9,'#ffffff',2,4],[9,9,'#ffffff',2,4],[0,14,'#c0804a',3,2],[13,14,'#c0804a',3,2],[4,14,'#333',4,2],[8,14,'#333',4,2]]);}
 function sGoogSpice(){return svg([[3,0,'#ff4400',10,2],[2,1,'#ff6600',12,3],[1,2,'#ff8800',14,4],[0,3,'#ff6600',16,5],[1,4,'#ff9900',14,5],[0,5,'#ff6600',16,4],[3,3,'#ffcc00',10,6],[4,4,'#ffe066',8,4],[5,5,'#ffffff',2,2],[9,5,'#ffffff',2,2],[5,5,'#ffff00',2,2],[9,5,'#ffff00',2,2],[6,5,'#ff0000',1,1],[10,5,'#ff0000',1,1],[5,8,'#440000',6,2],[6,8,'#ff2200',4,1],[4,0,'#ff2200',2,2],[10,0,'#ff2200',2,2],[1,8,'#ff6600',2,6],[13,8,'#ff6600',2,6],[3,12,'#ff6600',10,4],[2,13,'#ff8800',12,3],[4,14,'#ff4400',3,2],[9,14,'#ff4400',3,2]]);}
 function sFreakyPratiky(){return svg([[1,0,'#2a1a0a',14,3],[0,1,'#2a1a0a',3,6],[13,1,'#2a1a0a',3,6],[2,0,'#4a3010',12,2],[1,1,'#4a3010',4,5],[11,1,'#4a3010',4,5],[4,3,'#c8905a',8,5],[5,4,'#c8905a',6,4],[5,5,'#ffffff',3,2],[5,5,'#111',1,2],[10,5,'#ffffff',2,3],[10,5,'#111',2,1],[7,4,'#ff00ff',2,1],[5,7,'#222',6,2],[6,7,'#ffffff',1,1],[8,7,'#ffffff',1,1],[10,7,'#ffffff',1,1],[3,8,'#c01010',10,6],[3,9,'#a00010',10,1],[2,8,'#c01010',1,5],[13,8,'#c01010',1,5],[3,8,'#ffd700',10,1],[3,13,'#ffd700',10,1],[5,14,'#800010',3,2],[8,14,'#800010',3,2],[4,15,'#500010',4,1],[8,15,'#500010',4,1]]);}
 function sOmegaJayj(){return svg([[2,0,'#5a3008',12,3],[1,1,'#d0803a',14,6],[0,2,'#d0803a',16,6],[0,4,'#d0803a',16,4],[5,1,'#ff8800',6,3],[6,2,'#ffaa00',4,1],[4,4,'#ff6600',3,2],[9,4,'#ff6600',3,2],[5,4,'#ffff00',1,1],[10,4,'#ffff00',1,1],[2,7,'#c07030',12,3],[0,9,'#2a3a90',16,7],[0,10,'#3a4aa0',16,6],[1,11,'#4a5ab0',14,5],[3,11,'#ff8800',2,2],[11,11,'#ff8800',2,2],[0,9,'#3a4aa0',2,5],[14,9,'#3a4aa0',2,5],[3,15,'#1a2a70',4,1],[9,15,'#1a2a70',4,1],[0,13,'#d0803a',2,1],[14,13,'#d0803a',2,1]]);}
@@ -1029,8 +1028,6 @@ const MOVE_FX={
   'SKULL BASH':        {type:'slam',    color:'#c09060'},
   'MICRO BITE':        {type:'bite',    color:'#ffccaa'},
   'TINY TACKLE':       {type:'dash',    color:'#60a0e0'},
-  'THE BEASLY SPECIAL':{type:'mega',    color:'#ff0000'},
-  "GORDON'S WRATH":    {type:'mega',    color:'#8b4513'},
   'SPICE ERUPTION':    {type:'eruption',color:'#ff4400'},
   'MAGMA SURGE':       {type:'fire',    color:'#ff6600'},
   'NEPAL FRENZY':      {type:'scatter', color:'#ff00ff'},
@@ -1965,6 +1962,51 @@ function sOmegaDevourerJayj(){return svg([
   [1,7,'#ffcc0066',1,1],[14,7,'#ffcc0066',1,1],
   [0,11,'#ff440033',1,2],[15,11,'#ff440033',1,2],
 ])}
+
+// ARLIE'S MOUSTACHE — Arlie's moustache achieved sentience and left.
+// Thick magnificent handlebar moustache with Arlie's glasses perched on it.
+// Floats with purpose. Has seen things.
+function sArliesMoustache(){return svg([
+
+  // THE MOUSTACHE — thick, dark, magnificent handlebar
+  // Central body of the moustache — dense and proud
+  [3,6,'#1a1a1a',10,4],
+  [2,7,'#2a2a2a',12,3],
+  [1,7,'#1a1a1a',2,4],[13,7,'#1a1a1a',2,4],
+  // Handlebar curls — left and right ends curl upward
+  // Left curl
+  [0,6,'#1a1a1a',2,2],[0,5,'#222',1,2],[1,4,'#1a1a1a',1,2],[2,5,'#333',1,1],
+  // Right curl
+  [14,6,'#1a1a1a',2,2],[15,5,'#222',1,2],[14,4,'#1a1a1a',1,2],[13,5,'#333',1,1],
+  // Moustache texture / depth
+  [4,7,'#333',8,2],[5,8,'#222',6,1],
+  [3,6,'#111',2,1],[11,6,'#111',2,1],
+  // Moustache highlight (sheen)
+  [5,6,'#444',6,1],[7,7,'#3a3a3a',4,1],
+
+  // ARLIE'S GLASSES — perched proudly on top of the moustache
+  // Left lens
+  [2,2,'#111',5,4],[3,3,'#3090b8',3,2],[2,2,'#60b0d8',1,1],
+  // Right lens
+  [9,2,'#111',5,4],[10,3,'#3090b8',3,2],[9,2,'#60b0d8',1,1],
+  // Bridge between lenses
+  [7,3,'#111',2,1],
+  // Arm of glasses going left
+  [0,3,'#111',2,2],
+  // Arm going right
+  [14,3,'#111',2,2],
+  // Lens glints
+  [3,2,'#aaddff',1,1],[10,2,'#aaddff',1,1],
+
+  // EYES — the moustache has small eyes peeking through the glasses
+  [4,3,'#1a3a1a',1,1],[11,3,'#1a3a1a',1,1],
+
+  // FLOATING — little wisps below to show it's levitating
+  [5,13,'#888',2,1],[9,13,'#888',2,1],[7,12,'#999',2,1],
+  [4,14,'#aaa',1,1],[11,14,'#aaa',1,1],[6,14,'#bbb',1,1],[9,14,'#bbb',1,1],
+  [6,15,'#ccc',1,1],[10,15,'#ccc',1,1],
+
+])}
 // ═══════════════════════════════════════════
 //  JAYJAMON DATA
 // ═══════════════════════════════════════════
@@ -2020,6 +2062,9 @@ const JAY={
   arlie:{name:'ARLIE',type:'Nerd/Glass',baseHp:78,baseAtk:66,draw:sArlie,mythic:false,
     desc:'Glasses larger than its own head. Vision is perfect; everything else is chaos.',
     moves:[{name:'LENS FLARE',pwr:62},{name:'SPECS SMASH',pwr:70},{name:'PRESCRIPTION BURN',pwr:58},{name:'FOUR-EYES FURY',pwr:80}]},
+  arliesmoustache:{name:"ARLIE'S MOUSTACHE",type:'MYTHIC/Follicular',baseHp:420,baseAtk:200,draw:sArliesMoustache,mythic:true,spawnOnce:true,
+    desc:"Arlie's moustache woke up one morning, adjusted its own glasses, and left. It lives in The Fields now. It has never looked back. It is respected.",
+    moves:[{name:'HANDLEBAR SMASH',pwr:190},{name:'LENS FLARE',pwr:175},{name:'FOLLICULAR FURY',pwr:210},{name:'SUPERIOR BRISTLE',pwr:195}]},
   rocco:{name:'ROCCO',type:'Bald/Stone',baseHp:120,baseAtk:78,draw:sRocco,mythic:false,
     desc:'Completely bald. Blinding dome shine is used as a weapon.',
     moves:[{name:'DOME GLARE',pwr:68},{name:'SKULL BASH',pwr:80},{name:'CHROME SHINE',pwr:62},{name:'BALD TACKLE',pwr:74}]},
@@ -2041,10 +2086,6 @@ const JAY={
   threerats:{name:'3 RATS IN ARLIE COSTUME',type:'SECRET/Forbidden',baseHp:550,baseAtk:320,draw:sThreeRats,mythic:true,spawnOnce:true,hidden:true,noFlee:true,
     desc:'Three rats. Wearing an Arlie costume. They are NOT Arlie. Do not ask why. You cannot run. You WILL regret this.',
     moves:[{name:'DEFINITELY NOT RATS',pwr:280},{name:'TOTALLY NORMAL HEADBUTT',pwr:300},{name:'SUSPICIOUS SKITTER',pwr:260},{name:'ARLIE GLASSES SLAM',pwr:320}]},
-  sonny:{name:'SONNY G.B.',type:'ULTRA GOD BEAST MYTHICAL LEGEND',baseHp:9999,baseAtk:99999,draw:sSonny,mythic:true,ultraGod:true,spawnOnce:true,
-    desc:'Sonny Gordon Beasly transcended all known tiers. Only reachable after conquering ALL mythicals. One-shots JAYJ and OMEGA JAYJ. The Fields are his domain.',
-    moves:[{name:'THE BEASLY SPECIAL',pwr:99999},{name:"GORDON'S WRATH",pwr:88888},{name:'ULTRA GOD STOMP',pwr:77777},{name:'TRANSCENDENT SLAM',pwr:99000}],
-    specialVs:{jayj:'oneshot',omegajayj:'oneshot'}},
   googspice:{name:'GOOG SPICE',type:'MYTHIC/Volcano',baseHp:380,baseAtk:220,draw:sGoogSpice,mythic:true,spawnOnce:true,
     desc:'Born from the volcano\'s core. Evolves into Polar Goog at Lv.55.',
     evolvesAt:55,evolvesInto:'polargoog',
@@ -2104,7 +2145,7 @@ const JAY={
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['shingoddzilla','omegadevourerjayj','indie','richieIndie','jayj','jayjdugong','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','rocco','alby','nick','elliot','jfmk','threerats','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','gianthamleg','boriscat','jayjoesmithcat','eviltree','bataar','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
+const ALL_KEYS=['shingoddzilla','omegadevourerjayj','indie','richieIndie','jayj','jayjdugong','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','arliesmoustache','rocco','alby','nick','elliot','jfmk','threerats','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','gianthamleg','boriscat','jayjoesmithcat','eviltree','bataar','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -2537,8 +2578,8 @@ const GRASS_ZONES=[
   // MYTHICAL LAIR (split by rival)
   {r1:33,c1:2,r2:49,c2:20,  pool:['rotoscoperocco'], mythicKey:'rotoscoperocco'},
   {r1:33,c1:23,r2:49,c2:41, pool:['terry'],           mythicKey:'terry'},
-  // THE FIELDS — Sonny + mid-level
-  {r1:3,c1:94,r2:49,c2:97,  pool:['sonny'], mythicKey:'sonny', fieldsGate:true,
+  // THE FIELDS — mid-level encounters
+  {r1:3,c1:94,r2:49,c2:97,  pool:['arliesmoustache'], mythicKey:'arliesmoustache', fieldsGate:true,
     midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
   // THE VOID ZONE — behind lair, gated by megaKey
   {r1:54,c1:2,r2:58,c2:8, pool:['bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'], voidZone:true, lv:35},
@@ -2700,20 +2741,29 @@ function renderWorld(){
         ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE+7,1,6);
       } else if(t===T_FIELD_TALL){ctx.fillStyle='#1a5a0a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+2,2,12);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE,2,14);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,11);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+1,2,13);ctx.fillStyle='#3a9a1a';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,2);ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE,3,2);}
       else if(t===T_SECRET){
-        // Secret tile: void-tall ones just use base color; only the infamous rats tile pulses red
-        if(tr===54&&tc===36&&!G._ratsDefeated&&!G.caught.has('threerats')){
-          const p=(Math.sin(Date.now()/600)+1)/2;
-          ctx.fillStyle='#1a0000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
-          ctx.globalAlpha=0.3+p*0.5;ctx.fillStyle='#ff2200';
-          ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+3,RENDER_TILE-6,RENDER_TILE-6);
-          ctx.globalAlpha=1;
-        } else if(tr!==54||tc!==36){
-          // void-zone tall grass — dark with faint purple wisp
+        if(tr===54&&tc===36){
+          if(!G._ratsDefeated&&!G.caught.has('threerats')){
+            // Infamous tile — bright pulsing red, impossible to miss
+            const p=(Math.sin(Date.now()/400)+1)/2;
+            ctx.fillStyle='#330000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+            ctx.fillStyle=`rgb(${Math.floor(160+p*95)},${Math.floor(p*20)},0)`;
+            ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+1,RENDER_TILE-2,RENDER_TILE-2);
+            // Bright white flicker at peak
+            ctx.globalAlpha=p*0.35;
+            ctx.fillStyle='#ffffff';
+            ctx.fillRect(c*RENDER_TILE+4,r*RENDER_TILE+4,RENDER_TILE-8,RENDER_TILE-8);
+            ctx.globalAlpha=1;
+            // Pulsing red border glow
+            ctx.strokeStyle=`rgba(255,${Math.floor(p*60)},0,${0.6+p*0.4})`;
+            ctx.lineWidth=2;
+            ctx.strokeRect(c*RENDER_TILE+1,r*RENDER_TILE+1,RENDER_TILE-2,RENDER_TILE-2);
+          } else {
+            ctx.fillStyle='#1a0008';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+          }
+        } else {
+          // void-zone tall grass
           ctx.fillStyle='#0a000a';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
           if((tr*7+tc*13)%9===0){ctx.globalAlpha=0.4;ctx.fillStyle='#550077';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+5,6,6);ctx.globalAlpha=1;}
-        } else {
-          // rats tile already defeated/caught — plain dark
-          ctx.fillStyle='#330000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
         }
       }
       else if(t===T_VOID){
@@ -2828,8 +2878,8 @@ function startWalk(){
         } else {PLAYER.grassSteps=0;}
         // VOID DOOR gate check
         if(t===T_VOID_DOOR&&nc===25&&nr===53){
-          if(!G.megaKey){
-            toast('The Void is sealed...\nDefeat Three Rats in Arlie Costume!');
+          if(!G.megaKey&&!G.caught.has('threerats')&&!G._ratsDefeated){
+            toast('The Void is sealed...\nFind the 3 Rats in Arlie Costume\nbehind the Mythical Lair!');
             PLAYER.row=PLAYER.prevRow||nr;PLAYER.col=PLAYER.prevCol||nc;
             renderWorld();return;
           } else {
@@ -2907,27 +2957,6 @@ function triggerEncounter(r,c){
       toast('The Fields are sealed...\nCatch or face all Mythicals first!');
       startWalk();return;
     }
-    // Sonny spawn check
-    const sonnyCaught=G.caught.has('sonny');
-    const sonnySpawned=SPAWNED_MYTHICS.has('sonny');
-    // Mix: sometimes Sonny, sometimes mid-level jayjamon
-    const rollForSonny=!sonnyCaught&&Math.random()<0.25;
-    if(rollForSonny){
-      SPAWNED_MYTHICS.add('sonny');G.seen.add('sonny');
-      G.enemy=newInst('sonny',80+Math.floor(Math.random()*20));
-      G.battles++;G.over=false;G.locked=false;
-      (document.getElementById('mythic-flash')||{style:{}}).style.display='block';
-      setTimeout(()=>(document.getElementById('mythic-flash')||{style:{}}).style.display='none',800);
-      setTimeout(()=>{
-        showView('battle');
-        const bf=document.getElementById('bf');
-        bf.classList.add('mythic-bg');
-        bf.style.background='linear-gradient(180deg,#000000 0%,#0a0000 50%,#1a0000 100%)';
-        refreshBattleUI(true);
-        setBT('⚡ SONNY GORDON BEASLY APPEARS! ⚡',false);
-      },300);
-      return;
-    }
     // Mid-level fields jayjamon
     const midPool=zone.midPool||['indie','jesse','rohan'];
     const key=midPool[Math.floor(Math.random()*midPool.length)];
@@ -2953,7 +2982,7 @@ function triggerEncounter(r,c){
   }
   // VOID ZONE encounters — lv35 zone jayjamon
   if(zone.voidZone){
-    if(!G.megaKey){startWalk();return;}
+    if(!G.megaKey&&!G.caught.has('threerats')&&!G._ratsDefeated){startWalk();return;}
     const pool=zone.pool;
     const key=pool[Math.floor(Math.random()*pool.length)];
     G.seen.add(key);
@@ -3407,7 +3436,7 @@ async function tryBall(){
   (document.getElementById('ball-count')||{}).textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
   if(success){
     G.caught.add(en.key);
-    if(en.key==='threerats'){G._ratsDefeated=true;G.noFlee=false;} // rats resolved on catch too
+    if(en.key==='threerats'){G._ratsDefeated=true;G.megaKey=true;G.noFlee=false;} // rats resolved on catch too
     const alreadyOwned=G.party.find(p=>p.key===en.key)||(G.box||[]).find(p=>p.key===en.key);
     if(!alreadyOwned){
       if(G.party.filter(p=>p).length<6){
@@ -4012,7 +4041,7 @@ function devExec(cmd, rawOriginal){
     devInfo('force encounter <name>    — start battle with any jayjamon');
     devInfo('force encounter <name> <lv>  — specific level');
     devInfo('  names: indie jayj jesse rohan oscar arlie');
-    devInfo('         rocco alby sonny googspice freakypratiky');
+    devInfo('         rocco alby arliesmoustache googspice freakypratiky');
     devInfo('         omegajayj rotoscoperocco terry');
     devPrint('─── CATCH / DEX ──────────────────','#444');
     devInfo('catch all                 — catch every jayjamon');
@@ -4195,7 +4224,7 @@ function devExec(cmd, rawOriginal){
       volcano:    {col:46, row:8 },
       mountain:   {col:52, row:3 },
       birmingham: {col:45, row:26},
-      lair:       {col:14, row:27},
+      lair:       {col:36, row:48},
       center:     {col:23, row:8 },
       shop:       {col:23, row:13},
       temple:     {col:102,row:57},
@@ -4825,10 +4854,10 @@ const GYMS=[
    leaderTeam:[['rocco',52],['ratoscar',50],['hangryjayj',48]]},
 ];
 
-// Non-mythic, non-sonny keys eligible for council teams
+// Non-mythic keys eligible for council teams
 const COUNCIL_ELIGIBLE=ALL_KEYS.filter(k=>{
   const d=JAY[k];
-  return !d.mythic&&!d.ultraGod&&k!=='sonny'&&k!=='threerats';
+  return !d.mythic&&!d.ultraGod&&k!=='threerats'&&k!=='shingoddzilla'&&k!=='omegadevourerjayj';
 });
 
 // Council members — generated once per save (randomized)
