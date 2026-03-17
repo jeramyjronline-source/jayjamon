@@ -3677,6 +3677,27 @@ function endBattle(caught){
   _endBattleCore(caught);
 }
 function _endBattleCore(caught){
+  // If we're mid-trainer-battle and the active mon just fainted (not a win/catch),
+  // let checkNextFighter handle it rather than going to world
+  const inTrainer=G._gymBattleContext||G._councilBattleContext||
+                  (G.enemy&&G.enemy._isFinalBoss);
+  if(inTrainer&&!caught&&G.enemy&&G.enemy.hp>0){
+    // Player's mon fainted — check if party has survivors
+    const alive=G.party.filter(p=>p&&p.hp>0);
+    if(alive.length>0){
+      checkNextFighter();
+      return;
+    }
+    // Party wiped — clear trainer state and show gameover
+    G._gymBattleContext=null;G._councilBattleContext=null;
+    G.noFlee=false;
+    G._finalBossPhase=0;
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
+    showView('gameover');
+    (document.getElementById('go-text')||{}).textContent='All fainted! The trainer won...';
+    return;
+  }
   G.party.forEach(p=>{if(p.hp>0)p.hp=Math.min(p.maxHp,p.hp+Math.floor(p.maxHp*0.08));});
   if(!G.party[G.activeIdx]||G.party[G.activeIdx].hp<=0){
     const ai=G.party.findIndex(p=>p.hp>0);if(ai>=0)G.activeIdx=ai;
@@ -3693,6 +3714,12 @@ function _endBattleCore(caught){
     setTimeout(()=>{t.style.display='none';t.style.fontSize='7px';t.style.lineHeight='1.8';},5000);
     updateHUD();
   }
+  // Reset all battle state flags so next battle starts clean
+  G.locked=false;G.noFlee=false;G.over=false;
+  G._gymBattleContext=null;G._councilBattleContext=null;
+  const rb=document.getElementById('bmf');
+  if(rb){rb.disabled=false;rb.style.opacity='';}
+  lockBtns(false);
   showView('world');startWalk();scheduleAutoSave();
 }
 function recoverReturn(){
@@ -4960,8 +4987,8 @@ function startGymBattle(){
 }
 
 function launchTrainerBattle(teamPairs,msg,isLeader){
-  // Clear any stale previous battle context
-  G._gymBattleContext=null;
+  // Only clear council context here — gym context is set by the caller BEFORE this runs
+  // (don't null G._gymBattleContext — startGymBattle sets it and we need it)
   G._councilBattleContext=null;
   // Build enemy queue from team
   const first=teamPairs[0];
@@ -4995,14 +5022,21 @@ function launchTrainerBattle(teamPairs,msg,isLeader){
 function _handleTrainerChain(caught){
   const isTrainerBattle=G.enemy&&G.enemy._trainerBattle===true;
   const enemyWasKO=G.enemy&&G.enemy.hp<=0;
-  // If it was a trainer battle but player fled or lost (enemy NOT ko'd), clear context
+  // If it was a trainer battle but enemy NOT KO'd:
+  //   - could be player's mon fainted (let checkNextFighter handle it — DON'T clear context)
+  //   - could be a flee (G.noFlee would be false for world trainers, true for gym/council)
   if(isTrainerBattle&&!enemyWasKO){
-    G._gymBattleContext=null;
-    G._councilBattleContext=null;
-    G.noFlee=false;
-    const runBtn=document.getElementById('bmf');
-    if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';runBtn.title='';}
-    return false; // fall through to normal endBattle (world/gameover)
+    // Check if player fled (noFlee was false, they ran)
+    // In that case, clear everything and go to world
+    if(!G.noFlee){
+      G._gymBattleContext=null;
+      G._councilBattleContext=null;
+      const runBtn=document.getElementById('bmf');
+      if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';runBtn.title='';}
+      return false; // fled — fall through to world
+    }
+    // Otherwise player's mon fainted mid-trainer-battle — keep context, let checkNextFighter run
+    return false; // falls through to _endBattleCore which calls checkNextFighter if needed
   }
 
   // ── FINAL BOSS PHASE TRANSITION ──
@@ -5079,6 +5113,7 @@ function _handleTrainerChain(caught){
       currentGymPhase=(currentGymTrainerIdx>=GYMS[ctx.gymId].teams.length)?1:0;
       toast('Trainer defeated!');
     }
+    G.locked=false;G.noFlee=false;
     if(ctx.type==='worldtrainer'){setTimeout(()=>{showView('world');startWalk();},400);}
     else{setTimeout(()=>{showView('gym');openGym(ctx.gymId);},400);}
     return true;
