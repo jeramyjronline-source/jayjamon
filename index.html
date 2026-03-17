@@ -2859,6 +2859,10 @@ async function usePotionInBattle(){
 async function battleFlee(){if(G.locked||G.noFlee)return;if(G.noFlee){setBT("You can't run from this!");lockBtns(false);return;}lockBtns(true);setBT('Ran!');await sleep(1300);endBattle(false);}
 
 function endBattle(caught){
+  if(_handleTrainerChain(caught)) return;
+  _endBattleCore(caught);
+}
+function _endBattleCore(caught){
   G.party.forEach(p=>{if(p.hp>0)p.hp=Math.min(p.maxHp,p.hp+Math.floor(p.maxHp*0.08));});
   if(!G.party[G.activeIdx]||G.party[G.activeIdx].hp<=0){
     const ai=G.party.findIndex(p=>p.hp>0);if(ai>=0)G.activeIdx=ai;
@@ -4093,18 +4097,17 @@ function launchTrainerBattle(teamPairs,msg,isLeader){
   scheduleAutoSave();
 }
 
-// Hook into endBattle to handle trainer battle chains
-const _origEndBattle=endBattle;
-function endBattle(caught){
-  const ctx=G._gymBattleContext;
-  const councilCtx=G._councilBattleContext;
+// Trainer battle chain handler — called from within endBattle
+function _handleTrainerChain(caught){
+  const isTrainerBattle=G.enemy&&G.enemy._trainerBattle===true;
+  const enemyWasKO=G.enemy&&G.enemy.hp<=0;
 
   // ── GYM trainer chain ──
-  if(ctx&&G.enemy&&G.enemy._trainerBattle&&G.over&&G.wins>0){
-    const pairs=G.enemy._teamPairs;
+  const ctx=G._gymBattleContext;
+  if(ctx&&isTrainerBattle&&enemyWasKO){
+    const pairs=G.enemy._teamPairs||[];
     const nextIdx=(G.enemy._teamIdx||0)+1;
     if(nextIdx<pairs.length){
-      // Send out next trainer pokemon
       const next=pairs[nextIdx];
       const key=Array.isArray(next)?next[0]:next.key;
       const lv=Array.isArray(next)?next[1]:next.lv;
@@ -4112,34 +4115,35 @@ function endBattle(caught){
       G.enemy._trainerBattle=true;
       G.enemy._teamPairs=pairs;
       G.enemy._teamIdx=nextIdx;
-      G.enemy._isLeader=pairs[0]&&pairs[0]._isLeader;
       G.over=false;G.locked=false;
       refreshBattleUI(false);
-      setBT(`${JAY[key].name}! Go!`,false);
-      return; // don't exit battle
+      setBT(JAY[key].name+'! Go!',false);
+      return true; // handled — stay in battle
     }
     // All trainer pokemon beaten
     G.noFlee=false;
     const runBtn=document.getElementById('bmf');
     if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
     G._gymBattleContext=null;
+    G.enemy=null;
     if(ctx.type==='leader'){
       G.gymsBeaten[ctx.gymId]=true;
       const gym=GYMS[ctx.gymId];
-      toast('🏅 '+gym.badge+' earned!\n'+gym.leader+' defeated!');
+      toast('Badge earned! '+gym.leader+' defeated!');
       scheduleAutoSave();
     } else {
       currentGymTrainerIdx++;
       currentGymPhase=(currentGymTrainerIdx>=GYMS[ctx.gymId].teams.length)?1:0;
+      toast('Trainer defeated!');
     }
-    G.enemy=null;
-    _origEndBattle(caught);
-    return;
+    setTimeout(()=>{showView('gym');openGym(ctx.gymId);},400);
+    return true;
   }
 
   // ── COUNCIL chain ──
-  if(councilCtx&&G.enemy&&G.enemy._trainerBattle&&G.over&&G.wins>0){
-    const pairs=G.enemy._teamPairs;
+  const councilCtx=G._councilBattleContext;
+  if(councilCtx&&isTrainerBattle&&enemyWasKO){
+    const pairs=G.enemy._teamPairs||[];
     const nextIdx=(G.enemy._teamIdx||0)+1;
     if(nextIdx<pairs.length){
       const next=pairs[nextIdx];
@@ -4149,10 +4153,9 @@ function endBattle(caught){
       G.enemy._teamIdx=nextIdx;
       G.over=false;G.locked=false;
       refreshBattleUI(false);
-      setBT(`${JAY[next.key].name}! Go!`,false);
-      return;
+      setBT(JAY[next.key].name+'! Go!',false);
+      return true;
     }
-    // Council member beaten
     G.noFlee=false;
     const runBtn=document.getElementById('bmf');
     if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
@@ -4160,19 +4163,19 @@ function endBattle(caught){
     G._councilBattleContext=null;
     G.enemy=null;
     const allDone=G.councilBeaten.every(Boolean);
-    if(allDone){
-      toast('🔥 COUNCIL OF 53 DEFEATED!\nYou are the true Jayjamon Master!');
-    } else {
-      toast('Council member defeated! Keep going!');
-    }
+    toast(allDone?'🔥 COUNCIL OF 53 DEFEATED!':'Council member down! Keep going!');
     scheduleAutoSave();
-    _origEndBattle(caught);
-    // Go back to council view
-    setTimeout(()=>{showView('council');renderCouncil();},100);
-    return;
+    setTimeout(()=>{showView('council');renderCouncil();},400);
+    return true;
   }
 
-  _origEndBattle(caught);
+  // Not a trainer battle — clear any stale context
+  G._gymBattleContext=null;
+  G._councilBattleContext=null;
+  G.noFlee=false;
+  const runBtn=document.getElementById('bmf');
+  if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
+  return false; // not handled, fall through to normal endBattle
 }
 
 // ── COUNCIL SYSTEM ──
