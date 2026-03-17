@@ -326,7 +326,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/23</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/30</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -374,6 +374,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
     <button id="imb-bigzoup" onclick="applyItemToSelected('bigzoup')" style="flex:1;background:none;border:1px solid var(--mythic2);font-family:'Press Start 2P',monospace;font-size:5px;color:var(--mythic2);padding:6px 2px;cursor:pointer" disabled>ZA ZOUP 🍲<br><span style="font-size:4px" id="imb-bigzoup-ct">x0</span></button>
     <button id="imb-mythorb" onclick="applyItemToSelected('mythorb')" style="flex:1;background:none;border:1px solid #cc44ff;font-family:'Press Start 2P',monospace;font-size:5px;color:#cc44ff;padding:6px 2px;cursor:pointer" disabled>MYTH ORB 🔮<br><span style="font-size:4px" id="imb-mythorb-ct">x0</span></button>
     <button id="imb-chillidrop" onclick="applyItemToSelected('chillidrop')" style="flex:1;background:none;border:1px solid #ff4400;font-family:'Press Start 2P',monospace;font-size:5px;color:#ff4400;padding:6px 2px;cursor:pointer" disabled>CHILLI 🌶️<br><span style="font-size:4px" id="imb-chillidrop-ct">x0</span></button>
+    <button id="imb-mythstone" onclick="applyItemToSelected('mythstone')" style="flex:1;background:none;border:1px solid #c8a020;font-family:'Press Start 2P',monospace;font-size:5px;color:#c8a020;padding:6px 2px;cursor:pointer" disabled>MYTH STONE 🪨<br><span style="font-size:4px" id="imb-mythstone-ct">x0</span></button>
    </div>
    <button onclick="closeItemMenu()" style="background:none;border:1px solid var(--red);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--red);padding:5px;cursor:pointer">✕ CANCEL</button>
   </div>
@@ -464,6 +465,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
    <div class="shop-item"><div class="si-info"><div class="si-name">MYTH JAYBALL</div><div class="si-desc">For mythical Jayjamon!</div></div><button class="si-buy" onclick="buyItem('mythball')">₽500</button></div>
    <div class="shop-item"><div class="si-info"><div class="si-name">POTION</div><div class="si-desc">Restores 30 HP</div></div><button class="si-buy" onclick="buyItem('potion')">₽80</button></div>
    <div class="shop-item"><div class="si-info"><div class="si-name">SUPER POTION</div><div class="si-desc">Restores 100 HP</div></div><button class="si-buy" onclick="buyItem('superpotion')">₽150</button></div>
+   <div class="shop-item" style="border-color:#c8a020;background:linear-gradient(90deg,#1a1000,#0d0800)"><div class="si-info"><div class="si-name" style="color:#c8a020">MYTH STONE 🪨</div><div class="si-desc" style="color:#c8a020;opacity:1">Evolves certain Jayjamon!</div></div><button class="si-buy" style="border-color:#c8a020;color:#c8a020" onclick="buyItem('mythstone')">₽2000</button></div>
    <div class="shop-item" style="border-color:var(--mythic2);background:linear-gradient(90deg,#1a0010,#0d0018)"><div class="si-info"><div class="si-name" style="color:var(--mythic2)">ZA BIG ZOUP 🍲</div><div class="si-desc" style="color:var(--mythic2);opacity:1">Levels active Jayjamon +5!</div></div><button class="si-buy" style="border-color:var(--mythic2);color:var(--mythic2)" onclick="buyItem('bigzoup')">₽999</button></div>
    <button class="back-btn" onclick="showView('world');startWalk()">◂ LEAVE SHOP</button>
   </div>
@@ -541,6 +543,24 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
     <div style="background:#001200;border-top:1px solid #002200;padding:3px 10px;flex-shrink:0">
       <span style="font-size:5px;color:#005500;">Type HELP for all commands &#183; ESC to close</span>
     </div>
+  </div>
+
+  <!-- GYM VIEW -->
+  <div class="view" id="view-gym" style="padding:10px;gap:6px;overflow-y:auto;">
+   <div class="panel-title" id="gym-title" style="color:#c8a000">🏋️ GYM</div>
+   <div id="gym-leader-card" style="background:#1a1a00;border:2px solid #c8a000;border-radius:4px;padding:8px;display:flex;align-items:center;gap:10px;margin-bottom:4px"></div>
+   <div id="gym-desc" style="font-size:5px;color:var(--gb2);line-height:1.8;text-align:center;padding:4px 0"></div>
+   <div id="gym-badge-row" style="text-align:center;font-size:7px;padding:4px 0"></div>
+   <button id="gym-fight-btn" class="menu-btn" onclick="startGymBattle()" style="background:#2a2a00;border-color:#c8a000;color:#c8a000">⚔️ CHALLENGE LEADER<span class="ms" id="gym-leader-sub">battle for the badge</span></button>
+   <button class="back-btn" onclick="showView('world');startWalk()">◂ LEAVE GYM</button>
+  </div>
+
+  <!-- COUNCIL VIEW -->
+  <div class="view" id="view-council" style="padding:10px;gap:6px;overflow-y:auto;">
+   <div class="panel-title" style="color:#ff4400">🔥 COUNCIL OF 53</div>
+   <div style="font-size:5px;color:var(--red);line-height:1.9;text-align:center;padding:4px">The four judges. All level 100. Good luck.</div>
+   <div id="council-members" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1"></div>
+   <button id="council-back-btn" class="back-btn" onclick="showView('world');startWalk()">◂ FLEE THE COUNCIL</button>
   </div>
 
   <!-- GAMEOVER -->
@@ -659,7 +679,7 @@ function loadProgress(uid){
     if(data&&data.party&&data.party.length>0){
       G.party=data.party;G.box=data.box||[];G.caught=new Set(data.caught||[]);G.seen=new Set(data.seen||[]);
       G.money=data.money||500;G.bag=data.bag||{ball:3,superball:0,mythball:0,potion:2,superpotion:0};
-      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;G.playtime=data.playtime||0;
+      G.battles=data.battles||0;G.wins=data.wins||0;G.activeIdx=data.activeIdx||0;G.playtime=data.playtime||0;G.megaKey=data.megaKey||false;G._ratsDefeated=data.ratsDefeated||false;G.gymsBeaten=data.gymsBeaten||[false,false,false,false,false,false,false];G.councilBeaten=data.councilBeaten||[false,false,false,false];
       (data.spawned||[]).forEach(k=>SPAWNED_MYTHICS.add(k));
       document.getElementById('save-indicator').textContent='✓ Loaded!';
       setTimeout(()=>document.getElementById('save-indicator').textContent='',2000);
@@ -673,7 +693,7 @@ function loadProgress(uid){
 function doSave(){
   if(!currentUser){toast('Sign in to save\nyour progress!');return;}
   const data={party:G.party,box:G.box||[],caught:[...G.caught],seen:[...G.seen],money:G.money,
-    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,
+    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,megaKey:G.megaKey||false,ratsDefeated:G._ratsDefeated||false,gymsBeaten:G.gymsBeaten||[],councilBeaten:G.councilBeaten||[],councilTeams:G._councilTeams||null,
     spawned:[...SPAWNED_MYTHICS],savedAt:Date.now()};
   try{
     localStorage.setItem('jayjamon_save_'+currentUser.uid,JSON.stringify(data));
@@ -793,6 +813,14 @@ const MOVE_FX={
   'ICE BEAR HUG':      {type:'vines',   color:'#aaddff'},
   'ARCTIC SURGE':      {type:'scatter', color:'#6699ff'},
   'FROZEN FURY':       {type:'mega',    color:'#4488ff'},
+  'ACADEMIC BASH':     {type:'slam',    color:'#f0f0f0'},
+  'THESIS DROP':       {type:'stomp',   color:'#ccccff'},
+  'DREAD LECTURE':     {type:'sound',   color:'#7a5030'},
+  'PEER REVIEW SLAM':  {type:'scatter', color:'#888888'},
+  'COSMIC DREAD WAVE': {type:'mega',    color:'#ffcc00'},
+  'ANCIENT KNOT':      {type:'vines',   color:'#c8a020'},
+  'LEVITATE':          {type:'light',   color:'#ffee44'},
+  'THIRD EYE OPEN':    {type:'light',   color:'#ffcc00'},
   'MEGA THIRD EYE BLAST':{type:'light',  color:'#ff00ff'},
   'MYTH ABSORB':         {type:'mega',   color:'#cc44ff'},
   'CHAOS FRENZY':        {type:'scatter',color:'#ff00ff'},
@@ -1204,6 +1232,231 @@ function sPolarGoog(){return svg([
   // frosty breath
   [3,7,'#cceeff',1,1],[12,7,'#cceeff',1,1],[4,6,'#ddeeff',1,1],[11,6,'#ddeeff',1,1],
 ])}
+
+// DR ROHAN — evolved at lv25. Rohan got a PhD somehow. Lab coat over the dreads. Clipboard.
+function sDrRohan(){return svg([
+  // same massive dreads but neater, pulled back slightly
+  [0,0,'#5a3820',3,16],[1,2,'#7a5030',2,14],
+  [13,0,'#5a3820',3,16],[13,2,'#7a5030',2,14],
+  [3,0,'#7a5030',10,2],[0,6,'#5a3820',2,8],[14,6,'#5a3820',2,8],
+  // dread highlights (PhD = well-maintained)
+  [1,4,'#9a7040',1,8],[14,4,'#9a7040',1,8],
+  // face — same brown skin, now has reading glasses
+  [4,2,'#c8906a',8,5],[5,3,'#c8906a',6,4],
+  // thin reading glasses (smaller than Arlie, professional)
+  [4,4,'#333',3,2],[9,4,'#333',3,2],[7,5,'#333',2,1],
+  [5,5,'#88ccee',1,1],[10,5,'#88ccee',1,1],
+  // eyes behind glasses
+  [5,5,'#1a1a1a',1,1],[10,5,'#1a1a1a',1,1],
+  // slight smile
+  [6,6,'#a06050',4,1],[7,6,'#b07060',2,1],
+  // neck
+  [7,7,'#c8906a',2,2],
+  // WHITE LAB COAT over everything
+  [3,9,'#f0f0f0',10,7],[2,9,'#f0f0f0',1,6],[13,9,'#f0f0f0',1,6],
+  [3,9,'#cccccc',1,6],[12,9,'#cccccc',1,6],
+  // lab coat pocket + pen
+  [10,11,'#dddddd',2,3],[10,11,'#333',1,1],
+  // shirt underneath (colourful, still rohan)
+  [5,9,'#2acc60',2,2],[8,9,'#2acc60',2,2],
+  // arms with coat sleeves
+  [1,9,'#f0f0f0',2,6],[13,9,'#f0f0f0',2,6],
+  // CLIPBOARD in one hand
+  [0,12,'#c8a050',3,3],[0,12,'#888',3,1],[0,13,'#fff',3,1],[0,14,'#fff',3,1],
+  // hands
+  [13,13,'#c8906a',2,1],
+  // trousers (smart)
+  [5,15,'#2a3a6a',3,1],[8,15,'#2a3a6a',3,1],
+  // shoes
+  [4,15,'#222',2,1],[9,15,'#222',2,1],
+])}
+
+// ALMOND — mythstone evolution of Rohan. The dreads achieved sentience.
+// Pure cosmic entity, draped in ancient cloth, dreads now glow gold and levitate
+function sAlmond(){return svg([
+  // COSMIC GLOWING DREADS — gold, floating outward like tentacles
+  [0,0,'#c8a020',2,4],[14,0,'#c8a020',2,4],
+  [0,2,'#c8a020',3,6],[13,2,'#c8a020',3,6],
+  [0,4,'#ffcc00',2,8],[14,4,'#ffcc00',2,8],
+  [1,0,'#ffee44',14,3],
+  // dread tips glow white
+  [0,0,'#ffffff',1,2],[15,0,'#ffffff',1,2],
+  [0,6,'#ffffff',1,2],[15,6,'#ffffff',1,2],
+  // ANCIENT FACE — calm, wise, slightly glowing
+  [4,4,'#d4a070',8,5],[5,5,'#d4a070',6,4],[3,5,'#d4a070',2,3],[11,5,'#d4a070',2,3],
+  // closed/half-closed eyes, serene
+  [5,6,'#1a0a00',3,1],[9,6,'#1a0a00',3,1],
+  // third eye hint (between brows, gold dot)
+  [7,5,'#ffcc00',2,1],
+  // gentle expression
+  [6,8,'#a07050',4,1],
+  // cosmic robes — deep purple with gold trim
+  [2,10,'#220044',12,6],[1,10,'#220044',1,5],[14,10,'#220044',1,5],
+  [2,10,'#ffcc00',12,1],[2,15,'#ffcc00',12,1],
+  // gold rune symbols on robe
+  [5,12,'#ffcc00',2,1],[9,12,'#ffcc00',2,1],[7,11,'#cc8800',2,1],
+  // floating arms (wide, blessing gesture)
+  [0,10,'#220044',2,5],[14,10,'#220044',2,5],
+  // glowing hands
+  [0,14,'#ffcc00',2,2],[14,14,'#ffcc00',2,2],
+  // gold aura dots
+  [3,9,'#ffee44',1,1],[12,9,'#ffee44',1,1],
+  [1,8,'#ffcc00',1,1],[14,8,'#ffcc00',1,1],
+])}
+
+// THREE RATS IN ARLIE COSTUME — horrifying, secret mythic
+function sThreeRats(){return svg([
+  // GIANT ARLIE GLASSES (oversized, clearly fake)
+  [0,2,'#1a1a1a',8,7],[9,2,'#1a1a1a',7,7],
+  [1,3,'#3090b8',6,5],[10,3,'#3090b8',5,5],
+  [7,5,'#1a1a1a',2,3], // bridge
+  // Rats peeking out from behind and below glasses
+  // TOP rat (looks most like arlie, wearing glasses)
+  [3,3,'#888',4,4],[4,4,'#aaa',2,2],[5,5,'#cc8888',1,1],
+  // MIDDLE rat  
+  [2,7,'#777',2,3],[13,7,'#777',2,3],
+  [3,8,'#999',2,2],[11,8,'#999',2,2],
+  [3,9,'#cc8888',1,1],[12,9,'#cc8888',1,1],
+  // BOTTOM rat — most visible, little rat feet showing below costume
+  [4,11,'#888',8,3],[5,12,'#999',6,2],
+  // RAT TAILS dangling out
+  [14,9,'#777',1,3],[15,8,'#777',1,2],[15,6,'#777',1,3],
+  [1,10,'#777',1,3],[0,8,'#777',1,3],[0,6,'#777',1,2],
+  // RAT EARS on top (two sets — definitely too many ears)
+  [3,1,'#aaa',2,2],[7,0,'#aaa',2,2],[11,0,'#aaa',2,2],
+  [4,1,'#cc8888',1,1],[8,0,'#cc8888',1,1],[12,0,'#cc8888',1,1],
+  // ARLIE BODY (costume, slightly ill-fitting)
+  [2,11,'#3090b8',12,5],[1,12,'#3090b8',1,3],[14,12,'#3090b8',1,3],
+  // RAT FEET sticking out at bottom
+  [3,15,'#888',3,1],[6,15,'#888',2,1],[10,15,'#888',2,1],
+  [4,14,'#999',2,1],[11,14,'#999',2,1],
+  // Suspicious beady rat eyes visible above glasses
+  [3,4,'#ff2200',1,1],[12,4,'#ff2200',1,1],
+  // "arlie face" painted on the costume front
+  [6,7,'#f5e0c8',4,3],[7,8,'#333',1,1],[9,8,'#333',1,1],
+])}
+
+// JAYJ'S BELLY BUTTON FLUFF
+function sBellyButtonFluff(){return svg([
+  // weird fluffy ball shape — mostly grey fluff
+  [3,2,'#ccc',10,12],[2,3,'#ddd',12,10],[1,5,'#ccc',14,8],
+  [4,1,'#bbb',8,2],[2,2,'#ccc',3,2],[11,2,'#ccc',3,2],
+  // compressed fluff texture
+  [4,3,'#aaa',2,2],[10,3,'#aaa',2,2],[7,2,'#bbb',2,2],
+  [3,7,'#999',2,1],[11,7,'#999',2,1],[7,5,'#aaa',2,1],
+  // tiny squished face in the fluff
+  [6,7,'#8a7a6a',1,1],[9,7,'#8a7a6a',1,1],
+  [7,9,'#776050',2,1],
+  // fluff wisps sticking up
+  [5,0,'#ccc',2,2],[9,0,'#bbb',2,3],[3,1,'#ddd',2,2],[11,0,'#ddd',2,2],
+  [1,3,'#bbb',2,2],[13,3,'#bbb',2,2],[0,6,'#ccc',2,3],[14,5,'#ccc',2,4],
+  // belly button indent
+  [7,10,'#999',2,2],[8,10,'#888',1,1],
+])}
+
+// CHRISTMAS PRATIK — Santa hat, Christmas jumper, holding candy cane
+function sChristmasPratik(){return svg([
+  // SANTA HAT
+  [4,0,'#cc0000',8,1],[3,1,'#cc0000',10,2],[3,2,'#cc0000',10,3],
+  [3,1,'#ffffff',10,1], // hat brim
+  [10,0,'#ffffff',2,3], // pompom
+  // face
+  [4,4,'#f0c890',8,5],[5,5,'#f0c890',6,4],
+  // happy christmas eyes
+  [5,5,'#1a1a1a',2,1],[9,5,'#1a1a1a',2,1],
+  [5,4,'#cc0000',2,1],[9,4,'#cc0000',2,1], // rosy cheeks
+  // big grin
+  [5,8,'#222',6,1],[6,8,'#ff6666',4,1],
+  // CHRISTMAS JUMPER — green with pattern
+  [3,10,'#006600',10,6],[2,10,'#006600',1,5],[13,10,'#006600',1,5],
+  [5,11,'#cc0000',2,1],[9,11,'#cc0000',2,1],[7,10,'#ffcc00',2,1], // baubles
+  [4,13,'#880000',2,1],[10,13,'#880000',2,1], // reindeer hint
+  // arms
+  [1,10,'#006600',2,5],[13,10,'#006600',2,5],
+  // CANDY CANE in hand
+  [0,13,'#cc0000',2,1],[0,12,'#fff',2,1],[0,11,'#cc0000',2,1],[0,10,'#fff',2,1],
+  [0,9,'#cc0000',1,2],[1,8,'#cc0000',1,2],
+  // legs
+  [5,15,'#333',3,1],[8,15,'#333',3,1],
+])}
+
+// MILK TEA MAN — wearing milk tea cup, bubble tea themed
+function sMilkTeaMan(){return svg([
+  // BIG MILK TEA CUP HEAD (the cup is their entire head)
+  [3,0,'#f5e6d0',10,2],[2,1,'#f0ddc0',12,7],[2,2,'#f0ddc0',12,6],
+  // cup lid
+  [2,0,'#888',12,2],[3,0,'#aaa',10,1],
+  // straw
+  [10,0,'#ff6699',2,8],[11,0,'#ff6699',1,8],
+  // bubble tea bubbles floating in cup (face area)
+  [5,4,'#5a3010',2,2],[9,4,'#5a3010',2,2], // eyes = tapioca pearls
+  [5,4,'#000',1,1],[9,4,'#000',1,1],
+  [4,6,'#5a3010',2,2],[10,6,'#5a3010',2,2],[7,5,'#5a3010',2,2], // more pearls
+  // slight smile
+  [6,7,'#8b6040',4,1],
+  // actual body below the cup
+  [4,9,'#f5c8a0',8,2], // neck area
+  // cozy clothes — pastel
+  [3,11,'#d4a8d4',10,5],[2,11,'#d4a8d4',1,4],[13,11,'#d4a8d4',1,4],
+  // arms
+  [1,11,'#d4a8d4',2,4],[13,11,'#d4a8d4',2,4],
+  // hands holding cup (another smaller cup)
+  [1,14,'#f0ddc0',3,2],[12,14,'#f0ddc0',3,2],
+  // legs
+  [5,15,'#6a3a8a',3,1],[8,15,'#6a3a8a',3,1],
+])}
+
+// UNCLE FATTY THE MONKEY — big chubby monkey, vest, cigar
+function sUncleFatty(){return svg([
+  // BIG round monkey head
+  [3,0,'#8b5a2b',10,4],[2,1,'#8b5a2b',12,5],[1,2,'#9a6a3a',14,4],
+  // monkey ears
+  [0,3,'#8b5a2b',3,4],[13,3,'#8b5a2b',3,4],[1,4,'#c08858',1,2],[14,4,'#c08858',1,2],
+  // face — lighter muzzle
+  [4,4,'#d4a070',8,4],[5,5,'#d4a070',6,3],
+  // cheeky eyes (slightly crossed, old and tired)
+  [5,3,'#1a0a00',2,1],[9,3,'#1a0a00',2,1],
+  [4,3,'#5a3010',3,1],[9,3,'#5a3010',3,1],
+  // cigar
+  [5,7,'#c8a020',7,1],[12,7,'#ff4400',1,1],[11,7,'#888',1,1],
+  // VERY FAT BODY — rolls and all
+  [0,8,'#aa6030',16,8],[0,9,'#aa6030',16,7],[1,10,'#bb7040',14,6],
+  // VEST (open, classy)
+  [4,8,'#222',2,7],[10,8,'#222',2,7],[5,9,'#888',1,5],[11,9,'#888',1,5],
+  // belly hanging out (lighter)
+  [5,11,'#d4a070',6,4],
+  // stubby arms
+  [0,8,'#8b5a2b',2,5],[14,8,'#8b5a2b',2,5],
+  // little fat monkey hands
+  [0,12,'#8b5a2b',3,3],[13,12,'#8b5a2b',3,3],
+  // short fat legs
+  [4,15,'#6a3a1a',4,1],[8,15,'#6a3a1a',4,1],
+])}
+
+// LUXEMBOURGIAN ARMY — entire tiny army compressed into one jayjamon shape
+// 3 soldiers stacked, tiny rifles, red/white/blue uniform
+function sLuxembourgian(){return svg([
+  // Three tiny soldiers stacked vertically
+  // SOLDIER 1 (top)
+  [5,0,'#e8e0d0',6,2],[4,0,'#1a3a6a',8,1], // military hat
+  [5,1,'#f5c8a0',6,2],
+  [4,2,'#cc1122',8,3],[3,3,'#1a3a6a',2,2],[11,3,'#1a3a6a',2,2], // uniform
+  [2,3,'#888',2,2],[13,3,'#888',2,2], // rifles
+  // SOLDIER 2 (middle)
+  [5,5,'#f5c8a0',6,1],[4,5,'#1a3a6a',8,1], // hat
+  [4,6,'#cc1122',8,2],[3,6,'#1a3a6a',2,2],[11,6,'#1a3a6a',2,2],
+  [1,6,'#888',3,2],[12,6,'#888',3,2], // rifles sticking out
+  // SOLDIER 3 (bottom)
+  [5,9,'#f5c8a0',6,1],[4,9,'#1a3a6a',8,1], // hat
+  [4,10,'#cc1122',8,3],[3,10,'#1a3a6a',2,3],[11,10,'#1a3a6a',2,3],
+  [0,10,'#888',4,1],[12,10,'#888',4,1], // rifles
+  // LUXEMBOURG FLAG BANNER they're holding together
+  [5,13,'#ee0000',2,2],[7,13,'#ffffff',2,2],[9,13,'#00aaff',2,2],
+  // collective legs (all six, marching)
+  [2,15,'#1a3a6a',2,1],[5,15,'#1a3a6a',2,1],[8,15,'#1a3a6a',2,1],[11,15,'#1a3a6a',2,1],
+  // flag pole
+  [11,11,'#888',1,4],[11,11,'#cc1122',3,1],
+])}
 // ═══════════════════════════════════════════
 //  JAYJAMON DATA
 // ═══════════════════════════════════════════
@@ -1233,8 +1486,17 @@ const JAY={
     evolvedFrom:'jesse',
     moves:[{name:'POTATO BASH',pwr:85},{name:'LUCKY CLOVER SLAM',pwr:78},{name:'SHAMROCK STORM',pwr:92},{name:'POT O GOLD SMASH',pwr:100}]},
   rohan:{name:'ROHAN',type:'Dreads/Chill',baseHp:100,baseAtk:70,draw:sRohan,mythic:false,
-    desc:'Dreadlocked Jayjamon. Hair so long it contains its own ecosystem.',
+    desc:'Dreadlocked Jayjamon. Hair so long it contains its own ecosystem. Evolves into Dr Rohan at Lv.25. Use a Myth Stone for a different path.',
+    evolvesAt:25,evolvesInto:'drrohan',itemEvolvesInto:'almond',itemKey:'mythstone',
     moves:[{name:'DREAD WHIP',pwr:66},{name:'TANGLE TRAP',pwr:52},{name:'KNOT LOCK',pwr:60},{name:'ROOTS WRATH',pwr:78}]},
+  drrohan:{name:'DR ROHAN',type:'Academic/Chill',baseHp:140,baseAtk:98,draw:sDrRohan,mythic:false,
+    desc:'Rohan got a PhD. Nobody knows in what. He carries a clipboard now. The dreads are still there, just a bit tidier.',
+    evolvedFrom:'rohan',
+    moves:[{name:'ACADEMIC BASH',pwr:92},{name:'THESIS DROP',pwr:88},{name:'DREAD LECTURE',pwr:100},{name:'PEER REVIEW SLAM',pwr:78}]},
+  almond:{name:'ALMOND',type:'Cosmic/Ancient',baseHp:185,baseAtk:132,draw:sAlmond,mythic:false,
+    desc:'The Myth Stone resonated with the dreads. Rohan ascended. His name is Almond now. The dreads float.',
+    evolvedFrom:'rohan',itemEvo:true,
+    moves:[{name:'COSMIC DREAD WAVE',pwr:125},{name:'ANCIENT KNOT',pwr:112},{name:'LEVITATE',pwr:95},{name:'THIRD EYE OPEN',pwr:140}]},
   oscar:{name:'OSCAR',type:'Normal/Large',baseHp:112,baseAtk:74,draw:sOscar,mythic:false,
     desc:'Just an absolutely massive mouse. Nobody knows why. Eats everything. Evolves into RAT OSCAR at Lv.40.',
     evolvesAt:40,evolvesInto:'ratoscar',
@@ -1258,6 +1520,9 @@ const JAY={
   elliot:{name:'ELLIOT',type:'Sharp/Intense',baseHp:82,baseAtk:78,draw:sElliot,mythic:false,
     desc:'Extremely focused. Wears neat sharp glasses. Will not break eye contact. Ever.',
     moves:[{name:'DEATH STARE',pwr:72},{name:'INTENSE FOCUS',pwr:60},{name:'LASER GLARE',pwr:80},{name:'ANALYTICAL STRIKE',pwr:66}]},
+  threerats:{name:'3 RATS IN ARLIE COSTUME',type:'SECRET/Forbidden',baseHp:550,baseAtk:320,draw:sThreeRats,mythic:true,spawnOnce:true,hidden:true,noFlee:true,
+    desc:'Three rats. Wearing an Arlie costume. They are NOT Arlie. Do not ask why. You cannot run. You WILL regret this.',
+    moves:[{name:'DEFINITELY NOT RATS',pwr:280},{name:'TOTALLY NORMAL HEADBUTT',pwr:300},{name:'SUSPICIOUS SKITTER',pwr:260},{name:'ARLIE GLASSES SLAM',pwr:320}]},
   sonny:{name:'SONNY G.B.',type:'ULTRA GOD BEAST MYTHICAL LEGEND',baseHp:9999,baseAtk:99999,draw:sSonny,mythic:true,ultraGod:true,spawnOnce:true,
     desc:'Sonny Gordon Beasly transcended all known tiers. Only reachable after conquering ALL mythicals. One-shots JAYJ and OMEGA JAYJ. The Fields are his domain.',
     moves:[{name:'THE BEASLY SPECIAL',pwr:99999},{name:"GORDON'S WRATH",pwr:88888},{name:'ULTRA GOD STOMP',pwr:77777},{name:'TRANSCENDENT SLAM',pwr:99000}],
@@ -1283,11 +1548,26 @@ const JAY={
   rotoscoperocco:{name:'ROTOSCOPE ROCCO',type:'MYTHIC/Lair',baseHp:460,baseAtk:280,draw:sRotoscopeRocco,mythic:true,spawnOnce:true,
     desc:'A reality-glitching mythical from the Lair. Rivals TERRY.',
     moves:[{name:'REALITY GLITCH',pwr:270},{name:'PIXEL SHATTER',pwr:260},{name:'FRAME TEAR',pwr:245},{name:'STATIC OVERLOAD',pwr:255}]},
+  bellybuttonfluff:{name:'BELLY BUTTON FLUFF',type:'Lint/Void',baseHp:130,baseAtk:90,draw:sBellyButtonFluff,mythic:false,
+    desc:'Escaped from Jayj navel. Has been in there a very long time. Somehow alive. Smells warm.',
+    moves:[{name:'FLUFF BALL',pwr:88},{name:'LINT ROLL',pwr:76},{name:'WARM MUSK',pwr:82},{name:'NAVEL DIVE',pwr:95}]},
+  christmaspratik:{name:'CHRISTMAS PRATIK',type:'Festive/Chaos',baseHp:145,baseAtk:102,draw:sChristmasPratik,mythic:false,
+    desc:'Pratik put on a Santa hat and a Christmas jumper and never took them off. It is August.',
+    moves:[{name:'CANDY CANE BASH',pwr:98},{name:'TINSEL TRAP',pwr:88},{name:'JINGLE SLAM',pwr:105},{name:'CHRISTMAS SPIRIT',pwr:92}]},
+  milkteaman:{name:'MILK TEA MAN',type:'Beverage/Chill',baseHp:120,baseAtk:85,draw:sMilkTeaMan,mythic:false,
+    desc:'His head is a bubble tea cup. The pearls are his eyes. Nobody has questioned this.',
+    moves:[{name:'BUBBLE BURST',pwr:82},{name:'TAPIOCA TACKLE',pwr:90},{name:'STRAW JAB',pwr:78},{name:'FULL SUGAR',pwr:100}]},
+  unclefatty:{name:'UNCLE FATTY',type:'Primate/Chaotic',baseHp:165,baseAtk:108,draw:sUncleFatty,mythic:false,
+    desc:'Uncle Fatty the Monkey. Heavyset. Wearing an open vest. Cigar permanently lit. Surprisingly spry.',
+    moves:[{name:'FAT MONKEY FIST',pwr:105},{name:'CIGAR FLICK',pwr:88},{name:'BELLY BOUNCE',pwr:115},{name:'UNCLE SLAM',pwr:98}]},
+  luxembourgian:{name:'LUXEMBOURGIAN ARMY',type:'Military/Tiny',baseHp:155,baseAtk:112,draw:sLuxembourgian,mythic:false,
+    desc:'The entire Luxembourgian army, compressed into one Jayjamon-shaped unit. Three soldiers. One flag. Maximum efficiency.',
+    moves:[{name:'TINY INVASION',pwr:108},{name:'FLAG BASH',pwr:95},{name:'GRAND DUCHY SLAM',pwr:118},{name:'LUXEMBOURG BLITZ',pwr:102}]},
   terry:{name:'TERRY',type:'MYTHIC/Lair',baseHp:460,baseAtk:285,draw:sTerry,mythic:true,spawnOnce:true,
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','richieIndie','jayj','hangryjayj','jesse','leprechaun','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry'];
+const ALL_KEYS=['indie','richieIndie','jayj','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','rocco','alby','nick','elliot','threerats','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -1300,8 +1580,9 @@ const G={
   box:[],  // PC storage — unlimited
   caught:new Set(),seen:new Set(),
   battles:0,wins:0,money:500,playtime:0,
-  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0,mythorb:0,chillidrop:0},
-  enemy:null,locked:false,over:false,
+  bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0,mythorb:0,chillidrop:0,mythstone:0},
+  enemy:null,locked:false,over:false,noFlee:false,megaKey:false,_ratsDefeated:false,
+  gymsBeaten:[false,false,false,false,false,false,false],councilBeaten:[false,false,false,false],
   peer:null,conn:null,mpMyTurn:false,mpPeerPos:null,
 };
 function newInst(key,lv){
@@ -1384,18 +1665,18 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 // ═══════════════════════════════════════════
 //  TILE MAP  (64×36)
 // ═══════════════════════════════════════════
-const TILE={COLS:100,ROWS:56};
+const TILE={COLS:100,ROWS:60};
 const T_GRASS=0,T_TALL=1,T_PATH=2,T_WALL=3,T_WATER=4,
       T_CENTER=5,T_SHOP=6,T_SIGN=7,T_TREE=8,T_FLOWER=9,
       T_LAVA=10,T_ROCK=11,T_SNOW=12,T_ICE=13,T_DARK=14,T_PORTAL=15,
-      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23;
+      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23,T_VOID=24,T_VOID_DOOR=25,T_SECRET=26,T_GYM=27,T_COUNCIL=28;
 const TILE_COLORS={[T_GRASS]:'#3a7a3a',[T_TALL]:'#1e5c1e',[T_PATH]:'#a08060',
   [T_WALL]:'#8b4513',[T_WATER]:'#3060a8',[T_CENTER]:'#e03050',[T_SHOP]:'#d0a030',
   [T_SIGN]:'#c08040',[T_TREE]:'#226622',[T_FLOWER]:'#4a9a4a',[T_LAVA]:'#cc3300',
   [T_ROCK]:'#886644',[T_SNOW]:'#ddeeff',[T_ICE]:'#aaccee',[T_DARK]:'#110022',
   [T_PORTAL]:'#660099',[T_MOUNTAIN]:'#887766',[T_CITY]:'#667788',
-  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030'};
-const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS];
+  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030',[T_VOID]:'#0a000a',[T_VOID_DOOR]:'#330044',[T_SECRET]:'#1a0000',[T_GYM]:'#e0c020',[T_COUNCIL]:'#800000'};
+const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_VOID_DOOR,T_SECRET];
 
 function buildMap(){
   const C=TILE.COLS,R=TILE.ROWS,m=[];
@@ -1520,6 +1801,51 @@ function buildMap(){
   for(let r=26;r<31;r++){m[r][21]=T_PATH;m[r][22]=T_PATH;m[r][23]=T_PATH;}
   for(let r=14;r<32;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
 
+  // ── SECRET TILE — single tile behind lair south wall ──
+  // Row 53 is just outside the lair's south wall (row 52)
+  m[53][21]=T_SECRET; // The infamous tile — Three Rats spawn here
+  m[53][20]=T_LAIR_FLOOR; // approach path
+  m[53][22]=T_LAIR_FLOOR;
+  m[53][19]=T_LAIR_FLOOR;
+  m[53][23]=T_LAIR_FLOOR;
+
+  // ── VOID DOOR — gate tile left of secret tile, needs megaKey ──
+  m[53][10]=T_VOID_DOOR; // door to void zone
+  for(let c=11;c<20;c++) m[53][c]=T_LAIR_FLOOR; // corridor from lair to door
+
+  // ── THE VOID ZONE — left of spawn, cols 1-9, rows 53-58 ──
+  for(let r=54;r<59;r++) for(let c=1;c<10;c++) m[r][c]=T_VOID;
+  // Void zone tall encounters
+  for(let r=54;r<59;r++) for(let c=2;c<9;c++) m[r][c]=T_SECRET; // repurpose as void tall
+  // Borders
+  for(let c=1;c<10;c++){m[53][c]=T_VOID_DOOR; m[59][c]=T_WALL;}
+  m[53][1]=T_WALL; m[53][9]=T_WALL;
+  for(let r=54;r<59;r++){m[r][1]=T_WALL; m[r][9]=T_WALL;}
+  // Replace VOID_DOOR borders with proper VOID
+  for(let c=1;c<10;c++) m[53][c]=T_VOID_DOOR; // entry row all door-coloured
+  m[53][10]=T_VOID_DOOR; // actual gate tile
+  // Walls around secret tile area to make it feel hidden
+  for(let c=24;c<44;c++) m[53][c]=T_WALL; // seal east of secret
+  for(let c=1;c<20;c++) m[54][c]=T_VOID; // void starts at 54
+
+  // ── GYMS (7 gyms across the map, each 3x3 yellow tiles) ──
+  const GYMLOCS=[
+    [3,5],[18,5],     // Town gyms
+    [4,50],[4,72],    // Volcano + Mountain
+    [24,48],[33,50],  // Nose + Birmingham
+    [27,25],          // Shadow gym (near lair entrance)
+  ];
+  GYMLOCS.forEach(([gr,gc])=>{
+    for(let dr=0;dr<3;dr++) for(let dc=0;dc<3;dc++) m[gr+dr][gc+dc]=T_GYM;
+  });
+
+  // ── COUNCIL OF 53 LAIR — rows 30-38, cols 44-46 (between brum & lair) ──
+  for(let r=30;r<39;r++) for(let c=44;c<47;c++) m[r][c]=T_COUNCIL;
+  // Council door tile (walkable, gated) — player steps on col 44, rows 33-34
+  m[33][44]=T_COUNCIL;m[34][44]=T_COUNCIL; // entry tiles (detected in walk loop)
+  // Connect council to path
+  m[33][43]=T_PATH;m[34][43]=T_PATH;
+
   // ── THE FIELDS (cols 92-98, rows 1-52) ──
   for(let r=1;r<R-1;r++){m[r][94]=T_FIELD;m[r][95]=T_FIELD;m[r][96]=T_FIELD;m[r][97]=T_FIELD;m[r][98]=T_WALL;}
   for(let r=3;r<50;r++){m[r][94]=T_FIELD_TALL;m[r][95]=T_FIELD_TALL;m[r][96]=T_FIELD_TALL;m[r][97]=T_FIELD_TALL;}
@@ -1555,6 +1881,8 @@ const GRASS_ZONES=[
   // THE FIELDS — Sonny + mid-level
   {r1:3,c1:94,r2:49,c2:97,  pool:['sonny'], mythicKey:'sonny', fieldsGate:true,
     midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
+  // THE VOID ZONE — behind lair, gated by megaKey
+  {r1:54,c1:2,r2:58,c2:8, pool:['bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'], voidZone:true, lv:35},
 ];
 const REGION_BOUNDS=[
   {name:'ICE RINK',  r1:13,c1:74,r2:22,c2:92},
@@ -1565,6 +1893,7 @@ const REGION_BOUNDS=[
   {name:'MYTH.LAIR', r1:29,c1:1,r2:53,c2:44},
   {name:'FIELDS',    r1:1,c1:92,r2:53,c2:99},
   {name:'TOWN',      r1:1,c1:1,r2:28,c2:45},
+  {name:'THE VOID',   r1:53,c1:1,r2:59,c2:10},
 ];
 function getRegion(r,c){for(const b of REGION_BOUNDS)if(r>=b.r1&&r<=b.r2&&c>=b.c1&&c<=b.c2)return b.name;return'WORLD';}
 function getTileZone(r,c){for(const z of GRASS_ZONES)if(r>=z.r1&&r<=z.r2&&c>=z.c1&&c<=z.c2)return z;return null;}
@@ -1744,16 +2073,46 @@ function startWalk(){
         const reg=getRegion(nr,nc);
         if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
         document.getElementById('hud-region').textContent=reg;
-        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS];
+        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID];
         if(tallTypes.includes(t)){
           PLAYER.grassSteps++;
           if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
         } else {PLAYER.grassSteps=0;}
+        // VOID DOOR gate check
+        if(t===T_VOID_DOOR&&nc===10&&nr===53){
+          if(!G.megaKey){
+            toast('The Void is sealed...\nDefeat Three Rats in Arlie Costume!');
+            PLAYER.row=PLAYER.prevRow||nr;PLAYER.col=PLAYER.prevCol||nc;
+            renderWorld();return;
+          } else {
+            showRegionBanner('THE VOID');
+          }
+        }
+        // SECRET TILE — trigger Three Rats encounter when stepped on
+        if(t===T_SECRET&&nr===53&&nc>=19&&nc<=23){
+          if(!G._ratsDefeated){
+            triggerRatsEncounter();return;
+          }
+        }
+        PLAYER.prevRow=nr;PLAYER.prevCol=nc;
         // buildings — enter silently, no msg
         for(let dr=-1;dr<=0;dr++) for(let dc=-1;dc<=1;dc++){
           const bt=WORLD_MAP[nr+dr]?.[nc+dc];
           if(bt===T_CENTER){stopWalk();showView('center');renderCenter();return;}
           if(bt===T_SHOP){stopWalk();showView('shop');updateShopMoney();return;}
+          if(bt===T_GYM){
+            // Find which gym this is
+            const gymId=getGymId(nr,nc);
+            if(gymId>=0) openGym(gymId);return;
+          }
+          if(bt===T_COUNCIL){
+            if((G.gymsBeaten||[]).filter(Boolean).length<7){
+              toast('The Council of 53 is sealed!\nDefeat all 7 gym leaders first!');
+            } else {
+              stopWalk();openCouncil();
+            }
+            return;
+          }
         }
       }
     }
@@ -1768,7 +2127,7 @@ function stopWalk(){
 
 function showRegionBanner(name){
   const b=document.getElementById('region-banner');
-  const labels={'TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE'};
+  const labels={'GYM 1':'🏋️ STARTER GYM','GYM 2':'🏋️ STREET GYM','GYM 3':'🌋 BLAZE GYM','GYM 4':'⛰️ PEAK GYM','GYM 5':'💪 BULK GYM','GYM 6':'🏙️ CITY GYM','GYM 7':'💀 SHADOW GYM','COUNCIL':'🔥 COUNCIL OF 53','TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE','THE VOID':'🕳️ THE VOID'};
   b.textContent=labels[name]||name;b.style.display='block';
   setTimeout(()=>b.style.display='none',2500);
 }
@@ -1825,6 +2184,20 @@ function triggerEncounter(r,c){
     setBT(`${JAY[key].name}!`,false);
     scheduleAutoSave();
     return;
+  }
+
+  // VOID ZONE encounters — lv35 zone jayjamon
+  if(zone.voidZone){
+    if(!G.megaKey){startWalk();return;}
+    const pool=zone.pool;
+    const key=pool[Math.floor(Math.random()*pool.length)];
+    G.seen.add(key);
+    const lv=(zone.lv||35)+Math.floor(Math.random()*8);
+    G.enemy=newInst(key,lv);
+    G.battles++;G.over=false;G.locked=false;
+    showView('battle');refreshBattleUI(false);
+    setBT(`${JAY[key].name}!`,false);
+    scheduleAutoSave();return;
   }
 
   if(zone.mythicKey){
@@ -1964,7 +2337,7 @@ function healAll(){
 }
 function updateShopMoney(){document.getElementById('shop-money').textContent=`₽${G.money}`;}
 function buyItem(item){
-  const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150,bigzoup:999,mythorb:0};
+  const prices={ball:100,superball:200,mythball:500,potion:80,superpotion:150,bigzoup:999,mythorb:0,mythstone:2000};
   const cost=prices[item];
   if(G.money<cost){toast('NOT ENOUGH ₽!');return;}
   G.money-=cost;G.bag[item]=(G.bag[item]||0)+1;
@@ -1973,7 +2346,7 @@ function buyItem(item){
 function openBag(){showView('bag');renderBag();}
 function renderBag(){
   const el=document.getElementById('bag-list');el.innerHTML='';
-  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x',mythorb:'MYTH ORB 🔮 x',chillidrop:'CHILLI DROP 🌶️ x'};
+  const items={ball:'JAYBALL x',superball:'SUPER JAYBALL x',mythball:'MYTH JAYBALL x',potion:'POTION x',superpotion:'SUPER POTION x',bigzoup:'ZA BIG ZOUP x',mythorb:'MYTH ORB 🔮 x',chillidrop:'CHILLI DROP 🌶️ x',mythstone:'MYTH STONE 🪨 x'};
   Object.entries(items).forEach(([k,n])=>{
     const div=document.createElement('div');div.className='bag-item';
     div.innerHTML=`<div class="bi-name">${n}${G.bag[k]||0}</div>`;
@@ -1984,6 +2357,7 @@ function renderDex(){
   const el=document.getElementById('dex-list');el.innerHTML='';
   document.getElementById('dex-count').textContent=`(${G.caught.size}/${TOTAL})`;
   ALL_KEYS.forEach(key=>{
+    if(JAY[key]&&JAY[key].hidden)return; // secret - don't show in dex
     const d=JAY[key],c=G.caught.has(key),s=G.seen.has(key),im=d.mythic;
     const row=document.createElement('div');row.className='dex-row'+(im?' mythic-dex':'');
     row.innerHTML=`<div class="dr-sw" style="${c||s?'':'filter:brightness(0.06)'}">${d.draw()}</div>
@@ -2028,7 +2402,7 @@ function refreshBattleUI(isMythic=false){
   // Reset to fight tab
   battleTab('fight');
   document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
-  document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0));
+  document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0)+(G.bag.mythstone||0));
   document.getElementById('btc').style.display='none';
   lockBtns(false);
 }
@@ -2108,6 +2482,17 @@ async function useMove(idx){
     } else {
       const gained=expResult?expResult.expGained:0;
       setBT(JAY[en.key].mythic||JAY[en.key].ultraGod?`${ed.name} vanished! +${gained}EXP`:`${ed.name} fainted! +${gained}EXP`,true);
+    }
+    // THREE RATS defeated — drop megaKey, unlock Void
+    if(en.key==='threerats'){
+      G._ratsDefeated=true;
+      G.megaKey=true;
+      G.noFlee=false;
+      const rBtn=document.getElementById('bmf');
+      if(rBtn){rBtn.disabled=false;rBtn.style.opacity='';rBtn.title='';}
+      await sleep(400);
+      setBT('The rats scatter! MEGA KEY obtained! 🗝️\nThe Void Zone is now accessible!',true);
+      await sleep(2500);endBattle(false);return;
     }
     // ITEM DROPS when mythics are KO'd
     if(JAY[en.key].mythic||JAY[en.key].ultraGod){
@@ -2291,7 +2676,7 @@ function openItemMenu(){
     el.appendChild(row);
   });
   // Update button counts
-  ['potion','superpotion','bigzoup','mythorb','chillidrop'].forEach(k=>{
+  ['potion','superpotion','bigzoup','mythorb','chillidrop','mythstone'].forEach(k=>{
     const ct=document.getElementById('imb-'+k+'-ct');
     if(ct)ct.textContent='x'+(G.bag[k]||0);
     const btn=document.getElementById('imb-'+k);
@@ -2384,6 +2769,30 @@ async function applyItemToSelected(itemKey){
     await sleep(2500);lockBtns(false);setBT('Choose your move!',false);return;
   }
 
+  if(itemKey==='mythstone'){
+    if(inst.key!=='rohan'){setBT('Myth Stone only works on ROHAN!');lockBtns(false);return;}
+    if(!(G.bag.mythstone||0)){setBT('No Myth Stones! Buy one at Jay Mart.');lockBtns(false);return;}
+    G.bag.mythstone--;
+    inst.key='almond';
+    const newD=JAY['almond'];
+    const newMax=calcMaxHp('almond',inst.lv);
+    inst.maxHp=newMax;inst.hp=newMax;
+    G.caught.add('almond');G.seen.add('almond');
+    if(itemMenuSelectedIdx===G.activeIdx){
+      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:mythic-idle 1.6s ease-in-out infinite">${newD.draw()}</div>`;
+      document.getElementById('bfpn').textContent=newD.name;
+      document.getElementById('bfplv').textContent='Lv.'+inst.lv;
+      setHP('p',inst.hp,inst.maxHp);
+      newD.moves.forEach((mv,i)=>{
+        const nb=document.getElementById(`bm${i+1}n`);const pb=document.getElementById(`bm${i+1}p`);
+        if(nb)nb.textContent=mv.name;if(pb)pb.textContent=`PWR:${mv.pwr}`;
+      });
+    }
+    updateItemCount();
+    setBT('✨ The Myth Stone resonated...\nROHAN became ALMOND! 🪨',true);
+    await sleep(2500);lockBtns(false);setBT('Choose your move!',false);return;
+  }
+
   if(itemKey==='mythorb'){
     if(inst.key!=='freakypratiky'){setBT('Myth Orb only works on Freaky Pratiky!');lockBtns(false);return;}
     if(!(G.bag.mythorb||0)){setBT('No Myth Orbs! Defeat mythicals to get them.');lockBtns(false);return;}
@@ -2415,7 +2824,7 @@ async function applyItemToSelected(itemKey){
 }
 
 function updateItemCount(){
-  const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0);
+  const total=(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)+(G.bag.mythorb||0)+(G.bag.chillidrop||0)+(G.bag.mythstone||0);
   document.getElementById('pot-count').textContent='x'+total;
 }
 
@@ -2447,7 +2856,7 @@ async function usePotionInBattle(){
   setBT(`${pd.name} +${heal} HP`);
   await sleep(800);await enemyTurn();
 }
-async function battleFlee(){if(G.locked)return;lockBtns(true);setBT('Ran!');await sleep(1300);endBattle(false);}
+async function battleFlee(){if(G.locked||G.noFlee)return;if(G.noFlee){setBT("You can't run from this!");lockBtns(false);return;}lockBtns(true);setBT('Ran!');await sleep(1300);endBattle(false);}
 
 function endBattle(caught){
   G.party.forEach(p=>{if(p.hp>0)p.hp=Math.min(p.maxHp,p.hp+Math.floor(p.maxHp*0.08));});
@@ -3087,7 +3496,7 @@ function devExec(cmd){
           const reg=getRegion(nr,nc);
           if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
           document.getElementById('hud-region').textContent=reg;
-          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS];
+          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID];
           if(tallTypes.includes(t)&&!window._noEncounters){
             PLAYER.grassSteps++;
             if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
@@ -3480,6 +3889,345 @@ function openLeaderboard(){
 // Submit score on every save
 const _origDoSave=doSave;
 function doSave(){submitLBScore();_origDoSave();}
+
+
+// ═══════════════════════════════════════════
+//  THREE RATS ENCOUNTER (secret tile, no flee)
+// ═══════════════════════════════════════════
+function triggerRatsEncounter(){
+  if(G._ratsDefeated){startWalk();return;} // already beaten
+  stopWalk();
+  G.seen.add('threerats');
+  SPAWNED_MYTHICS.add('threerats');
+  G.enemy=newInst('threerats',70+Math.floor(Math.random()*15));
+  G.battles++;G.over=false;G.locked=false;
+  G.noFlee=true; // can NOT run
+  document.getElementById('mythic-flash').style.display='block';
+  setTimeout(()=>document.getElementById('mythic-flash').style.display='none',800);
+  setTimeout(()=>{
+    showView('battle');
+    const bf=document.getElementById('bf');
+    bf.classList.add('mythic-bg');
+    bf.style.background='linear-gradient(180deg,#050005 0%,#1a0000 50%,#0a000a 100%)';
+    refreshBattleUI(true);
+    setBT('...They were here the whole time.\n3 RATS IN ARLIE COSTUME!',false);
+    // Hide RUN button — can't flee
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=true;runBtn.style.opacity='0.2';runBtn.title='You cannot run.';}
+  },300);
+}
+
+
+// ═══════════════════════════════════════════
+//  GYM SYSTEM
+// ═══════════════════════════════════════════
+
+// Gym definitions: name, leader name, badge, lore, jayjamon pool + levels
+const GYMS=[
+  {name:'STARTER GYM',   leader:'GYM LEADER BRAD',   badge:'🟡 BEGINNER BADGE',  emoji:'🏋️',
+   desc:'Brad has been running the gym for 3 years. He is very enthusiastic.',
+   teams:[[['indie',8],['alby',9]],        // trainer 1
+          [['indie',10],['nick',10]]],      // leader
+   leaderTeam:[['indie',12],['nick',11],['alby',13]]},
+
+  {name:'STREET GYM',    leader:'GYM LEADER YOLANDA', badge:'🟠 HUSTLE BADGE',   emoji:'🛹',
+   desc:'Yolanda never loses. She has a skateboard indoors.',
+   teams:[[['jesse',14],['rocco',15]],
+          [['jesse',16],['rohan',15]]],
+   leaderTeam:[['jesse',18],['rocco',17],['rohan',16]]},
+
+  {name:'BLAZE GYM',     leader:'GYM LEADER IGNACE',  badge:'🔴 EMBER BADGE',    emoji:'🌋',
+   desc:'Ignace loves fire. His eyebrows are gone.',
+   teams:[[['jesse',22],['arlie',20]],
+          [['jesse',24],['rocco',22]]],
+   leaderTeam:[['leprechaun',25],['jesse',24],['rocco',23]]},
+
+  {name:'PEAK GYM',      leader:'GYM LEADER SHERPA',  badge:'⚪ SUMMIT BADGE',   emoji:'⛰️',
+   desc:'Sherpa Gym. Sherpa runs it. He walked here from Nepal.',
+   teams:[[['alby',28],['nick',26]],
+          [['rohan',29],['alby',27]]],
+   leaderTeam:[['drrohan',30],['almond',28],['nick',29]]},
+
+  {name:'BULK GYM',      leader:'GYM LEADER JEZZA',   badge:'🔵 MASS BADGE',     emoji:'💪',
+   desc:'Jezza worships Jayj. Has a poster. The gym smells of sweat and chips.',
+   teams:[[['jayj',33],['oscar',31]],
+          [['jayj',35],['oscar',33]]],
+   leaderTeam:[['jayj',38],['ratoscar',36],['oscar',35]]},
+
+  {name:'CITY GYM',      leader:'GYM LEADER BIANCA',  badge:'🟣 METRO BADGE',    emoji:'🏙️',
+   desc:'Bianca is extremely stylish. Her gym has marble floors. She pities you.',
+   teams:[[['elliot',40],['arlie',38]],
+          [['elliot',42],['richieIndie',40]]],
+   leaderTeam:[['richieIndie',44],['elliot',43],['arlie',42]]},
+
+  {name:'SHADOW GYM',    leader:'GYM LEADER MORGUE',  badge:'⚫ ABYSS BADGE',    emoji:'💀',
+   desc:'Morgue speaks in whispers. Something is wrong with him.',
+   teams:[[['rocco',47],['elliot',46]],
+          [['rocco',49],['richieIndie',47]]],
+   leaderTeam:[['rocco',52],['ratoscar',50],['hangryjayj',48]]},
+];
+
+// Non-mythic, non-sonny keys eligible for council teams
+const COUNCIL_ELIGIBLE=ALL_KEYS.filter(k=>{
+  const d=JAY[k];
+  return !d.mythic&&!d.ultraGod&&k!=='sonny'&&k!=='threerats';
+});
+
+// Council members — generated once per save (randomized)
+const COUNCIL_NAMES=['THE CHAIRMAN','THE VICE','THE TREASURER','THE SECRETARY'];
+const COUNCIL_TITLES=['of 53','the Undefeated','Eternal','Supreme'];
+let _councilTeams=null;
+
+function getCouncilTeams(){
+  if(_councilTeams)return _councilTeams;
+  // Check saved
+  if(G._councilTeams){_councilTeams=G._councilTeams;return _councilTeams;}
+  // Generate randomized teams for this playthrough
+  _councilTeams=COUNCIL_NAMES.map((name,i)=>{
+    const pool=[...COUNCIL_ELIGIBLE].sort(()=>Math.random()-0.5);
+    const size=3;
+    return{name,title:COUNCIL_TITLES[i],jayjamon:pool.slice(0,size).map(k=>({key:k,lv:100}))};
+  });
+  G._councilTeams=_councilTeams;
+  return _councilTeams;
+}
+
+const GYM_LOCS=[
+  {r:3,c:5},{r:18,c:5},
+  {r:4,c:50},{r:4,c:72},
+  {r:24,c:48},{r:33,c:50},
+  {r:27,c:25},
+];
+
+function getGymId(pr,pc){
+  for(let i=0;i<GYM_LOCS.length;i++){
+    const{r,c}=GYM_LOCS[i];
+    if(pr>=r-1&&pr<=r+3&&pc>=c-1&&pc<=c+4) return i;
+  }
+  return -1;
+}
+
+let currentGymId=-1;
+let currentGymPhase=0; // 0=trainers, 1=leader
+let currentGymTrainerIdx=0;
+let councilMemberIdx=0;
+
+function openGym(gymId){
+  stopWalk();
+  currentGymId=gymId;
+  currentGymPhase=0;
+  currentGymTrainerIdx=0;
+  const gym=GYMS[gymId];
+  const beaten=G.gymsBeaten[gymId];
+
+  document.getElementById('gym-title').textContent=gym.emoji+' '+gym.name;
+  document.getElementById('gym-desc').textContent=gym.desc;
+  document.getElementById('gym-badge-row').textContent=beaten?'✓ '+gym.badge+' earned!':'Badge: '+gym.badge+' (not yet earned)';
+
+  // Leader card
+  const card=document.getElementById('gym-leader-card');
+  card.innerHTML=`<div style="font-size:16px">${gym.emoji}</div>
+    <div>
+      <div style="font-size:6px;color:#e8d020">${gym.leader}</div>
+      <div style="font-size:5px;color:#888;margin-top:2px">${gym.leaderTeam.map(([k,lv])=>JAY[k]?.name+' Lv.'+lv).join(' · ')}</div>
+    </div>`;
+
+  const fightBtn=document.getElementById('gym-fight-btn');
+  const sub=document.getElementById('gym-leader-sub');
+  if(beaten){
+    fightBtn.textContent='⚔️ REMATCH LEADER';
+    sub.textContent='already beaten · rematch available';
+    currentGymPhase=1; // skip to leader for rematch
+  } else {
+    fightBtn.textContent='⚔️ CHALLENGE LEADER';
+    sub.textContent='beat trainers first · then the leader';
+  }
+
+  showView('gym');
+}
+
+function startGymBattle(){
+  const gym=GYMS[currentGymId];
+  const beaten=G.gymsBeaten[currentGymId];
+  let teamPairs;
+
+  if(beaten||currentGymPhase===1){
+    // Go straight to leader
+    teamPairs=gym.leaderTeam;
+    G._gymBattleContext={type:'leader',gymId:currentGymId,remaining:[...teamPairs]};
+    launchTrainerBattle(teamPairs,`${gym.leader}!`,true);
+  } else {
+    // Trainer gauntlet
+    const trainerTeam=gym.teams[currentGymTrainerIdx]||gym.teams[0];
+    G._gymBattleContext={type:'trainer',gymId:currentGymId,trainerIdx:currentGymTrainerIdx,remaining:[...trainerTeam]};
+    launchTrainerBattle(trainerTeam,`Trainer ${currentGymTrainerIdx+1} wants to battle!`,false);
+  }
+}
+
+function launchTrainerBattle(teamPairs,msg,isLeader){
+  // Build enemy queue from team
+  const first=teamPairs[0];
+  const key=Array.isArray(first)?first[0]:first.key;
+  const lv=Array.isArray(first)?first[1]:first.lv;
+  G.enemy=newInst(key,lv);
+  G.enemy._trainerBattle=true;
+  G.enemy._teamPairs=[...teamPairs];
+  G.enemy._teamIdx=0;
+  G.enemy._isLeader=isLeader;
+  G.battles++;G.over=false;G.locked=false;G.noFlee=true;
+
+  // Disable run btn
+  setTimeout(()=>{
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=true;runBtn.style.opacity='0.2';}
+  },100);
+
+  showView('battle');
+  const bf=document.getElementById('bf');
+  bf.classList.remove('mythic-bg');bf.style.background='';
+  if(isLeader){
+    bf.style.background='linear-gradient(180deg,#1a1a00 0%,#2a2a00 60%,var(--gb4) 100%)';
+  }
+  refreshBattleUI(false);
+  setBT(msg,false);
+  scheduleAutoSave();
+}
+
+// Hook into endBattle to handle trainer battle chains
+const _origEndBattle=endBattle;
+function endBattle(caught){
+  const ctx=G._gymBattleContext;
+  const councilCtx=G._councilBattleContext;
+
+  // ── GYM trainer chain ──
+  if(ctx&&G.enemy&&G.enemy._trainerBattle&&G.over&&G.wins>0){
+    const pairs=G.enemy._teamPairs;
+    const nextIdx=(G.enemy._teamIdx||0)+1;
+    if(nextIdx<pairs.length){
+      // Send out next trainer pokemon
+      const next=pairs[nextIdx];
+      const key=Array.isArray(next)?next[0]:next.key;
+      const lv=Array.isArray(next)?next[1]:next.lv;
+      G.enemy=newInst(key,lv);
+      G.enemy._trainerBattle=true;
+      G.enemy._teamPairs=pairs;
+      G.enemy._teamIdx=nextIdx;
+      G.enemy._isLeader=pairs[0]&&pairs[0]._isLeader;
+      G.over=false;G.locked=false;
+      refreshBattleUI(false);
+      setBT(`${JAY[key].name}! Go!`,false);
+      return; // don't exit battle
+    }
+    // All trainer pokemon beaten
+    G.noFlee=false;
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
+    G._gymBattleContext=null;
+    if(ctx.type==='leader'){
+      G.gymsBeaten[ctx.gymId]=true;
+      const gym=GYMS[ctx.gymId];
+      toast('🏅 '+gym.badge+' earned!\n'+gym.leader+' defeated!');
+      scheduleAutoSave();
+    } else {
+      currentGymTrainerIdx++;
+      currentGymPhase=(currentGymTrainerIdx>=GYMS[ctx.gymId].teams.length)?1:0;
+    }
+    G.enemy=null;
+    _origEndBattle(caught);
+    return;
+  }
+
+  // ── COUNCIL chain ──
+  if(councilCtx&&G.enemy&&G.enemy._trainerBattle&&G.over&&G.wins>0){
+    const pairs=G.enemy._teamPairs;
+    const nextIdx=(G.enemy._teamIdx||0)+1;
+    if(nextIdx<pairs.length){
+      const next=pairs[nextIdx];
+      G.enemy=newInst(next.key,next.lv);
+      G.enemy._trainerBattle=true;
+      G.enemy._teamPairs=pairs;
+      G.enemy._teamIdx=nextIdx;
+      G.over=false;G.locked=false;
+      refreshBattleUI(false);
+      setBT(`${JAY[next.key].name}! Go!`,false);
+      return;
+    }
+    // Council member beaten
+    G.noFlee=false;
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
+    G.councilBeaten[councilCtx.memberIdx]=true;
+    G._councilBattleContext=null;
+    G.enemy=null;
+    const allDone=G.councilBeaten.every(Boolean);
+    if(allDone){
+      toast('🔥 COUNCIL OF 53 DEFEATED!\nYou are the true Jayjamon Master!');
+    } else {
+      toast('Council member defeated! Keep going!');
+    }
+    scheduleAutoSave();
+    _origEndBattle(caught);
+    // Go back to council view
+    setTimeout(()=>{showView('council');renderCouncil();},100);
+    return;
+  }
+
+  _origEndBattle(caught);
+}
+
+// ── COUNCIL SYSTEM ──
+function openCouncil(){
+  stopWalk();
+  getCouncilTeams(); // ensure generated
+  renderCouncil();
+  showView('council');
+}
+
+function renderCouncil(){
+  const teams=getCouncilTeams();
+  const el=document.getElementById('council-members');el.innerHTML='';
+  teams.forEach((member,i)=>{
+    const beaten=G.councilBeaten[i];
+    const card=document.createElement('div');
+    card.style.cssText=`background:${beaten?'#0a1a00':'#1a0000'};border:2px solid ${beaten?'#336600':'#660000'};border-radius:3px;padding:8px;cursor:${beaten?'default':'pointer'};`;
+    const teamStr=member.jayjamon.map(j=>JAY[j.key]?.name||j.key).join(', ');
+    card.innerHTML=`
+      <div style="font-size:6px;color:${beaten?'#66cc00':'#ff4400'}">${beaten?'✓ ':''} ${member.name} ${member.title}</div>
+      <div style="font-size:5px;color:#888;margin-top:3px">Lv.100: ${teamStr}</div>
+      ${beaten?'<div style="font-size:5px;color:#66cc00;margin-top:2px">DEFEATED</div>':'<div style="font-size:5px;color:#ff8800;margin-top:2px">⚔️ TAP TO BATTLE</div>'}`;
+    if(!beaten){
+      card.onclick=()=>startCouncilBattle(i);
+    }
+    el.appendChild(card);
+  });
+  const beaten=G.councilBeaten.filter(Boolean).length;
+  const hdr=document.querySelector('#view-council .panel-title');
+  if(hdr)hdr.textContent=`🔥 COUNCIL OF 53 (${beaten}/4 defeated)`;
+}
+
+function startCouncilBattle(memberIdx){
+  const member=getCouncilTeams()[memberIdx];
+  councilMemberIdx=memberIdx;
+  G._councilBattleContext={memberIdx};
+  G.noFlee=true;
+  const teamPairs=member.jayjamon;
+  const first=teamPairs[0];
+  G.enemy=newInst(first.key,first.lv);
+  G.enemy._trainerBattle=true;
+  G.enemy._teamPairs=teamPairs;
+  G.enemy._teamIdx=0;
+  G.battles++;G.over=false;G.locked=false;
+
+  setTimeout(()=>{
+    const runBtn=document.getElementById('bmf');
+    if(runBtn){runBtn.disabled=true;runBtn.style.opacity='0.2';}
+  },100);
+
+  showView('battle');
+  document.getElementById('bf').style.background='linear-gradient(180deg,#1a0000 0%,#2a0000 60%,var(--gb4) 100%)';
+  refreshBattleUI(false);
+  setBT(`COUNCIL MEMBER: ${member.name}! Lv.100 ${JAY[first.key]?.name}!`,false);
+}
 
 buildStarters();
 startPlaytimeTracker();
