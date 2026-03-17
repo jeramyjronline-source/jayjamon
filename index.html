@@ -328,7 +328,7 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/30</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/37</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -1493,6 +1493,98 @@ function sLuxembourgian(){return svg([
   // flag pole
   [11,11,'#888',1,4],[11,11,'#cc1122',3,1],
 ])}
+
+// JAYJ DUGONG — jayj's aquatic cousin. Fat, blue-grey, magnificent moustache, tiny flippers
+function sJayjDugong(){return svg([
+  // big round blubbery head
+  [2,0,'#5a7a9a',12,4],[1,1,'#6a8aaa',14,5],[0,2,'#7a9abb',16,5],[0,3,'#6a8aaa',16,4],
+  // small beady eyes
+  [4,3,'#111',2,2],[10,3,'#111',2,2],[5,3,'#1a3a5a',1,1],[11,3,'#1a3a5a',1,1],
+  // MAGNIFICENT MOUSTACHE (just like jayj's girth, but facial)
+  [3,6,'#4a6a8a',10,2],[2,6,'#5a7a9a',12,2],[3,7,'#3a5a7a',10,1],
+  // little dugong snout
+  [6,5,'#88aacc',4,2],[7,5,'#99bbdd',2,1],
+  // smile
+  [5,8,'#3a5a7a',6,1],[6,8,'#4a6a8a',4,1],
+  // MASSIVE ROUND BODY (dugong proportions = jayj proportions)
+  [0,8,'#6a8aaa',16,8],[0,9,'#7a9abb',16,7],[1,10,'#8aaacb',14,6],[2,11,'#9abbd b',12,5],
+  // belly (lighter)
+  [4,10,'#aaccdd',8,5],[5,11,'#bbddee',6,4],
+  // tiny little flippers
+  [0,10,'#5a7a9a',3,4],[13,10,'#5a7a9a',3,4],
+  [0,13,'#4a6a8a',4,2],[12,13,'#4a6a8a',4,2],
+  // dugong tail (fluked)
+  [3,15,'#5a7a9a',4,1],[9,15,'#5a7a9a',4,1],[2,14,'#4a6a8a',3,1],[11,14,'#4a6a8a',3,1],
+  // water droplets
+  [1,5,'#88bbdd',1,1],[14,6,'#88bbdd',1,1],[0,8,'#aaddff',1,1],
+])}
+
+// GIANT HAM LEG — a mythic that is one massive cartoonish ham leg
+// Jayj absolutely destroys it on sight. It is very powerful against everyone else.
+function sGiantHamLeg(){return svg([
+  // THE BONE sticking out top
+  [7,0,'#f0e8d0',2,3],[6,1,'#fff',4,3],[6,0,'#f5f0e0',4,2],
+  [7,2,'#e8e0c8',2,2],[6,3,'#f0e8d0',4,1],
+  // main ham body — enormous, glistening pink
+  [2,3,'#e87070',12,2],[1,4,'#d85858',14,4],[0,5,'#cc4444',16,6],
+  [0,6,'#e86060',16,5],[0,7,'#f07070',16,4],[1,8,'#e86060',14,4],
+  [0,5,'#cc3333',16,2],
+  // ham glaze (shiny spots)
+  [3,5,'#ff9999',3,2],[10,6,'#ff9999',3,2],[5,4,'#ffaaaa',2,1],[9,5,'#ffaaaa',2,1],
+  [7,7,'#ffbbbb',2,2],
+  // darker edges (depth)
+  [0,5,'#aa2222',2,6],[14,5,'#aa2222',2,6],
+  [2,11,'#cc4444',12,2],[3,12,'#bb3333',10,2],
+  // bottom of ham (cut face showing meat layers)
+  [1,13,'#cc4444',14,3],[2,13,'#dd5555',12,2],[3,14,'#ee6666',10,2],
+  [3,14,'#ffaaaa',10,1],
+  // little legs (comically small for a giant ham leg)
+  [5,15,'#e87070',2,1],[9,15,'#e87070',2,1],
+  // bone detail
+  [7,0,'#fff',2,1],[6,2,'#eee',4,1],
+  // mythic golden glow aura
+  [0,4,'#ffcc0044',2,2],[14,4,'#ffcc0044',2,2],
+])}
+
+// JESSE FERGUSON MONTGOMERY KEW — full formal name. Extremely professional.
+// Blazer, name badge, briefcase, still looks like Jesse but very official about it
+function sJFMK(){return svg([
+  // ginger hair — same chaos as jesse but SLIGHTLY more controlled (parted)
+  [3,0,'#c0300a',10,2],[2,1,'#c0300a',12,3],[2,2,'#c0300a',12,2],
+  [4,1,'#dd4422',8,2],[2,1,'#c0300a',3,4],[11,1,'#c0300a',3,4],
+  // face — freckles, same as jesse
+  [4,3,'#f2c09a',8,5],[5,4,'#f2c09a',6,3],
+  [5,3,'#c06050',1,1],[7,3,'#c06050',1,1],[9,3,'#c06050',1,1],[11,3,'#c06050',1,1],
+  // slightly more composed expression (mouth is a firm line not chaos)
+  [6,6,'#a06050',4,1],
+  // eyes — alert, professional
+  [5,4,'#2a5a2a',2,1],[9,4,'#2a5a2a',2,1],
+  [5,5,'#111',1,1],[9,5,'#111',1,1],
+  // neck
+  [7,7,'#f2c09a',2,2],
+  // WHITE SHIRT + DARK BLAZER
+  [6,9,'#ffffff',4,6], // white shirt centre
+  [3,9,'#1a2a3a',3,7],[10,9,'#1a2a3a',3,7], // dark blazer sides
+  [3,9,'#1a2a3a',10,1],[3,15,'#1a2a3a',10,1], // blazer top/bottom
+  // tie — red like jesse's chaos energy
+  [7,9,'#cc1122',2,6],
+  // NAME BADGE on lapel
+  [3,11,'#ffffff',2,2],[3,11,'#333',2,1],[4,12,'#666',1,1],
+  // arms with blazer
+  [1,9,'#1a2a3a',2,6],[13,9,'#1a2a3a',2,6],
+  // BRIEFCASE in one hand
+  [0,13,'#8b6030',4,3],[0,13,'#c8a050',4,1],[0,14,'#a07040',4,1],[2,13,'#c8a050',1,3],
+  [0,15,'#8b6030',4,1],
+  // other hand
+  [12,14,'#f2c09a',3,1],
+  // formal trousers
+  [5,15,'#1a2a3a',3,1],[8,15,'#1a2a3a',3,1],
+])}
+
+function sBoriscat(){return svg([[2,0,'#cc6600',12,4],[1,1,'#dd7700',14,5],[0,2,'#ee8800',16,5],[0,3,'#dd7700',16,4],[2,0,'#cc6600',3,3],[11,0,'#cc6600',3,3],[3,1,'#ffaaaa',1,1],[12,1,'#ffaaaa',1,1],[1,2,'#aa4400',2,2],[13,2,'#aa4400',2,2],[4,3,'#228822',3,2],[9,3,'#228822',3,2],[4,4,'#111',2,1],[9,4,'#111',2,1],[4,3,'#cc6600',3,1],[9,3,'#cc6600',3,1],[7,6,'#ffaaaa',2,1],[6,7,'#aa5500',4,1],[0,5,'#fff',4,1],[12,5,'#fff',4,1],[0,8,'#dd7700',16,8],[0,9,'#ee8800',16,7],[1,10,'#dd7700',14,6],[4,9,'#ffbb44',8,5],[5,10,'#ffcc66',6,4],[3,10,'#aa4400',2,3],[11,10,'#aa4400',2,3],[2,14,'#cc6600',3,2],[11,14,'#cc6600',3,2],[2,15,'#bb5500',4,1],[10,15,'#bb5500',4,1],[12,13,'#cc6600',3,1]])}
+function sJayjLeeSmith(){return svg([[4,0,'#9b7520',8,1],[3,1,'#d4905c',10,5],[2,2,'#d4905c',12,4],[3,2,'#d4905c',2,3],[11,2,'#d4905c',2,3],[6,3,'#333',1,1],[9,3,'#333',1,1],[7,5,'#b07060',2,1],[3,6,'#d4905c',10,2],[2,7,'#c48050',12,2],[0,8,'#1a2a4a',16,8],[1,9,'#1a2a4a',14,7],[2,10,'#2a3a5a',12,5],[0,8,'#2a3a6a',2,8],[6,8,'#2a3a6a',2,8],[12,8,'#2a3a6a',2,8],[0,12,'#2a3a6a',16,1],[13,11,'#fff',3,3],[13,11,'#cccc88',3,2],[14,13,'#888',2,1],[0,10,'#1a2a4a',2,4],[2,15,'#8a3a1a',5,1],[9,15,'#8a3a1a',5,1],[6,6,'#c07060',4,1]])}
+function sEvilLemonTree(){return svg([[6,12,'#5a3010',4,4],[7,13,'#4a2000',2,3],[5,11,'#6a4020',2,5],[9,11,'#6a4020',2,5],[4,13,'#5a3010',2,2],[10,13,'#5a3010',2,2],[2,15,'#4a2000',4,1],[9,15,'#4a2000',5,1],[2,1,'#1a7a1a',12,5],[1,2,'#2a8a2a',14,5],[0,3,'#1a7a1a',16,6],[1,4,'#2a8a2a',14,4],[3,5,'#3a9a3a',10,4],[4,6,'#2a8a2a',8,4],[5,7,'#1a7a1a',6,5],[3,3,'#eeee00',2,2],[11,3,'#eeee00',2,2],[7,1,'#dddd00',2,2],[2,6,'#ffff00',2,2],[12,6,'#ffff00',2,2],[6,8,'#eeee00',2,2],[10,8,'#eeee00',2,2],[6,12,'#ff0000',1,1],[9,12,'#ff0000',1,1],[7,14,'#220000',2,1]])}
+function sBataar(){return svg([[4,0,'#aaccff',8,2],[3,1,'#bbddff',10,2],[5,0,'#ffffff',6,1],[4,3,'#ddeeff',8,5],[5,4,'#eeffff',6,4],[3,3,'#ccddff',2,3],[11,3,'#ccddff',2,3],[5,4,'#2244aa',2,1],[9,4,'#2244aa',2,1],[6,4,'#001133',1,1],[10,4,'#001133',1,1],[6,7,'#aaccff',4,1],[2,8,'#6688cc',12,8],[1,9,'#7799dd',14,7],[0,10,'#6688cc',16,6],[2,8,'#cc9900',12,1],[2,14,'#cc9900',12,1],[2,8,'#cc9900',1,6],[13,8,'#cc9900',1,6],[1,9,'#4a3010',2,7],[2,10,'#ffffaa',1,5],[4,15,'#aaccff',3,1],[9,15,'#aaccff',3,1]])}
 // ═══════════════════════════════════════════
 //  JAYJAMON DATA
 // ═══════════════════════════════════════════
@@ -1506,9 +1598,13 @@ const JAY={
     evolvedFrom:'indie',
     moves:[{name:'GOLD RECORD SMASH',pwr:80},{name:'EMOTIONAL DAMAGE',pwr:72},{name:'PLATINUM HIT',pwr:88},{name:'RICH CHORD',pwr:65}]},
   jayj:{name:'JAYJ',type:'Heavy/Stout',baseHp:145,baseAtk:72,draw:sJayj,mythic:false,
-    desc:'Morbidly obese. Evolves into OMEGA JAYJ at Lv.50. Use the Chilli Drop on him for a different path.',
-    evolvesAt:50,evolvesInto:'omegajayj',itemEvolvesInto:'hangryjayj',itemKey:'chillidrop',
+    desc:'Morbidly obese. Evolves into OMEGA JAYJ at Lv.50. Use the Chilli Drop on him for a different path. DESTROYS Giant Ham Leg.',
+    evolvesAt:50,evolvesInto:'omegajayj',itemEvolvesInto:'hangryjayj',itemKey:'chillidrop',altEvolvesAt:67,altEvolvesInto:'jayjoesmithcat',
+    specialVs:{gianthamleg:'oneshot'},
     moves:[{name:'BODY SLAM',pwr:82},{name:'GRAVITON WHEEZE',pwr:54},{name:'FAT ROLL',pwr:68},{name:'SEISMIC STOMP',pwr:90}]},
+  jayjdugong:{name:'JAYJ DUGONG',type:'Aquatic/Chubby',baseHp:165,baseAtk:78,draw:sJayjDugong,mythic:false,
+    desc:'Jayj distant aquatic cousin. Same energy, different habitat. The moustache is entirely its own idea. Lives in the sea near Birmingham.',
+    moves:[{name:'BLUBBER BASH',pwr:80},{name:'DUGONG DIVE',pwr:72},{name:'MOUSTACHE WAVE',pwr:68},{name:'DEEP FAT SPLASH',pwr:88}]},
   hangryjayj:{name:'HANGRY JAYJ',type:'Spicy/Furious',baseHp:200,baseAtk:115,draw:sHangryJayj,mythic:false,
     desc:'Jayj ate Goog Spice chilli drop. He is now furious, steaming, and somehow even larger. Do not approach.',
     evolvedFrom:'jayj',itemEvo:true,
@@ -1556,6 +1652,12 @@ const JAY={
   elliot:{name:'ELLIOT',type:'Sharp/Intense',baseHp:82,baseAtk:78,draw:sElliot,mythic:false,
     desc:'Extremely focused. Wears neat sharp glasses. Will not break eye contact. Ever.',
     moves:[{name:'DEATH STARE',pwr:72},{name:'INTENSE FOCUS',pwr:60},{name:'LASER GLARE',pwr:80},{name:'ANALYTICAL STRIKE',pwr:66}]},
+  gianthamleg:{name:'GIANT HAM LEG',type:'MYTHIC/Meaty',baseHp:500,baseAtk:260,draw:sGiantHamLeg,mythic:true,spawnOnce:true,
+    desc:'A mythical ham leg. Enormous. Glistening. Nobody knows where it came from or why it is here. JAYJ destroys it instantly on sight. Against everyone else it is devastating.',
+    moves:[{name:'MASSIVE HAM SWING',pwr:240},{name:'BONE SMASH',pwr:220},{name:'GLAZED FURY',pwr:210},{name:'HAM AVALANCHE',pwr:250}]},
+  jfmk:{name:'JESSE FERGUSON MONTGOMERY KEW',type:'Professional/Ginger',baseHp:96,baseAtk:86,draw:sJFMK,mythic:false,
+    desc:'His full legal name. He insists on all four names at all times. Carries a briefcase. Has a name badge. Still absolutely chaotic underneath the blazer.',
+    moves:[{name:'BRIEFCASE SLAM',pwr:88},{name:'FORMAL FURY',pwr:76},{name:'NAME BADGE JAB',pwr:70},{name:'PROFESSIONAL COMBUSTION',pwr:95}]},
   threerats:{name:'3 RATS IN ARLIE COSTUME',type:'SECRET/Forbidden',baseHp:550,baseAtk:320,draw:sThreeRats,mythic:true,spawnOnce:true,hidden:true,noFlee:true,
     desc:'Three rats. Wearing an Arlie costume. They are NOT Arlie. Do not ask why. You cannot run. You WILL regret this.',
     moves:[{name:'DEFINITELY NOT RATS',pwr:280},{name:'TOTALLY NORMAL HEADBUTT',pwr:300},{name:'SUSPICIOUS SKITTER',pwr:260},{name:'ARLIE GLASSES SLAM',pwr:320}]},
@@ -1599,11 +1701,24 @@ const JAY={
   luxembourgian:{name:'LUXEMBOURGIAN ARMY',type:'Military/Tiny',baseHp:155,baseAtk:112,draw:sLuxembourgian,mythic:false,
     desc:'The entire Luxembourgian army, compressed into one Jayjamon-shaped unit. Three soldiers. One flag. Maximum efficiency.',
     moves:[{name:'TINY INVASION',pwr:108},{name:'FLAG BASH',pwr:95},{name:'GRAND DUCHY SLAM',pwr:118},{name:'LUXEMBOURG BLITZ',pwr:102}]},
+  boriscat:{name:'BORIS THE FAT ASS CAT',type:'Feline/Massive',baseHp:175,baseAtk:88,draw:sBoriscat,mythic:false,
+    desc:'An orange tabby of extraordinary girth. Unimpressed by everything. Has knocked something off every surface in Big Jayj house.',
+    moves:[{name:'FAT CAT FLOP',pwr:90},{name:'JUDGEMENT STARE',pwr:78},{name:'LAZY SWIPE',pwr:82},{name:'HEAVYWEIGHT PURR',pwr:68}]},
+  jayjoesmithcat:{name:'JAYJ LEE SMITH',type:'Settled/Powerful',baseHp:250,baseAtk:130,draw:sJayjLeeSmith,mythic:false,
+    desc:'Jayj found the house and never left. Dressing gown, cup of tea, tremendous power. Do not disturb.',
+    evolvedFrom:'jayj',
+    moves:[{name:'DRESSING GOWN SLAM',pwr:120},{name:'TEA SPILL',pwr:105},{name:'COUCH CRUSH',pwr:115},{name:'SETTLED STOMP',pwr:135}]},
+  eviltree:{name:'EVIL LEMON TREE',type:'Arboreal/Sinister',baseHp:160,baseAtk:95,draw:sEvilLemonTree,mythic:false,
+    desc:'A lemon tree that is simply evil. Planted itself in Big Jayj house uninvited. The lemons are wrong.',
+    moves:[{name:'LEMON BARRAGE',pwr:92},{name:'EVIL BRANCH WHIP',pwr:88},{name:'ROOT ENTANGLE',pwr:78},{name:'CURSED CITRUS',pwr:100}]},
+  bataar:{name:'GHOST OF BATAAR',type:'Spirit/Ancient',baseHp:145,baseAtk:118,draw:sBataar,mythic:false,
+    desc:'The spirit of Bataar, ancient Mongolian warrior. Haunts Big Jayj house for reasons nobody has asked about. Carries a ghostly bow.',
+    moves:[{name:'SPIRIT ARROW',pwr:115},{name:'STEPPE CHARGE',pwr:105},{name:'ANCIENT FURY',pwr:125},{name:'GHOST BLADE',pwr:98}]},
   terry:{name:'TERRY',type:'MYTHIC/Lair',baseHp:460,baseAtk:285,draw:sTerry,mythic:true,spawnOnce:true,
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','richieIndie','jayj','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','rocco','alby','nick','elliot','threerats','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
+const ALL_KEYS=['indie','richieIndie','jayj','jayjdugong','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','rocco','alby','nick','elliot','jfmk','threerats','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','gianthamleg','boriscat','jayjoesmithcat','eviltree','bataar','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -1653,6 +1768,14 @@ function levelUpInst(inst,times=1){
 // Check and trigger evolution after level-up
 function checkEvolution(inst){
   const d=JAY[inst.key];
+  if(d.altEvolvesAt&&inst.lv>=d.altEvolvesAt&&d.altEvolvesInto&&JAY[d.altEvolvesInto]){
+    const oldName=d.name,targetKey=d.altEvolvesInto,newD=JAY[targetKey];
+    inst.key=targetKey;
+    const newMax=calcMaxHp(targetKey,inst.lv);
+    inst.maxHp=newMax;inst.hp=Math.min(inst.maxHp,inst.hp+(newMax-inst.maxHp));
+    G.caught.add(targetKey);G.seen.add(targetKey);
+    return{oldName,newName:newD.name};
+  }
   if(!d.evolvesAt||inst.lv<d.evolvesAt)return null;
   const targetKey=d.evolvesInto;
   if(!targetKey||!JAY[targetKey])return null;
@@ -1701,18 +1824,18 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 // ═══════════════════════════════════════════
 //  TILE MAP  (64×36)
 // ═══════════════════════════════════════════
-const TILE={COLS:100,ROWS:60};
+const TILE={COLS:115,ROWS:60};
 const T_GRASS=0,T_TALL=1,T_PATH=2,T_WALL=3,T_WATER=4,
       T_CENTER=5,T_SHOP=6,T_SIGN=7,T_TREE=8,T_FLOWER=9,
       T_LAVA=10,T_ROCK=11,T_SNOW=12,T_ICE=13,T_DARK=14,T_PORTAL=15,
-      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23,T_VOID=24,T_VOID_DOOR=25,T_SECRET=26,T_GYM=27,T_COUNCIL=28;
+      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23,T_VOID=24,T_VOID_DOOR=25,T_SECRET=26,T_GYM=27,T_COUNCIL=28,T_HOUSE=29,T_HOUSE_WALL=30;
 const TILE_COLORS={[T_GRASS]:'#3a7a3a',[T_TALL]:'#1e5c1e',[T_PATH]:'#a08060',
   [T_WALL]:'#8b4513',[T_WATER]:'#3060a8',[T_CENTER]:'#e03050',[T_SHOP]:'#d0a030',
   [T_SIGN]:'#c08040',[T_TREE]:'#226622',[T_FLOWER]:'#4a9a4a',[T_LAVA]:'#cc3300',
   [T_ROCK]:'#886644',[T_SNOW]:'#ddeeff',[T_ICE]:'#aaccee',[T_DARK]:'#110022',
   [T_PORTAL]:'#660099',[T_MOUNTAIN]:'#887766',[T_CITY]:'#667788',
-  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030',[T_VOID]:'#0a000a',[T_VOID_DOOR]:'#330044',[T_SECRET]:'#1a0000',[T_GYM]:'#e0c020',[T_COUNCIL]:'#800000'};
-const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_VOID_DOOR,T_SECRET];
+  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030',[T_VOID]:'#0a000a',[T_VOID_DOOR]:'#330044',[T_SECRET]:'#1a0000',[T_GYM]:'#e0c020',[T_COUNCIL]:'#800000',[T_HOUSE]:'#c8a050',[T_HOUSE_WALL]:'#6a3a1a'};
+const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_VOID_DOOR,T_SECRET,T_HOUSE];
 
 function buildMap(){
   const C=TILE.COLS,R=TILE.ROWS,m=[];
@@ -1722,173 +1845,188 @@ function buildMap(){
   for(let c=0;c<C;c++){m[0][c]=T_WALL;m[R-1][c]=T_WALL;}
   for(let r=0;r<R;r++){m[r][0]=T_WALL;m[r][C-1]=T_WALL;}
 
+  // ── BIG JAYJ'S HOUSE (cols 1-14, rows 1-55) ──
+  for(let c=1;c<15;c++){m[1][c]=T_HOUSE_WALL;m[55][c]=T_HOUSE_WALL;}
+  for(let r=1;r<56;r++){m[r][1]=T_HOUSE_WALL;m[r][14]=T_HOUSE_WALL;}
+  for(let r=2;r<55;r++) for(let c=2;c<14;c++) m[r][c]=T_HOUSE;
+  for(let r=3;r<20;r++) for(let c=3;c<13;c++) m[r][c]=T_TALL;
+  for(let r=21;r<39;r++) for(let c=3;c<13;c++) m[r][c]=T_TALL;
+  for(let r=41;r<54;r++) for(let c=3;c<13;c++) m[r][c]=T_TALL;
+  m[13][14]=T_PATH;m[13][15]=T_PATH;m[14][14]=T_PATH;m[14][15]=T_PATH;
+  m[2][8]=T_SIGN;
+  for(let c=5;c<9;c++) for(let r=8;r<12;r++) m[r][c]=T_WATER;
+  for(let c=2;c<14;c++) m[20][c]=T_HOUSE_WALL;
+  m[20][7]=T_PATH;m[20][8]=T_PATH;
+  for(let c=2;c<14;c++) m[40][c]=T_HOUSE_WALL;
+  m[40][7]=T_PATH;m[40][8]=T_PATH;
+
   // ── TOWN (top-left, cols 1-44, rows 1-26) ──
   // Main horizontal path
   for(let c=1;c<46;c++){m[13][c]=T_PATH;m[14][c]=T_PATH;}
   // Vertical path
-  for(let r=1;r<26;r++){m[r][22]=T_PATH;m[r][23]=T_PATH;}
+  for(let r=1;r<26;r++){m[r][37]=T_PATH;m[r][38]=T_PATH;}
   // Tall grass zones — bigger patches
-  for(let r=2;r<11;r++) for(let c=2;c<17;c++) m[r][c]=T_TALL;
-  for(let r=16;r<25;r++) for(let c=2;c<17;c++) m[r][c]=T_TALL;
-  for(let r=2;r<11;r++) for(let c=26;c<40;c++) m[r][c]=T_TALL;
-  for(let r=16;r<25;r++) for(let c=26;c<40;c++) m[r][c]=T_TALL;
+  for(let r=2;r<11;r++) for(let c=17;c<32;c++) m[r][c]=T_TALL;
+  for(let r=16;r<25;r++) for(let c=17;c<32;c++) m[r][c]=T_TALL;
+  for(let r=2;r<11;r++) for(let c=41;c<55;c++) m[r][c]=T_TALL;
+  for(let r=16;r<25;r++) for(let c=41;c<55;c++) m[r][c]=T_TALL;
   // Flowers
-  [[5,19],[6,20],[7,18],[8,21],[10,20],[11,19],[4,21],[9,18]].forEach(([r,c])=>{if(m[r][c]===T_GRASS)m[r][c]=T_FLOWER;});
+  [[5,34],[6,35],[7,33],[8,36],[10,35],[11,34],[4,36],[9,33]].forEach(([r,c])=>{if(m[r][c]===T_GRASS)m[r][c]=T_FLOWER;});
   // Trees
-  [[2,18],[2,19],[2,20],[3,18],[10,18],[11,18],[2,41],[10,41],[2,24],[11,24]].forEach(([r,c])=>{
+  [[2,33],[2,34],[2,35],[3,33],[10,33],[11,33],[2,56],[10,56],[2,39],[11,39]].forEach(([r,c])=>{
     if(m[r]&&m[r][c]!==undefined&&m[r][c]===T_GRASS)m[r][c]=T_TREE;
   });
   // Water lake
-  for(let c=24;c<29;c++) for(let r=12;r<15;r++) m[r][c]=T_WATER;
+  for(let c=39;c<44;c++) for(let r=12;r<15;r++) m[r][c]=T_WATER;
   // Buildings
-  for(let r=3;r<7;r++) for(let c=33;c<38;c++) m[r][c]=T_CENTER;
-  for(let r=17;r<21;r++) for(let c=33;c<38;c++) m[r][c]=T_SHOP;
+  for(let r=3;r<7;r++) for(let c=48;c<53;c++) m[r][c]=T_CENTER;
+  for(let r=17;r<21;r++) for(let c=48;c<53;c++) m[r][c]=T_SHOP;
   // Signs
-  m[13][20]=T_SIGN; m[13][25]=T_SIGN;
+  m[13][35]=T_SIGN; m[13][40]=T_SIGN;
 
   // ── CONNECTOR PATHS ──
   // East path continues to volcano/mountain
-  for(let c=44;c<C-1;c++){m[13][c]=T_PATH;m[14][c]=T_PATH;}
+  for(let c=59;c<C-1;c++){m[13][c]=T_PATH;m[14][c]=T_PATH;}
   // South path into lair
-  for(let r=26;r<R-1;r++){m[r][22]=T_PATH;m[r][23]=T_PATH;}
+  for(let r=26;r<R-1;r++){m[r][37]=T_PATH;m[r][38]=T_PATH;}
   // North path to mountain (col 75)
-  for(let r=1;r<14;r++){m[r][75]=T_PATH;m[r][76]=T_PATH;}
+  for(let r=1;r<14;r++){m[r][90]=T_PATH;m[r][91]=T_PATH;}
   // South-east to Birmingham
-  for(let r=14;r<32;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
+  for(let r=14;r<32;r++){m[r][83]=T_PATH;m[r][84]=T_PATH;}
 
-  // ── VOLCANO (cols 48-80, rows 2-22) ──
-  for(let r=2;r<22;r++) for(let c=48;c<80;c++){
+  // ── VOLCANO (cols 63-95, rows 2-22) ──
+  for(let r=2;r<22;r++) for(let c=63;c<95;c++){
     if(m[r][c]===T_GRASS){
       const d=Math.abs(r-12)+Math.abs(c-64);
       if(d<6) m[r][c]=T_LAVA; else m[r][c]=T_ROCK;
     }
   }
   // Extra lava ring
-  for(let r=7;r<17;r++) for(let c=58;c<72;c++){
-    if(Math.abs(r-12)+Math.abs(c-65)<7) m[r][c]=T_LAVA; else if(m[r][c]===T_GRASS) m[r][c]=T_ROCK;
+  for(let r=7;r<17;r++) for(let c=73;c<87;c++){
+    if(Math.abs(r-12)+Math.abs(c-80)<7) m[r][c]=T_LAVA; else if(m[r][c]===T_GRASS) m[r][c]=T_ROCK;
   }
   // Volcano borders
-  for(let c=49;c<79;c++){m[1][c]=T_ROCK;m[22][c]=T_ROCK;}
-  for(let r=1;r<23;r++){m[r][48]=T_ROCK;m[r][80]=T_ROCK;}
+  for(let c=64;c<94;c++){m[1][c]=T_ROCK;m[22][c]=T_ROCK;}
+  for(let r=1;r<23;r++){m[r][63]=T_ROCK;m[r][95]=T_ROCK;}
   // Sign at volcano entrance
-  m[13][47]=T_SIGN;
+  m[13][62]=T_SIGN;
 
-  // ── MOUNTAIN (cols 68-98, rows 1-21) ──
-  for(let r=1;r<22;r++) for(let c=70;c<99;c++){
+  // ── MOUNTAIN (cols 83-113, rows 1-21) ──
+  for(let r=1;r<22;r++) for(let c=85;c<114;c++){
     if(m[r][c]===T_GRASS||m[r][c]===T_ICE){
-      m[r][c]=(r<5||(c>88&&r<12))?T_SNOW:(r+c)%4===0?T_ICE:T_MOUNTAIN;
+      m[r][c]=(r<5||(c>103&&r<12))?T_SNOW:(r+c)%4===0?T_ICE:T_MOUNTAIN;
     }
   }
   // Mountain path
-  for(let r=1;r<14;r++){m[r][75]=T_PATH;m[r][76]=T_PATH;}
+  for(let r=1;r<14;r++){m[r][90]=T_PATH;m[r][91]=T_PATH;}
   // Peak ice
-  for(let c=76;c<96;c++) m[1][c]=T_ICE;
-  for(let c=74;c<96;c++) m[2][c]=T_SNOW;
-  for(let c=72;c<96;c++) m[3][c]=T_SNOW;
+  for(let c=91;c<111;c++) m[1][c]=T_ICE;
+  for(let c=89;c<111;c++) m[2][c]=T_SNOW;
+  for(let c=87;c<111;c++) m[3][c]=T_SNOW;
   // ICE RINK — bigger, rows 14-21, cols 76-90
-  for(let r=14;r<22;r++) for(let c=76;c<91;c++) m[r][c]=T_ICE_RINK;
+  for(let r=14;r<22;r++) for(let c=91;c<106;c++) m[r][c]=T_ICE_RINK;
   // Ice rink borders
-  for(let c=75;c<92;c++){m[13][c]=T_ICE;m[22][c]=T_ROCK;}
-  for(let r=14;r<22;r++){m[r][75]=T_ICE;m[r][91]=T_ICE;}
+  for(let c=90;c<107;c++){m[13][c]=T_ICE;m[22][c]=T_ROCK;}
+  for(let r=14;r<22;r++){m[r][90]=T_ICE;m[r][106]=T_ICE;}
   // Connect rink to path
-  m[13][75]=T_PATH;m[14][74]=T_PATH;m[14][75]=T_PATH;
+  m[13][90]=T_PATH;m[14][89]=T_PATH;m[14][90]=T_PATH;
 
   // ── JAYJ'S NOSE (rows 23-27, cols 46-70) ──
-  for(let r=23;r<28;r++) for(let c=46;c<71;c++) m[r][c]=T_NOSE_GRASS;
-  for(let c=46;c<71;c++) m[22][c]=T_PATH;
-  m[22][45]=T_PATH;m[23][45]=T_PATH;
+  for(let r=23;r<28;r++) for(let c=61;c<86;c++) m[r][c]=T_NOSE_GRASS;
+  for(let c=61;c<86;c++) m[22][c]=T_PATH;
+  m[22][60]=T_PATH;m[23][60]=T_PATH;
 
   // ── BIRMINGHAM (cols 46-92, rows 30-50) ──
-  for(let r=30;r<51;r++) for(let c=46;c<93;c++){if(m[r][c]===T_GRASS)m[r][c]=T_CITY;}
+  for(let r=30;r<51;r++) for(let c=61;c<108;c++){if(m[r][c]===T_GRASS)m[r][c]=T_CITY;}
   // City roads
-  for(let c=46;c<93;c++){m[38][c]=T_PATH;m[39][c]=T_PATH;}
-  for(let r=30;r<51;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
+  for(let c=61;c<108;c++){m[38][c]=T_PATH;m[39][c]=T_PATH;}
+  for(let r=30;r<51;r++){m[r][83]=T_PATH;m[r][84]=T_PATH;}
   // Birmingham tall grass — bigger zones
-  for(let r=31;r<38;r++) for(let c=47;c<67;c++) m[r][c]=T_TALL;
-  for(let r=40;r<50;r++) for(let c=70;c<92;c++) m[r][c]=T_TALL;
+  for(let r=31;r<38;r++) for(let c=62;c<82;c++) m[r][c]=T_TALL;
+  for(let r=40;r<50;r++) for(let c=85;c<107;c++) m[r][c]=T_TALL;
   // Buildings (second center + shops)
-  for(let r=31;r<35;r++) for(let c=72;c<78;c++) m[r][c]=T_CENTER;
-  for(let r=44;r<48;r++) for(let c=48;c<54;c++) m[r][c]=T_SHOP;
+  for(let r=31;r<35;r++) for(let c=87;c<93;c++) m[r][c]=T_CENTER;
+  for(let r=44;r<48;r++) for(let c=63;c<69;c++) m[r][c]=T_SHOP;
   // Sign
-  m[38][45]=T_SIGN;
+  m[38][60]=T_SIGN;
 
   // ── MYTHICAL LAIR (cols 1-42, rows 30-52) ──
-  for(let r=30;r<53;r++) for(let c=1;c<43;c++) m[r][c]=T_LAIR_FLOOR;
+  for(let r=30;r<53;r++) for(let c=16;c<58;c++) m[r][c]=T_LAIR_FLOOR;
   // Lair walls (border)
-  for(let c=1;c<43;c++){m[30][c]=T_LAIR_WALL;m[52][c]=T_LAIR_WALL;}
-  for(let r=30;r<53;r++){m[r][1]=T_LAIR_WALL;m[r][43]=T_LAIR_WALL;}
+  for(let c=16;c<58;c++){m[30][c]=T_LAIR_WALL;m[52][c]=T_LAIR_WALL;}
+  for(let r=30;r<53;r++){m[r][16]=T_LAIR_WALL;m[r][58]=T_LAIR_WALL;}
   // Inner dark zones
-  for(let c=4;c<18;c++){m[32][c]=T_DARK;m[50][c]=T_DARK;}
-  for(let c=24;c<40;c++){m[32][c]=T_DARK;m[50][c]=T_DARK;}
+  for(let c=19;c<33;c++){m[32][c]=T_DARK;m[50][c]=T_DARK;}
+  for(let c=39;c<55;c++){m[32][c]=T_DARK;m[50][c]=T_DARK;}
   // Portals (pairs)
-  m[40][8]=T_PORTAL;m[40][9]=T_PORTAL;m[40][10]=T_PORTAL;
-  m[40][32]=T_PORTAL;m[40][33]=T_PORTAL;m[40][34]=T_PORTAL;
+  m[40][23]=T_PORTAL;m[40][24]=T_PORTAL;m[40][25]=T_PORTAL;
+  m[40][47]=T_PORTAL;m[40][48]=T_PORTAL;m[40][49]=T_PORTAL;
   // Rotoscope territory (left half)
-  for(let r=33;r<50;r++) for(let c=2;c<21;c++) if(m[r][c]===T_LAIR_FLOOR) m[r][c]=T_DARK;
+  for(let r=33;r<50;r++) for(let c=17;c<36;c++) if(m[r][c]===T_LAIR_FLOOR) m[r][c]=T_DARK;
   // Terry territory (right half)
-  for(let r=33;r<50;r++) for(let c=22;c<42;c++) if(m[r][c]===T_LAIR_FLOOR) m[r][c]=T_DARK;
+  for(let r=33;r<50;r++) for(let c=37;c<57;c++) if(m[r][c]===T_LAIR_FLOOR) m[r][c]=T_DARK;
   // Main lair path
-  for(let c=1;c<43;c++) m[40][c]=T_LAIR_FLOOR;
-  m[40][21]=T_LAIR_WALL;m[40][22]=T_LAIR_WALL; // rival divider
+  for(let c=16;c<58;c++) m[40][c]=T_LAIR_FLOOR;
+  m[40][36]=T_LAIR_WALL;m[40][37]=T_LAIR_WALL; // rival divider
   // Sign
-  m[30][21]=T_SIGN;m[30][22]=T_SIGN;
+  m[30][36]=T_SIGN;m[30][37]=T_SIGN;
 
   // ── Paths connecting lair ──
-  for(let r=26;r<31;r++){m[r][21]=T_PATH;m[r][22]=T_PATH;m[r][23]=T_PATH;}
-  for(let r=14;r<32;r++){m[r][68]=T_PATH;m[r][69]=T_PATH;}
+  for(let r=26;r<31;r++){m[r][36]=T_PATH;m[r][37]=T_PATH;m[r][38]=T_PATH;}
+  for(let r=14;r<32;r++){m[r][83]=T_PATH;m[r][84]=T_PATH;}
 
   // ── SECRET TILE — single tile behind lair south wall ──
   // Row 53 is just outside the lair's south wall (row 52)
-  m[53][21]=T_SECRET; // The infamous tile — Three Rats spawn here
-  m[53][20]=T_LAIR_FLOOR; // approach path
-  m[53][22]=T_LAIR_FLOOR;
-  m[53][19]=T_LAIR_FLOOR;
-  m[53][23]=T_LAIR_FLOOR;
+  m[53][36]=T_SECRET; // The infamous tile — Three Rats spawn here
+  m[53][35]=T_LAIR_FLOOR; // approach path
+  m[53][37]=T_LAIR_FLOOR;
+  m[53][34]=T_LAIR_FLOOR;
+  m[53][38]=T_LAIR_FLOOR;
 
   // ── VOID DOOR — gate tile left of secret tile, needs megaKey ──
-  m[53][10]=T_VOID_DOOR; // door to void zone
-  for(let c=11;c<20;c++) m[53][c]=T_LAIR_FLOOR; // corridor from lair to door
+  m[53][25]=T_VOID_DOOR; // door to void zone
+  for(let c=26;c<35;c++) m[53][c]=T_LAIR_FLOOR; // corridor from lair to door
 
   // ── THE VOID ZONE — left of spawn, cols 1-9, rows 53-58 ──
-  for(let r=54;r<59;r++) for(let c=1;c<10;c++) m[r][c]=T_VOID;
+  for(let r=54;r<59;r++) for(let c=16;c<25;c++) m[r][c]=T_VOID;
   // Void zone tall encounters
-  for(let r=54;r<59;r++) for(let c=2;c<9;c++) m[r][c]=T_SECRET; // repurpose as void tall
+  for(let r=54;r<59;r++) for(let c=17;c<24;c++) m[r][c]=T_SECRET; // void tall
   // Borders
-  for(let c=1;c<10;c++){m[53][c]=T_VOID_DOOR; m[59][c]=T_WALL;}
-  m[53][1]=T_WALL; m[53][9]=T_WALL;
-  for(let r=54;r<59;r++){m[r][1]=T_WALL; m[r][9]=T_WALL;}
+  for(let c=16;c<25;c++){m[53][c]=T_VOID_DOOR; m[59][c]=T_WALL;}
+  m[53][16]=T_WALL; m[53][24]=T_WALL;
+  for(let r=54;r<59;r++){m[r][16]=T_WALL; m[r][24]=T_WALL;}
   // Replace VOID_DOOR borders with proper VOID
-  for(let c=1;c<10;c++) m[53][c]=T_VOID_DOOR; // entry row all door-coloured
+  for(let c=16;c<25;c++) m[53][c]=T_VOID_DOOR; // entry row all door-coloured
   m[53][10]=T_VOID_DOOR; // actual gate tile
   // Walls around secret tile area to make it feel hidden
-  for(let c=24;c<44;c++) m[53][c]=T_WALL; // seal east of secret
-  for(let c=1;c<20;c++) m[54][c]=T_VOID; // void starts at 54
+  for(let c=39;c<59;c++) m[53][c]=T_WALL; // seal east of secret
+  for(let c=16;c<35;c++) m[54][c]=T_VOID; // void starts at 54
 
   // ── GYMS (7 gyms across the map, each 3x3 yellow tiles) ──
   const GYMLOCS=[
-    [3,5],[18,5],     // Town gyms
-    [4,50],[4,72],    // Volcano + Mountain
-    [24,48],[33,50],  // Nose + Birmingham
-    [27,25],          // Shadow gym (near lair entrance)
+    [3,20],[18,20],    // Town gyms
+    [4,65],[4,87],    // Volcano + Mountain
+    [24,63],[33,65],  // Nose + Birmingham
+    [27,40],          // Shadow gym
   ];
   GYMLOCS.forEach(([gr,gc])=>{
     for(let dr=0;dr<3;dr++) for(let dc=0;dc<3;dc++) m[gr+dr][gc+dc]=T_GYM;
   });
 
   // ── COUNCIL OF 53 LAIR — rows 30-38, cols 44-46 (between brum & lair) ──
-  for(let r=30;r<39;r++) for(let c=44;c<47;c++) m[r][c]=T_COUNCIL;
+  for(let r=30;r<39;r++) for(let c=59;c<62;c++) m[r][c]=T_COUNCIL;
   // Council door tile (walkable, gated) — player steps on col 44, rows 33-34
-  m[33][44]=T_COUNCIL;m[34][44]=T_COUNCIL; // entry tiles (detected in walk loop)
+  m[33][59]=T_COUNCIL;m[34][59]=T_COUNCIL; // entry tiles (detected in walk loop)
   // Connect council to path
-  m[33][43]=T_PATH;m[34][43]=T_PATH;
+  m[33][58]=T_PATH;m[34][58]=T_PATH;
 
   // ── THE FIELDS (cols 92-98, rows 1-52) ──
-  for(let r=1;r<R-1;r++){m[r][94]=T_FIELD;m[r][95]=T_FIELD;m[r][96]=T_FIELD;m[r][97]=T_FIELD;m[r][98]=T_WALL;}
-  for(let r=3;r<50;r++){m[r][94]=T_FIELD_TALL;m[r][95]=T_FIELD_TALL;m[r][96]=T_FIELD_TALL;m[r][97]=T_FIELD_TALL;}
+  for(let r=1;r<R-1;r++){m[r][109]=T_FIELD;m[r][110]=T_FIELD;m[r][111]=T_FIELD;m[r][112]=T_FIELD;m[r][113]=T_WALL;}
+  for(let r=3;r<50;r++){m[r][109]=T_FIELD_TALL;m[r][110]=T_FIELD_TALL;m[r][111]=T_FIELD_TALL;m[r][112]=T_FIELD_TALL;}
   // Connect fields to main east path
-  m[13][92]=T_PATH;m[13][93]=T_PATH;m[13][94]=T_PATH;
-  m[14][92]=T_PATH;m[14][93]=T_PATH;m[14][94]=T_PATH;
-  for(let c=92;c<94;c++){m[0][c]=T_WALL;m[R-1][c]=T_WALL;}
+  m[13][107]=T_PATH;m[13][108]=T_PATH;m[13][109]=T_PATH;
+  m[14][107]=T_PATH;m[14][108]=T_PATH;m[14][109]=T_PATH;
+  for(let c=107;c<109;c++){m[0][c]=T_WALL;m[R-1][c]=T_WALL;}
 
   return m;
 }
@@ -1896,10 +2034,10 @@ const WORLD_MAP=buildMap();
 
 const GRASS_ZONES=[
   // TOWN grass zones (4 quadrants, bigger)
-  {r1:2,c1:2,r2:10,c2:16,  pool:['indie','arlie','alby','nick']},
+  {r1:2,c1:2,r2:10,c2:16,  pool:['indie','arlie','alby','nick','jfmk']},
   {r1:16,c1:2,r2:24,c2:16, pool:['jesse','rohan','rocco','elliot']},
   {r1:2,c1:26,r2:10,c2:39, pool:['oscar','alby','nick']},
-  {r1:16,c1:26,r2:24,c2:39,pool:['jayj','rocco','arlie','elliot']},
+  {r1:16,c1:26,r2:24,c2:39,pool:['jayj','jayjdugong','rocco','arlie','elliot']},
   // VOLCANO — goog spice lurks in the lava
   {r1:2,c1:48,r2:21,c2:79, pool:['googspice'], mythicKey:'googspice'},
   // ICE RINK — must come BEFORE mountain zone (tighter bounds match first)
@@ -1907,10 +2045,11 @@ const GRASS_ZONES=[
   // MOUNTAIN zone (main) — Freaky Pratiky mythic encounter
   {r1:1,c1:70,r2:13,c2:98,  pool:['freakypratiky'], mythicKey:'freakypratiky'},
   // JAYJ'S NOSE — level 20 zone
-  {r1:23,c1:46,r2:27,c2:70, pool:['jayj','indie','nick','elliot','alby'], lv:20},
+  {r1:23,c1:46,r2:27,c2:70, pool:['jayj','jayjdugong','indie','nick','elliot','alby'], lv:20},
   // BIRMINGHAM zones
   {r1:31,c1:47,r2:37,c2:66, pool:['omegajayj'],     mythicKey:'omegajayj'},
   {r1:40,c1:70,r2:49,c2:91, pool:['jayj','oscar','omegajayj'], mythicKey:'omegajayj'},
+  {r1:31,c1:70,r2:37,c2:91, pool:['gianthamleg'], mythicKey:'gianthamleg'},
   // MYTHICAL LAIR (split by rival)
   {r1:33,c1:2,r2:49,c2:20,  pool:['rotoscoperocco'], mythicKey:'rotoscoperocco'},
   {r1:33,c1:23,r2:49,c2:41, pool:['terry'],           mythicKey:'terry'},
@@ -1919,22 +2058,26 @@ const GRASS_ZONES=[
     midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
   // THE VOID ZONE — behind lair, gated by megaKey
   {r1:54,c1:2,r2:58,c2:8, pool:['bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'], voidZone:true, lv:35},
+  {r1:3,c1:3,r2:19,c2:13, pool:['boriscat','eviltree','bataar','jayj'], lv:25, bighouse:true},
+  {r1:21,c1:3,r2:39,c2:13, pool:['boriscat','eviltree','bataar'], lv:30, bighouse:true},
+  {r1:41,c1:3,r2:54,c2:13, pool:['jayj','jayjoesmithcat','boriscat'], lv:40, bighouse:true},
 ];
 const REGION_BOUNDS=[
-  {name:'ICE RINK',  r1:13,c1:74,r2:22,c2:92},
-  {name:'MOUNTAIN',  r1:1,c1:69,r2:22,c2:99},
-  {name:'VOLCANO',   r1:1,c1:47,r2:23,c2:81},
-  {name:'JAYJ NOSE', r1:22,c1:44,r2:28,c2:72},
-  {name:'BIRMINGHAM',r1:29,c1:44,r2:52,c2:94},
-  {name:'MYTH.LAIR', r1:29,c1:1,r2:53,c2:44},
-  {name:'FIELDS',    r1:1,c1:92,r2:53,c2:99},
-  {name:'TOWN',      r1:1,c1:1,r2:28,c2:45},
-  {name:'THE VOID',   r1:53,c1:1,r2:59,c2:10},
+  {name:'BIG JAYJ HOUSE',r1:1,c1:1,r2:56,c2:14},
+  {name:'ICE RINK',  r1:13,c1:89,r2:22,c2:107},
+  {name:'MOUNTAIN',  r1:1,c1:84,r2:22,c2:114},
+  {name:'VOLCANO',   r1:1,c1:62,r2:23,c2:96},
+  {name:'JAYJ NOSE', r1:22,c1:59,r2:28,c2:87},
+  {name:'BIRMINGHAM',r1:29,c1:59,r2:52,c2:109},
+  {name:'MYTH.LAIR', r1:29,c1:15,r2:53,c2:59},
+  {name:'FIELDS',    r1:1,c1:107,r2:53,c2:114},
+  {name:'TOWN',      r1:1,c1:15,r2:28,c2:60},
+  {name:'THE VOID',   r1:53,c1:15,r2:59,c2:25},
 ];
 function getRegion(r,c){for(const b of REGION_BOUNDS)if(r>=b.r1&&r<=b.r2&&c>=b.c1&&c<=b.c2)return b.name;return'WORLD';}
 function getTileZone(r,c){for(const z of GRASS_ZONES)if(r>=z.r1&&r<=z.r2&&c>=z.c1&&c<=z.c2)return z;return null;}
 
-const PLAYER={col:8,row:13,face:'D',moving:{U:false,D:false,L:false,R:false},stepCount:0,grassSteps:0,camCol:0,camRow:0};
+const PLAYER={col:23,row:13,face:'D',moving:{U:false,D:false,L:false,R:false},stepCount:0,grassSteps:0,camCol:0,camRow:0};
 let lastRegion='TOWN';
 const RENDER_TILE=24,CANVAS_W=480,CANVAS_H=240;
 const VIEW_COLS=Math.floor(CANVAS_W/RENDER_TILE),VIEW_ROWS=Math.floor(CANVAS_H/RENDER_TILE);
@@ -2109,13 +2252,13 @@ function startWalk(){
         const reg=getRegion(nr,nc);
         if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
         (document.getElementById('hud-region')||{}).textContent=reg;
-        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID];
+        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_HOUSE];
         if(tallTypes.includes(t)){
           PLAYER.grassSteps++;
           if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
         } else {PLAYER.grassSteps=0;}
         // VOID DOOR gate check
-        if(t===T_VOID_DOOR&&nc===10&&nr===53){
+        if(t===T_VOID_DOOR&&nc===25&&nr===53){
           if(!G.megaKey){
             toast('The Void is sealed...\nDefeat Three Rats in Arlie Costume!');
             PLAYER.row=PLAYER.prevRow||nr;PLAYER.col=PLAYER.prevCol||nc;
@@ -2163,7 +2306,7 @@ function stopWalk(){
 
 function showRegionBanner(name){
   const b=document.getElementById('region-banner');
-  const labels={'GYM 1':'🏋️ STARTER GYM','GYM 2':'🏋️ STREET GYM','GYM 3':'🌋 BLAZE GYM','GYM 4':'⛰️ PEAK GYM','GYM 5':'💪 BULK GYM','GYM 6':'🏙️ CITY GYM','GYM 7':'💀 SHADOW GYM','COUNCIL':'🔥 COUNCIL OF 53','TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE','THE VOID':'🕳️ THE VOID'};
+  const labels={'BIG JAYJ HOUSE':"🏠 BIG JAYJ'S HOUSE",'GYM 1':'🏋️ STARTER GYM','GYM 2':'🏋️ STREET GYM','GYM 3':'🌋 BLAZE GYM','GYM 4':'⛰️ PEAK GYM','GYM 5':'💪 BULK GYM','GYM 6':'🏙️ CITY GYM','GYM 7':'💀 SHADOW GYM','COUNCIL':'🔥 COUNCIL OF 53','TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE','THE VOID':'🕳️ THE VOID'};
   b.textContent=labels[name]||name;b.style.display='block';
   setTimeout(()=>b.style.display='none',2500);
 }
@@ -2222,6 +2365,16 @@ function triggerEncounter(r,c){
     return;
   }
 
+  if(zone.bighouse){
+    const key=zone.pool[Math.floor(Math.random()*zone.pool.length)];
+    G.seen.add(key);
+    const lv=(zone.lv||25)+Math.floor(Math.random()*8);
+    G.enemy=newInst(key,lv);
+    G.battles++;G.over=false;G.locked=false;
+    showView('battle');refreshBattleUI(false);
+    setBT(`${JAY[key].name}!`,false);
+    scheduleAutoSave();return;
+  }
   // VOID ZONE encounters — lv35 zone jayjamon
   if(zone.voidZone){
     if(!G.megaKey){startWalk();return;}
@@ -3548,7 +3701,7 @@ function devExec(cmd){
           const reg=getRegion(nr,nc);
           if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
           (document.getElementById('hud-region')||{}).textContent=reg;
-          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID];
+          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_HOUSE];
           if(tallTypes.includes(t)&&!window._noEncounters){
             PLAYER.grassSteps++;
             if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
