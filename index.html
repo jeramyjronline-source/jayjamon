@@ -12,33 +12,77 @@
   --gb0:#0f380f;--gb1:#306230;--gb2:#8bac0f;--gb3:#9bbc0f;--gb4:#e0f8d0;
   --scr:#c4cfa1;--red:#e63946;--yel:#f4d03f;--blu:#4a90d9;
   --mythic:#ff6b00;--mythic2:#ff9a3c;
+  --shadow:rgba(0,0,0,.55);
+  --glow:0 0 12px rgba(139,172,15,.35);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:#111;display:flex;flex-direction:column;align-items:stretch;
+body{
+  background:#0a0e0a;
+  display:flex;flex-direction:column;align-items:stretch;
   height:100dvh;overflow:hidden;padding:0;font-family:'Press Start 2P',monospace;
-  background-image:radial-gradient(ellipse at 50% 0%,rgba(139,172,15,.1) 0%,transparent 60%);}
-h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--gb0);
-  letter-spacing:3px;text-align:center;margin:2px 0;line-height:1.2;}
-.subtitle{font-size:5px;color:var(--gb1);letter-spacing:1px;text-align:center;margin-bottom:2px;}
+  background-image:
+    radial-gradient(ellipse at 50% 0%,rgba(139,172,15,.18) 0%,transparent 55%),
+    radial-gradient(ellipse at 0% 100%,rgba(15,56,15,.25) 0%,transparent 50%);
+}
+h1{
+  font-size:clamp(10px,3vw,18px);color:var(--gb2);
+  text-shadow:0 0 12px rgba(139,172,15,.6),2px 2px 0 var(--gb0);
+  letter-spacing:4px;text-align:center;margin:3px 0;line-height:1.2;
+}
+.subtitle{font-size:5px;color:var(--gb1);letter-spacing:2px;text-align:center;margin-bottom:3px;}
 
 /* ACCOUNT BAR */
-#acct-bar{display:flex;align-items:center;gap:4px;margin-bottom:2px;flex-wrap:wrap;justify-content:center;padding:0 4px;}
-#acct-bar button{background:var(--gb1);border:1px solid var(--gb0);color:var(--gb4);
-  font-family:'Press Start 2P',monospace;font-size:4px;padding:3px 6px;cursor:pointer;border-radius:2px;}
-#acct-bar button:hover{background:var(--gb2);color:var(--gb0);}
-#acct-name{font-size:5px;color:var(--gb2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#save-indicator{font-size:5px;color:var(--gb1);}
+#acct-bar{display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap;justify-content:center;padding:0 6px;}
+#acct-bar button{
+  background:linear-gradient(135deg,var(--gb1),#1e4a1e);
+  border:1px solid var(--gb2);color:var(--gb4);
+  font-family:'Press Start 2P',monospace;font-size:4px;padding:4px 8px;
+  cursor:pointer;border-radius:3px;
+  box-shadow:0 2px 4px var(--shadow),inset 0 1px 0 rgba(139,172,15,.2);
+  transition:all .12s;
+}
+#acct-bar button:hover{background:linear-gradient(135deg,var(--gb2),var(--gb3));color:var(--gb0);transform:translateY(-1px);}
+#acct-name{font-size:5px;color:var(--gb2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 0 6px rgba(139,172,15,.4);}
+#save-indicator{font-size:4px;color:var(--gb1);}
 
 /* SHELL */
-#shell{flex:1;min-height:0;background:var(--gb0);border:0;border-top:2px solid var(--gb1);
-  border-radius:0;padding:2px;display:flex;flex-direction:column;
-  box-shadow:0 0 30px rgba(139,172,15,.2),inset 0 0 16px rgba(0,0,0,.4);}
-@media(min-width:520px){#shell{max-width:520px;border:3px solid var(--gb1);border-radius:6px;margin:4px auto;align-self:center;width:100%;}}
-#screen{background:var(--scr);border:1px solid var(--gb1);border-radius:2px;
-  position:relative;overflow:hidden;flex:1;min-height:0;display:flex;flex-direction:column;}
-#screen::after{content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(15,56,15,.04) 3px,rgba(15,56,15,.04) 4px);
-  pointer-events:none;z-index:200;}
+#shell{
+  flex:1;min-height:0;
+  background:linear-gradient(180deg,#122012 0%,var(--gb0) 8%,#0a1a0a 100%);
+  border:0;border-top:2px solid var(--gb1);
+  border-radius:0;padding:3px;display:flex;flex-direction:column;
+  box-shadow:0 0 40px rgba(139,172,15,.25),inset 0 0 20px rgba(0,0,0,.5);
+}
+@media(min-width:520px){
+  #shell{
+    max-width:520px;
+    border:3px solid var(--gb1);border-radius:8px;
+    margin:4px auto;align-self:center;width:100%;
+    box-shadow:0 0 60px rgba(139,172,15,.3),0 8px 32px rgba(0,0,0,.7),inset 0 0 20px rgba(0,0,0,.4);
+  }
+}
+#screen{
+  background:var(--scr);
+  border:2px solid var(--gb0);
+  border-radius:4px;
+  position:relative;overflow:hidden;
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  box-shadow:inset 0 0 8px rgba(0,0,0,.3);
+}
+#screen::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,
+    rgba(15,56,15,.05) 2px,rgba(15,56,15,.05) 3px
+  );
+  pointer-events:none;z-index:200;
+}
+/* Subtle screen vignette */
+#screen::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.18) 100%);
+  pointer-events:none;z-index:201;
+}
 .view{display:none;width:100%;flex:1;min-height:0;flex-direction:column;}
 .view.active{display:flex;}
 
@@ -99,11 +143,18 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
 /* WORLD */
 #view-world{padding:0;position:relative;line-height:0;flex:1;min-height:0;overflow:hidden;}
 #world-canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:none;object-fit:contain;}
-#world-hud{position:absolute;top:6px;left:6px;right:6px;display:flex;justify-content:space-between;
-  pointer-events:none;z-index:10;flex-wrap:wrap;gap:3px;}
-.hud-box{background:rgba(15,56,15,.9);border:2px solid var(--gb2);padding:3px 6px;border-radius:2px;}
-.hud-label{font-size:4px;color:var(--gb2);}
-.hud-val{font-size:7px;color:var(--gb4);margin-top:1px;}
+#world-hud{
+  position:absolute;top:5px;left:5px;right:5px;display:flex;justify-content:space-between;
+  pointer-events:none;z-index:10;flex-wrap:wrap;gap:3px;
+}
+.hud-box{
+  background:linear-gradient(135deg,rgba(8,28,8,.95),rgba(15,45,15,.9));
+  border:1px solid var(--gb2);border-top:1px solid var(--gb3);
+  padding:3px 7px;border-radius:3px;
+  box-shadow:0 2px 6px rgba(0,0,0,.6),inset 0 1px 0 rgba(139,172,15,.15);
+}
+.hud-label{font-size:4px;color:var(--gb2);letter-spacing:1px;}
+.hud-val{font-size:7px;color:var(--gb4);margin-top:1px;text-shadow:0 0 6px rgba(139,172,15,.4);}
 #region-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   background:rgba(15,56,15,.95);border:2px solid var(--mythic2);padding:8px 16px;
   font-size:8px;color:var(--mythic2);text-align:center;z-index:30;display:none;
@@ -123,62 +174,175 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
   transform:translate(-50%,-50%);pointer-events:none;}
 
 /* DPAD */
-#dpad{display:grid;grid-template-columns:repeat(3,36px);grid-template-rows:repeat(3,36px);
-  gap:2px;justify-content:center;padding:6px;background:var(--gb0);}
-.dp-btn{background:var(--gb1);border:none;border-radius:2px;color:var(--gb4);font-size:12px;
+#dpad{
+  display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px);
+  gap:3px;justify-content:center;padding:7px;
+  background:linear-gradient(180deg,#0a1a0a,var(--gb0));
+}
+.dp-btn{
+  background:linear-gradient(135deg,var(--gb1),#1e4a1e);
+  border:none;border-radius:4px;color:var(--gb4);font-size:13px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
-  user-select:none;-webkit-user-select:none;transition:background .1s;touch-action:none;}
-.dp-btn:active{background:var(--gb2);}
-.dp-mid{background:var(--gb0);cursor:default;}
-.dp-act-row{display:flex;justify-content:center;gap:8px;padding:4px 6px 6px;background:var(--gb0);}
-.dp-act{background:var(--gb1);border:none;border-radius:50%;width:34px;height:34px;
-  color:var(--gb4);font-family:'Press Start 2P',monospace;font-size:6px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:background .1s;touch-action:none;}
-.dp-act:active{background:var(--gb2);}
+  user-select:none;-webkit-user-select:none;
+  box-shadow:0 3px 0 #0a200a,0 4px 5px rgba(0,0,0,.5);
+  transition:all .08s;touch-action:none;
+}
+.dp-btn:active{background:var(--gb2);transform:translateY(2px);box-shadow:0 1px 0 #0a200a;}
+.dp-mid{background:rgba(15,56,15,.3);cursor:default;box-shadow:none;}
+.dp-act-row{
+  display:flex;justify-content:center;gap:10px;
+  padding:4px 6px 8px;
+  background:linear-gradient(180deg,var(--gb0),#0a1a0a);
+}
+.dp-act{
+  background:linear-gradient(135deg,var(--gb1),#1e4a1e);
+  border:none;border-radius:50%;width:36px;height:36px;
+  color:var(--gb4);font-family:'Press Start 2P',monospace;font-size:5px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 0 #0a200a,0 4px 6px rgba(0,0,0,.5);
+  transition:all .08s;touch-action:none;
+}
+.dp-act:active{background:var(--gb2);transform:translateY(2px);box-shadow:0 1px 0 #0a200a;}
 
 /* BATTLE */
 #view-battle{flex-direction:column;}
-#bf{flex:1;min-height:120px;max-height:200px;background:var(--gb4);border-bottom:3px solid var(--gb1);position:relative;overflow:hidden;}
-#bf::before{content:'';position:absolute;bottom:48px;left:0;right:0;height:3px;background:var(--gb1);}
-#bf::after{content:'';position:absolute;bottom:16px;left:0;right:0;height:2px;background:var(--gb2);}
-#bf.mythic-bg{background:linear-gradient(180deg,#1a0030 0%,#2d0050 60%,var(--gb4) 100%);}
-#bf.mythic-bg::before{background:var(--mythic);}
-.ep{position:absolute;top:8px;right:12px;display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
-.pp{position:absolute;bottom:16px;left:12px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
-.bsw{width:68px;height:68px;position:relative;}
-.bfi{background:rgba(15,56,15,.9);border:2px solid var(--gb0);padding:4px 7px;min-width:125px;border-radius:2px;}
-.bfi.mythic-info{border-color:var(--mythic2);background:rgba(30,0,60,.95);}
-.bfn{font-size:6px;color:var(--gb4);margin-bottom:2px;}
-.bfn.mythic-name{color:var(--mythic2);text-shadow:0 0 6px var(--mythic);}
+#bf{
+  flex:1;min-height:130px;max-height:210px;
+  background:linear-gradient(180deg,#b8d480 0%,#c8e090 35%,#a0c060 65%,#88aa40 100%);
+  border-bottom:3px solid var(--gb0);
+  position:relative;overflow:hidden;
+}
+/* Ground line */
+#bf::before{
+  content:'';position:absolute;bottom:52px;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--gb0),var(--gb1),var(--gb0));
+  box-shadow:0 2px 0 rgba(0,0,0,.3);
+}
+/* Player platform */
+#bf::after{
+  content:'';position:absolute;bottom:18px;left:8px;width:72px;height:8px;
+  background:linear-gradient(90deg,var(--gb1),var(--gb2),var(--gb1));
+  border-radius:50%;opacity:.7;
+}
+/* Sky gradient overlay */
+#bf-sky{
+  position:absolute;top:0;left:0;right:0;height:45%;
+  background:linear-gradient(180deg,#d0e870 0%,transparent 100%);
+  pointer-events:none;
+}
+#bf.mythic-bg{
+  background:linear-gradient(180deg,#0a0018 0%,#1a0035 40%,#2d0055 75%,#1a0028 100%);
+}
+#bf.mythic-bg::before{background:linear-gradient(90deg,var(--mythic),var(--mythic2),var(--mythic));}
+#bf.mythic-bg #bf-sky{background:linear-gradient(180deg,rgba(80,0,120,.6) 0%,transparent 100%);}
+.ep{position:absolute;top:8px;right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+.pp{position:absolute;bottom:18px;left:10px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
+.bsw{width:72px;height:72px;position:relative;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));}
+.bfi{
+  background:linear-gradient(135deg,rgba(15,40,15,.97),rgba(8,24,8,.97));
+  border:2px solid var(--gb1);
+  border-top:1px solid var(--gb2);
+  padding:5px 9px;min-width:130px;border-radius:4px;
+  box-shadow:0 3px 8px var(--shadow),inset 0 1px 0 rgba(139,172,15,.15);
+}
+.bfi.mythic-info{
+  border-color:var(--mythic);border-top-color:var(--mythic2);
+  background:linear-gradient(135deg,rgba(30,0,55,.97),rgba(15,0,30,.97));
+  box-shadow:0 3px 10px rgba(255,107,0,.3),inset 0 1px 0 rgba(255,154,60,.15);
+}
+.bfn{font-size:7px;color:var(--gb3);margin-bottom:3px;text-shadow:0 1px 0 rgba(0,0,0,.5);}
+.bfn.mythic-name{color:var(--mythic2);text-shadow:0 0 8px var(--mythic),0 1px 0 rgba(0,0,0,.5);}
 .bflv{font-size:5px;color:var(--gb2);}
-.bfhl{font-size:5px;color:var(--gb2);margin:2px 0;}
-.bfht{height:5px;background:var(--gb0);border:1px solid var(--gb2);border-radius:1px;overflow:hidden;}
-.bfhf{height:100%;background:var(--gb2);transition:width .4s ease;}
-.bfhf.mid{background:var(--yel);}.bfhf.low{background:var(--red);}.bfhf.mythic-bar{background:var(--mythic2);}
-.bfhn{font-size:5px;color:var(--gb4);margin-top:2px;}
-#btb{background:var(--gb4);border-bottom:2px solid var(--gb1);padding:8px 10px;
-  min-height:52px;font-size:7px;color:var(--gb0);line-height:1.9;}
-#btb.mythic-text{background:#1a0030;color:var(--mythic2);border-bottom-color:var(--mythic);}
-#bmen{background:var(--scr);display:grid;grid-template-columns:1fr 1fr;}
-.bmb{background:none;border:none;border-right:1px solid var(--gb1);border-bottom:1px solid var(--gb1);
+.bfhl{font-size:5px;color:var(--gb2);margin:3px 0 1px;}
+.bfht{
+  height:6px;
+  background:rgba(0,0,0,.5);
+  border:1px solid rgba(139,172,15,.3);
+  border-radius:3px;overflow:hidden;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.5);
+}
+.bfhf{height:100%;background:linear-gradient(90deg,var(--gb1),var(--gb2));transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bfhf.mid{background:linear-gradient(90deg,#b8850a,var(--yel));}
+.bfhf.low{background:linear-gradient(90deg,#aa2020,var(--red));}
+.bfhf.mythic-bar{background:linear-gradient(90deg,var(--mythic),var(--mythic2));}
+.bfhn{font-size:5px;color:var(--gb3);margin-top:2px;}
+/* Battle text box */
+#btb{
+  background:linear-gradient(180deg,#d8e8b0,var(--gb4));
+  border-bottom:3px solid var(--gb0);
+  border-top:1px solid var(--gb3);
+  padding:9px 12px;
+  min-height:54px;font-size:7px;color:var(--gb0);line-height:2;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.15);
+}
+#btb.mythic-text{
+  background:linear-gradient(180deg,#140028,#1a0030);
+  color:var(--mythic2);border-bottom-color:var(--mythic);
+  border-top-color:rgba(255,107,0,.3);
+}
+/* Battle menu */
+#bmen{
+  background:linear-gradient(180deg,var(--gb4),#ccd880);
+  display:grid;grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--gb3);
+}
+.bmb{
+  background:transparent;border:none;
+  border-right:1px solid rgba(15,56,15,.3);
+  border-bottom:1px solid rgba(15,56,15,.3);
   font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb0);
-  padding:8px 7px;cursor:pointer;text-align:left;transition:background .1s;line-height:1.7;}
-.bmb:hover:not(:disabled){background:var(--gb2);color:var(--gb4);}
-.bmb:disabled{opacity:.35;cursor:not-allowed;}
-.bmb .bs{font-size:5px;opacity:.65;display:block;margin-top:1px;}
+  padding:9px 8px;cursor:pointer;text-align:left;
+  transition:background .1s,color .1s;line-height:1.8;
+}
+.bmb:hover:not(:disabled){background:rgba(139,172,15,.4);color:var(--gb0);}
+.bmb:active:not(:disabled){background:var(--gb2);}
+.bmb:disabled{opacity:.3;cursor:not-allowed;}
+.bmb .bs{font-size:4px;opacity:.6;display:block;margin-top:2px;}
 .bcatch{color:var(--gb1);}.bflee{color:var(--red);border-right:none;}.bitem{color:var(--blu);}
+.bmt{display:block;font-size:5px;font-family:'Press Start 2P',monospace;margin-top:1px;font-weight:bold;}
+.bmt.se{color:#ff4400;}
+.bmt.nve{color:#4488cc;}
+.bmt.ni{color:#888;}
+/* Battle tab buttons */
+#btab-fight,#btab-action{
+  font-family:'Press Start 2P',monospace;font-size:5px;
+  border:none;border-top:2px solid var(--gb0);
+  padding:5px;cursor:pointer;transition:background .1s,color .1s;
+}
 
 /* PANELS */
-#view-menu,#view-center,#view-shop,#view-mp,#view-bag,#view-select,#view-dex{padding:10px;gap:7px;overflow-y:auto;}
-.panel-title{font-size:7px;color:var(--gb0);text-align:center;padding-bottom:6px;border-bottom:2px solid var(--gb1);margin-bottom:4px;}
-.panel-title.mythic-title{color:var(--mythic2);border-bottom-color:var(--mythic);}
-.menu-btn{background:var(--gb2);border:2px solid var(--gb0);border-radius:2px;padding:9px 12px;cursor:pointer;
-  font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gb0);transition:background .1s,transform .1s;text-align:left;}
-.menu-btn:hover{background:var(--gb3);transform:translateX(3px);}
-.menu-btn .ms{font-size:5px;opacity:.65;display:block;margin-top:2px;}
-.back-btn{background:var(--gb1);border:2px solid var(--gb0);border-radius:2px;padding:6px 12px;cursor:pointer;
-  font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb4);transition:background .1s;margin-top:auto;}
-.back-btn:hover{background:var(--gb2);color:var(--gb0);}
+#view-menu,#view-center,#view-shop,#view-mp,#view-bag,#view-select,#view-dex{
+  padding:12px 10px;gap:7px;overflow-y:auto;
+  background:linear-gradient(180deg,var(--gb4),#ccd880);
+}
+.panel-title{
+  font-size:7px;color:var(--gb0);text-align:center;
+  padding-bottom:7px;margin-bottom:5px;
+  border-bottom:2px solid var(--gb1);
+  text-shadow:0 1px 0 rgba(255,255,255,.3);
+  letter-spacing:2px;
+}
+.panel-title.mythic-title{color:var(--mythic2);border-bottom-color:var(--mythic);text-shadow:0 0 8px var(--mythic);}
+.menu-btn{
+  background:linear-gradient(135deg,var(--gb2),var(--gb3));
+  border:2px solid var(--gb0);border-radius:3px;
+  padding:10px 13px;cursor:pointer;
+  font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gb0);
+  transition:all .12s;text-align:left;
+  box-shadow:0 3px 0 var(--gb0),0 4px 8px var(--shadow);
+}
+.menu-btn:hover{background:linear-gradient(135deg,var(--gb3),#b8cc10);transform:translateX(3px) translateY(-1px);box-shadow:0 4px 0 var(--gb0),0 6px 12px var(--shadow);}
+.menu-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--gb0);}
+.menu-btn .ms{font-size:5px;opacity:.65;display:block;margin-top:3px;}
+.back-btn{
+  background:linear-gradient(135deg,var(--gb1),#1e4a1e);
+  border:2px solid var(--gb0);border-radius:3px;
+  padding:7px 13px;cursor:pointer;
+  font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb4);
+  transition:all .12s;margin-top:auto;
+  box-shadow:0 3px 0 #0a200a,0 4px 6px var(--shadow);
+}
+.back-btn:hover{background:linear-gradient(135deg,var(--gb2),var(--gb1));color:var(--gb0);transform:translateY(-1px);}
 .shop-item{background:var(--gb2);border:2px solid var(--gb0);border-radius:2px;
   padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .si-info .si-name{font-size:7px;color:var(--gb0);margin-bottom:2px;}
@@ -232,31 +396,76 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
 #heal-flash{display:none;position:absolute;inset:0;background:rgba(224,248,208,.65);z-index:150;pointer-events:none;}
 #mythic-flash{display:none;position:absolute;inset:0;z-index:140;pointer-events:none;
   background:radial-gradient(ellipse,rgba(255,107,0,.6) 0%,transparent 70%);}
-#toast{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  background:var(--gb0);color:var(--gb4);font-size:7px;padding:7px 13px;border:2px solid var(--gb2);
-  z-index:160;white-space:pre-line;animation:pop .2s ease;text-align:center;line-height:1.8;}
-#toast.mythic-toast{border-color:var(--mythic2);color:var(--mythic2);}
-#region-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  background:rgba(15,56,15,.95);border:2px solid var(--mythic2);padding:8px 16px;
-  font-size:8px;color:var(--mythic2);text-align:center;z-index:30;display:none;white-space:nowrap;}
+#toast{
+  display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:linear-gradient(135deg,rgba(8,28,8,.98),rgba(15,45,15,.98));
+  color:var(--gb4);font-size:7px;padding:9px 16px;
+  border:2px solid var(--gb2);border-top:1px solid var(--gb3);
+  border-radius:4px;
+  box-shadow:0 8px 24px rgba(0,0,0,.7),0 0 20px rgba(139,172,15,.2);
+  z-index:160;white-space:pre-line;animation:pop .18s cubic-bezier(.34,1.56,.64,1);
+  text-align:center;line-height:2;
+}
+#toast.mythic-toast{
+  border-color:var(--mythic);border-top-color:var(--mythic2);
+  color:var(--mythic2);
+  box-shadow:0 8px 24px rgba(0,0,0,.7),0 0 20px rgba(255,107,0,.3);
+}
+#region-banner{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:linear-gradient(135deg,rgba(8,28,8,.98),rgba(20,40,10,.95));
+  border:2px solid var(--mythic2);border-top:1px solid var(--gb3);
+  border-radius:4px;
+  padding:9px 18px;
+  font-size:8px;color:var(--mythic2);text-align:center;
+  z-index:30;display:none;white-space:nowrap;
+  text-shadow:0 0 10px var(--mythic);
+  box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 24px rgba(255,107,0,.2);
+  animation:pop .2s cubic-bezier(.34,1.56,.64,1);
+}
 
 /* TABS */
-.tabs{display:flex;border-top:2px solid var(--gb0);}
-.tab{flex:1;background:var(--gb2);border:none;border-right:1px solid var(--gb0);
-  font-family:'Press Start 2P',monospace;font-size:5px;color:var(--gb0);padding:6px 3px;cursor:pointer;transition:background .1s;}
+.tabs{
+  display:flex;border-top:2px solid var(--gb0);
+  background:linear-gradient(180deg,#1a2a10,var(--gb0));
+}
+.tab{
+  flex:1;
+  background:linear-gradient(180deg,var(--gb2),var(--gb3));
+  border:none;border-right:1px solid var(--gb0);
+  font-family:'Press Start 2P',monospace;font-size:5px;color:var(--gb0);
+  padding:7px 3px;cursor:pointer;
+  transition:all .1s;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.2);
+}
 .tab:last-child{border-right:none;}
-.tab:hover,.tab.on{background:var(--gb0);color:var(--gb4);}
+.tab:hover{background:linear-gradient(180deg,var(--gb3),#c8d820);}
+.tab.on{background:linear-gradient(180deg,#0a1a0a,var(--gb0));color:var(--gb4);box-shadow:inset 0 2px 4px rgba(0,0,0,.4);}
 
 /* GAMEOVER/WIN */
-#view-gameover,#view-win{padding:20px;align-items:center;justify-content:center;gap:12px;text-align:center;}
-#view-gameover h2{font-size:10px;color:var(--red);}
-#view-win h2{font-size:9px;color:var(--gb0);line-height:1.8;}
-.sp{font-size:6px;color:var(--gb1);line-height:2;}
-.ctrl-btn{background:var(--gb1);border:2px solid var(--gb0);color:var(--gb4);
-  font-family:'Press Start 2P',monospace;font-size:6px;padding:7px 14px;cursor:pointer;border-radius:2px;transition:background .1s;}
-.ctrl-btn:hover{background:var(--gb2);color:var(--gb0);}
+#view-gameover,#view-win{
+  padding:20px;align-items:center;justify-content:center;gap:14px;text-align:center;
+  background:linear-gradient(180deg,#0a1a0a,var(--gb4));
+}
+#view-gameover{background:linear-gradient(180deg,#1a0005,#2a000a,#0a0010);}
+#view-gameover h2{font-size:10px;color:var(--red);text-shadow:0 0 16px var(--red);}
+#view-win h2{font-size:9px;color:var(--gb0);line-height:1.8;text-shadow:0 0 10px rgba(139,172,15,.5);}
+.sp{font-size:6px;color:var(--gb1);line-height:2.2;}
+.ctrl-btn{
+  background:linear-gradient(135deg,var(--gb1),#1e4a1e);
+  border:2px solid var(--gb0);color:var(--gb4);
+  font-family:'Press Start 2P',monospace;font-size:6px;padding:9px 16px;
+  cursor:pointer;border-radius:4px;
+  box-shadow:0 4px 0 #0a200a,0 5px 8px var(--shadow);
+  transition:all .12s;
+}
+.ctrl-btn:hover{background:linear-gradient(135deg,var(--gb2),var(--gb1));color:var(--gb0);transform:translateY(-2px);}
+.ctrl-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0a200a;}
 
 @keyframes pop{0%{transform:translate(-50%,-50%) scale(.7)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 8px rgba(139,172,15,.3)}50%{box-shadow:0 0 18px rgba(139,172,15,.6)}}
+@keyframes slide-in-right{0%{transform:translateX(40px);opacity:0}100%{transform:translateX(0);opacity:1}}
+@keyframes slide-up{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
 @keyframes blink{50%{opacity:0}}
 @keyframes s-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 @keyframes s-idleF{0%,100%{transform:translateY(0) scaleX(-1)}50%{transform:translateY(-2px) scaleX(-1)}}
@@ -286,6 +495,31 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
   <button id="btn-signout" style="display:none" onclick="doSignOut()">SIGN OUT</button>
   <button id="btn-save" style="display:none" onclick="doSave()">💾 SAVE</button>
   <span id="save-indicator"></span>
+</div>
+
+
+<!-- PATCH NOTES MODAL -->
+<div id="patchnotes-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9998;align-items:center;justify-content:center;padding:10px;">
+  <div style="background:var(--gb0);border:3px solid var(--gb2);padding:16px;max-width:340px;width:100%;border-radius:4px;font-family:'Press Start 2P',monospace;max-height:80vh;display:flex;flex-direction:column;">
+    <div style="font-size:9px;color:var(--gb2);margin-bottom:10px;text-align:center">📋 PATCH NOTES</div>
+    <div id="patchnotes-list" style="flex:1;overflow-y:auto;font-size:5px;color:var(--gb4);line-height:2.2;margin-bottom:12px;"></div>
+    <button onclick="closePatchNotes()" style="background:var(--gb2);border:2px solid var(--gb0);font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb0);padding:8px;cursor:pointer;border-radius:2px;width:100%">▸ START PLAYING</button>
+  </div>
+</div>
+
+
+<!-- TEMPLE PROMPT -->
+<div id="temple-prompt" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;padding:12px;">
+  <div style="background:linear-gradient(180deg,#0a0800,#1a1000);border:3px solid #c8a020;border-top:2px solid #ffee44;padding:18px;max-width:320px;width:100%;border-radius:6px;font-family:'Press Start 2P',monospace;text-align:center;box-shadow:0 0 40px rgba(200,160,0,.4);">
+    <div style="font-size:7px;color:#ffee44;margin-bottom:8px;letter-spacing:2px">⛩️ TEMPLE OF GODS</div>
+    <div style="font-size:6px;color:#c8a020;margin-bottom:12px;line-height:2">The statue pulses with ancient energy.<br>You have earned the right to face<br>the final trial.</div>
+    <div style="font-size:5px;color:#ff8800;margin-bottom:6px;line-height:2">WARNING: You cannot flee.<br>Defeat both phases to win.<br>Phase 2 is Jayj's true cosmic form.</div>
+    <div style="font-size:5px;color:#888;margin-bottom:16px;line-height:2">Make sure your party is ready.</div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="acceptFinalBoss()" style="flex:1;background:linear-gradient(135deg,#8a6000,#c8a020);border:2px solid #ffee44;font-family:'Press Start 2P',monospace;font-size:6px;color:#000;padding:10px;cursor:pointer;border-radius:3px;">⚔️ I AM READY</button>
+      <button onclick="declineFinalBoss()" style="flex:1;background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #444;font-family:'Press Start 2P',monospace;font-size:6px;color:#888;padding:10px;cursor:pointer;border-radius:3px;">◂ NOT YET</button>
+    </div>
+  </div>
 </div>
 
 <!-- LOGIN MODAL -->
@@ -339,7 +573,7 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
 
   <!-- BATTLE -->
   <div class="view" id="view-battle">
-   <div id="bf">
+   <div id="bf"><div id="bf-sky"></div>
     <canvas id="battle-fx-canvas" width="480" height="190" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;display:none;"></canvas>
     <div class="ep"><div class="bfi" id="bfi-e"><div class="bfn" id="bfen">???</div><div class="bflv" id="bfelv">Lv.?</div><div class="bfhl">HP</div><div class="bfht"><div class="bfhf" id="bfehf" style="width:100%"></div></div><div class="bfhn" id="bfehn">—</div></div><div class="bsw" id="esp"></div></div>
     <div class="pp"><div class="bsw" id="psp"></div><div class="bfi"><div class="bfn" id="bfpn">???</div><div class="bflv" id="bfplv">Lv.?</div><div class="bfhl">HP</div><div class="bfht"><div class="bfhf" id="bfphf" style="width:100%"></div></div><div class="bfhn" id="bfphn">—</div></div></div>
@@ -351,10 +585,10 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
     <button id="btab-action" onclick="battleTab('action')" style="flex:1;background:var(--gb1);border:none;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb4);padding:5px;cursor:pointer;">▸ ACTION</button>
    </div>
    <div id="bmen">
-    <button class="bmb" id="bm1" onclick="useMove(0)"><span id="bm1n">FIGHT</span><span class="bs" id="bm1p">PWR —</span></button>
-    <button class="bmb" id="bm2" onclick="useMove(1)"><span id="bm2n">FIGHT</span><span class="bs" id="bm2p">PWR —</span></button>
-    <button class="bmb" id="bm3" onclick="useMove(2)"><span id="bm3n">FIGHT</span><span class="bs" id="bm3p">PWR —</span></button>
-    <button class="bmb" id="bm4" onclick="useMove(3)"><span id="bm4n">FIGHT</span><span class="bs" id="bm4p">PWR —</span></button>
+    <button class="bmb" id="bm1" onclick="useMove(0)"><span id="bm1n">FIGHT</span><span class="bs" id="bm1p">PWR —</span><span id="bm1t" class="bmt"></span></button>
+    <button class="bmb" id="bm2" onclick="useMove(1)"><span id="bm2n">FIGHT</span><span class="bs" id="bm2p">PWR —</span><span id="bm2t" class="bmt"></span></button>
+    <button class="bmb" id="bm3" onclick="useMove(2)"><span id="bm3n">FIGHT</span><span class="bs" id="bm3p">PWR —</span><span id="bm3t" class="bmt"></span></button>
+    <button class="bmb" id="bm4" onclick="useMove(3)"><span id="bm4n">FIGHT</span><span class="bs" id="bm4p">PWR —</span><span id="bm4t" class="bmt"></span></button>
    </div>
    <div id="bmen-action" style="display:none;background:var(--scr);display:none;grid-template-columns:1fr 1fr;">
     <button class="bmb bcatch" id="bmc" onclick="tryBall()">JAYBALL<span class="bs" id="ball-count">x0</span></button>
@@ -395,6 +629,7 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
    <button class="menu-btn" onclick="showView('dex');renderDex()">▸ JAYDEX<span class="ms">17 Jayjamon to catch</span></button>
    <button class="menu-btn" onclick="openBag()">▸ BAG<span class="ms">items &amp; jayballs</span></button>
    <button class="menu-btn" onclick="showView('mp')">▸ MULTIPLAYER<span class="ms">battle online</span></button>
+   <button class="menu-btn" onclick="openTypeChart()">▸ TYPE CHART<span class="ms">strengths &amp; weaknesses</span></button>
    <button class="menu-btn" onclick="openLeaderboard()">▸ LEADERBOARD<span class="ms">playtime hall of fame</span></button>
    <button class="menu-btn" onclick="doSave()">▸ SAVE GAME<span class="ms">saves to your account</span></button>
   </div>
@@ -565,6 +800,14 @@ h1{font-size:clamp(10px,3vw,18px);color:var(--gb2);text-shadow:2px 2px 0 var(--g
    <button id="council-back-btn" class="back-btn" onclick="showView('world');startWalk()">◂ FLEE THE COUNCIL</button>
   </div>
 
+  <!-- TYPE CHART -->
+  <div class="view" id="view-typechart" style="padding:10px;gap:6px;overflow-y:auto;background:linear-gradient(180deg,var(--gb4),#ccd880);">
+   <div class="panel-title">📊 TYPE CHART</div>
+   <div style="font-size:5px;color:var(--gb0);text-align:center;margin-bottom:4px;opacity:.8">Your type vs enemy type — shown on move buttons in battle</div>
+   <div id="typechart-body" style="display:flex;flex-direction:column;gap:5px;"></div>
+   <button class="back-btn" onclick="showView('menu')">◂ BACK</button>
+  </div>
+
   <!-- GAMEOVER -->
   <div class="view" id="view-gameover">
    <h2>YOU BLACKED OUT!</h2>
@@ -718,7 +961,7 @@ function loadProgress(uid){
 function doSave(){
   if(!currentUser){toast('Sign in to save\nyour progress!');return;}
   const data={party:G.party,box:G.box||[],caught:[...G.caught],seen:[...G.seen],money:G.money,
-    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,megaKey:G.megaKey||false,ratsDefeated:G._ratsDefeated||false,gymsBeaten:G.gymsBeaten||[],councilBeaten:G.councilBeaten||[],councilTeams:G._councilTeams||null,
+    bag:G.bag,battles:G.battles,wins:G.wins,activeIdx:G.activeIdx,playtime:G.playtime||0,megaKey:G.megaKey||false,ratsDefeated:G._ratsDefeated||false,gymsBeaten:G.gymsBeaten||[],councilBeaten:G.councilBeaten||[],councilTeams:G._councilTeams||null,trainerBeaten:G.trainerBeaten||[],finalBossDefeated:G._finalBossDefeated||false,
     spawned:[...SPAWNED_MYTHICS],savedAt:Date.now()};
   try{
     let saveStr=JSON.stringify(data);
@@ -1342,35 +1585,86 @@ function sAlmond(){return svg([
 
 // THREE RATS IN ARLIE COSTUME — horrifying, secret mythic
 function sThreeRats(){return svg([
-  // GIANT ARLIE GLASSES (oversized, clearly fake)
-  [0,2,'#1a1a1a',8,7],[9,2,'#1a1a1a',7,7],
-  [1,3,'#3090b8',6,5],[10,3,'#3090b8',5,5],
-  [7,5,'#1a1a1a',2,3], // bridge
-  // Rats peeking out from behind and below glasses
-  // TOP rat (looks most like arlie, wearing glasses)
-  [3,3,'#888',4,4],[4,4,'#aaa',2,2],[5,5,'#cc8888',1,1],
-  // MIDDLE rat  
-  [2,7,'#777',2,3],[13,7,'#777',2,3],
-  [3,8,'#999',2,2],[11,8,'#999',2,2],
-  [3,9,'#cc8888',1,1],[12,9,'#cc8888',1,1],
-  // BOTTOM rat — most visible, little rat feet showing below costume
-  [4,11,'#888',8,3],[5,12,'#999',6,2],
-  // RAT TAILS dangling out
-  [14,9,'#777',1,3],[15,8,'#777',1,2],[15,6,'#777',1,3],
-  [1,10,'#777',1,3],[0,8,'#777',1,3],[0,6,'#777',1,2],
-  // RAT EARS on top (two sets — definitely too many ears)
-  [3,1,'#aaa',2,2],[7,0,'#aaa',2,2],[11,0,'#aaa',2,2],
-  [4,1,'#cc8888',1,1],[8,0,'#cc8888',1,1],[12,0,'#cc8888',1,1],
-  // ARLIE BODY (costume, slightly ill-fitting)
-  [2,11,'#3090b8',12,5],[1,12,'#3090b8',1,3],[14,12,'#3090b8',1,3],
-  // RAT FEET sticking out at bottom
-  [3,15,'#888',3,1],[6,15,'#888',2,1],[10,15,'#888',2,1],
-  [4,14,'#999',2,1],[11,14,'#999',2,1],
-  // Suspicious beady rat eyes visible above glasses
-  [3,4,'#ff2200',1,1],[12,4,'#ff2200',1,1],
-  // "arlie face" painted on the costume front
-  [6,7,'#f5e0c8',4,3],[7,8,'#333',1,1],[9,8,'#333',1,1],
-])}
+
+  // ══ BIG ARLIE BODY (dominates the canvas) ══
+  // Large head — flesh coloured, takes up most of upper half
+  [4,3,'#f0d8b8',14,6],  // wide head
+  [3,4,'#f0d8b8',16,5],  // wider mid-face
+  [3,5,'#f0d8b8',16,4],
+  [4,6,'#f0d8b8',14,3],  // chin
+  // Hair (dark, Arlie-style short hair on top)
+  [4,2,'#2a1a0a',14,2],[3,3,'#2a1a0a',2,2],[17,3,'#2a1a0a',2,2],
+  [5,1,'#1a0a00',12,2],
+  // BIG ARLIE GLASSES — the defining feature, large and iconic
+  // Left lens
+  [4,4,'#111',4,3],[5,5,'#3090b8',2,1],[4,4,'#60b0d8',1,1],
+  // Right lens
+  [13,4,'#111',4,3],[14,5,'#3090b8',2,1],[13,4,'#60b0d8',1,1],
+  // Bridge between lenses
+  [8,5,'#111',4,1],
+  // Nose (small, between glasses)
+  [9,6,'#d0b898',3,1],
+  // Mouth (firm line, suspicious)
+  [8,7,'#a06050',5,1],[9,7,'#c07860',3,1],
+  // Ears
+  [2,4,'#f0d8b8',2,3],[17,4,'#f0d8b8',2,3],
+  [2,4,'#d0b090',1,3],[18,4,'#d0b090',1,3],
+
+  // ══ ARLIE TORSO — big blue shirt ══
+  [3,9,'#2272a8',15,7],   // main body
+  [2,10,'#2272a8',1,5],[17,10,'#2272a8',1,5], // side fill
+  // Collar + neck
+  [8,8,'#f0d8b8',5,2],
+  // Shirt details — centre line, pocket
+  [10,9,'#1a5a88',1,5],
+  [4,11,'#1a5a88',3,2],  // pocket
+  // Big arms
+  [1,9,'#2272a8',3,5],[17,9,'#2272a8',3,5],
+  [1,13,'#1a5a88',3,2],[17,13,'#1a5a88',3,2], // cuffs
+  // Legs / bottom
+  [5,15,'#1a3a5a',4,1],[12,15,'#1a3a5a',4,1],
+
+  // ══ TINY RAT ON HEAD ══
+  // Cute small rat perched on top of the hair, centre
+  [9,0,'#888',3,2],[8,1,'#999',5,2],[8,2,'#aaa',4,1],
+  // Tiny ears
+  [8,0,'#777',1,1],[12,0,'#777',1,1],
+  [8,0,'#cc8888',1,1],[12,0,'#cc8888',1,1],
+  // Tiny red eyes
+  [9,1,'#cc1100',1,1],[11,1,'#cc1100',1,1],
+  // Tiny snout + whiskers
+  [10,2,'#cc8888',1,1],
+  [7,1,'#ccc',1,1],[13,1,'#ccc',1,1],
+  // Tiny tail flicking up behind
+  [13,0,'#888',1,1],[14,0,'#777',1,1],[14,1,'#666',1,1],
+
+  // ══ TINY RAT ON LEFT SHOULDER ══
+  // Small rat sitting on the left arm, peering inward
+  [0,9,'#888',3,2],[0,10,'#999',3,2],[1,11,'#888',2,1],
+  // Tiny left-rat ears
+  [0,8,'#777',1,1],[2,8,'#777',1,1],
+  [0,8,'#cc8888',1,1],[2,8,'#cc8888',1,1],
+  // Tiny red eyes
+  [0,10,'#cc1100',1,1],[2,10,'#cc1100',1,1],
+  // Tiny snout
+  [1,11,'#cc8888',1,1],
+  // Left rat tail looping behind arm
+  [0,12,'#888',1,1],[0,13,'#777',1,1],
+
+  // ══ TINY RAT ON RIGHT SHOULDER ══
+  // Small rat on the right arm, mirror of left
+  [18,9,'#888',3,2],[18,10,'#999',3,2],[18,11,'#888',2,1],
+  // Tiny right-rat ears
+  [18,8,'#777',1,1],[20,8,'#777',1,1],
+  [18,8,'#cc8888',1,1],[20,8,'#cc8888',1,1],
+  // Tiny red eyes
+  [18,10,'#cc1100',1,1],[20,10,'#cc1100',1,1],
+  // Tiny snout
+  [19,11,'#cc8888',1,1],
+  // Right rat tail looping behind arm
+  [21,12,'#888',1,1],[21,13,'#777',1,1],
+
+],22,16)}
 
 // JAYJ'S BELLY BUTTON FLUFF
 function sBellyButtonFluff(){return svg([
@@ -1585,6 +1879,92 @@ function sBoriscat(){return svg([[2,0,'#cc6600',12,4],[1,1,'#dd7700',14,5],[0,2,
 function sJayjLeeSmith(){return svg([[4,0,'#9b7520',8,1],[3,1,'#d4905c',10,5],[2,2,'#d4905c',12,4],[3,2,'#d4905c',2,3],[11,2,'#d4905c',2,3],[6,3,'#333',1,1],[9,3,'#333',1,1],[7,5,'#b07060',2,1],[3,6,'#d4905c',10,2],[2,7,'#c48050',12,2],[0,8,'#1a2a4a',16,8],[1,9,'#1a2a4a',14,7],[2,10,'#2a3a5a',12,5],[0,8,'#2a3a6a',2,8],[6,8,'#2a3a6a',2,8],[12,8,'#2a3a6a',2,8],[0,12,'#2a3a6a',16,1],[13,11,'#fff',3,3],[13,11,'#cccc88',3,2],[14,13,'#888',2,1],[0,10,'#1a2a4a',2,4],[2,15,'#8a3a1a',5,1],[9,15,'#8a3a1a',5,1],[6,6,'#c07060',4,1]])}
 function sEvilLemonTree(){return svg([[6,12,'#5a3010',4,4],[7,13,'#4a2000',2,3],[5,11,'#6a4020',2,5],[9,11,'#6a4020',2,5],[4,13,'#5a3010',2,2],[10,13,'#5a3010',2,2],[2,15,'#4a2000',4,1],[9,15,'#4a2000',5,1],[2,1,'#1a7a1a',12,5],[1,2,'#2a8a2a',14,5],[0,3,'#1a7a1a',16,6],[1,4,'#2a8a2a',14,4],[3,5,'#3a9a3a',10,4],[4,6,'#2a8a2a',8,4],[5,7,'#1a7a1a',6,5],[3,3,'#eeee00',2,2],[11,3,'#eeee00',2,2],[7,1,'#dddd00',2,2],[2,6,'#ffff00',2,2],[12,6,'#ffff00',2,2],[6,8,'#eeee00',2,2],[10,8,'#eeee00',2,2],[6,12,'#ff0000',1,1],[9,12,'#ff0000',1,1],[7,14,'#220000',2,1]])}
 function sBataar(){return svg([[4,0,'#aaccff',8,2],[3,1,'#bbddff',10,2],[5,0,'#ffffff',6,1],[4,3,'#ddeeff',8,5],[5,4,'#eeffff',6,4],[3,3,'#ccddff',2,3],[11,3,'#ccddff',2,3],[5,4,'#2244aa',2,1],[9,4,'#2244aa',2,1],[6,4,'#001133',1,1],[10,4,'#001133',1,1],[6,7,'#aaccff',4,1],[2,8,'#6688cc',12,8],[1,9,'#7799dd',14,7],[0,10,'#6688cc',16,6],[2,8,'#cc9900',12,1],[2,14,'#cc9900',12,1],[2,8,'#cc9900',1,6],[13,8,'#cc9900',1,6],[1,9,'#4a3010',2,7],[2,10,'#ffffaa',1,5],[4,15,'#aaccff',3,1],[9,15,'#aaccff',3,1]])}
+
+// SHIN GODDZILLA — phase 1 final boss. Massive kaiju lizard, spiky, glowing.
+function sShinGoddzilla(){return svg([
+
+  // ── SHIN GODZILLA ──
+  // Charcoal/dark grey burnt skin throughout
+  // DORSAL SPINES — jagged, tall, glowing purple-red (his most iconic feature)
+  [14,0,'#1a0008',2,5],[15,0,'#cc0044',1,4],  // tallest spine (far right)
+  [12,1,'#1a0008',2,4],[13,1,'#aa0033',1,3],
+  [11,2,'#1a0008',2,3],[12,2,'#880022',1,2],
+  [10,3,'#1a0008',2,2],[11,3,'#660011',1,1],
+  // Spine glow — purple-magenta atomic glow along dorsal line
+  [15,1,'#ff00aa',1,1],[14,2,'#cc0077',1,1],[13,3,'#aa0055',1,1],[12,4,'#880033',1,1],
+
+  // HEAD — wide, long, flat-topped, Shin Godzilla specific shape
+  // Flat rectangular head, wide jaw
+  [3,1,'#2a2a2a',10,3],  // skull top
+  [2,2,'#333',12,3],     // head sides
+  [1,3,'#2a2a2a',14,3],  // wider jaw line
+  // GLOWING RED EYES — tiny, beady, set high and far back (very Shin)
+  [3,2,'#ff0000',1,1],[8,2,'#ff0000',1,1],
+  [3,2,'#ff6666',1,1],[8,2,'#ff6666',1,1],
+  // HUGE WIDE JAW — hinged open, rows of teeth visible inside
+  // The jaw detaches and splits — signature Shin look
+  [1,5,'#1a1a1a',14,3],   // lower jaw
+  [2,6,'#111',12,2],
+  // Teeth (upper and lower rows, small and many)
+  [2,5,'#ddd',1,1],[4,5,'#ddd',1,1],[6,5,'#ddd',1,1],[8,5,'#ddd',1,1],[10,5,'#ddd',1,1],[12,5,'#ddd',1,1],
+  [3,7,'#ccc',1,1],[5,7,'#ccc',1,1],[7,7,'#ccc',1,1],[9,7,'#ccc',1,1],[11,7,'#ccc',1,1],
+  // Glowing PURPLE inside jaw (atomic beam charging)
+  [3,6,'#550044',8,1],[4,6,'#880066',6,1],[5,5,'#660044',4,1],
+
+  // NECK + TORSO — very long, upright, hunched slightly
+  [3,8,'#2a2a2a',10,1],  // neck
+  [2,9,'#333',12,7],     // main torso
+  [1,10,'#2a2a2a',14,6],
+  // GLOWING RED CRACKS on torso (atomic energy beneath skin — very Shin)
+  [4,10,'#cc0022',1,2],[8,10,'#aa0011',1,2],[6,11,'#dd0033',1,3],[10,12,'#bb0022',1,2],
+  [3,13,'#cc0022',2,1],[9,13,'#990011',2,1],[7,9,'#aa0011',1,2],
+  // Chest glow — deep purple atomic core visible through translucent belly
+  [4,11,'#440033',6,3],[5,12,'#660044',4,2],
+
+  // TINY VESTIGIAL ARMS — held tight to chest, uselessly small (very Shin Godzilla)
+  [2,10,'#222',2,2],[12,10,'#222',2,2],  // upper arm stubs
+  [2,11,'#1a1a1a',2,2],[12,11,'#1a1a1a',2,2],
+  // tiny hands just barely visible
+  [1,12,'#333',2,1],[13,12,'#333',2,1],
+
+  // MASSIVE THIGHS + LEGS — the bottom third is all leg
+  [2,15,'#222',5,1],[9,15,'#222',5,1],  // feet
+
+],22,16)}
+
+// OMEGA DEVOURER JAYJ — the TRUE final boss. Beyond comprehension.
+// Jayj, but cosmic, transcendent, surrounded by orbital mass, pure terror
+function sOmegaDevourerJayj(){return svg([
+  // HAIR — but now COSMIC and wild, tendrils extending
+  [2,0,'#1a0a00',12,1],[1,1,'#4a2a08',14,2],[0,1,'#2a1a00',2,3],[14,1,'#2a1a00',2,3],
+  [3,0,'#c8a020',10,1], // gold crown energy
+  [5,0,'#ffee44',6,1],[0,0,'#ffcc0088',3,1],[13,0,'#ffcc0088',3,1],
+  // FACE — jayj but transcendent, both normal and cosmic
+  [2,2,'#c07040',12,5],[1,3,'#d08050',14,5],[0,4,'#c07040',16,4],
+  // Eyes — not just beady, now DIVINE glowing gold + void pupils
+  [3,3,'#ffcc00',3,2],[10,3,'#ffcc00',3,2],
+  [4,3,'#ff8800',2,1],[11,3,'#ff8800',2,1],
+  [4,4,'#000000',1,1],[12,4,'#000000',1,1], // void pupils
+  // Third eye (centre forehead) — pure gold
+  [7,2,'#ffee00',2,1],[8,2,'#ffffff',1,1],
+  // Frown — cosmic contempt
+  [5,6,'#7a3a20',6,1],[6,6,'#6a2a10',4,1],
+  // MASSIVE COSMIC BODY — jayj proportions but reality-warping scale
+  [0,7,'#aa5520',16,9],[0,8,'#c06030',16,8],[1,9,'#d07040',14,7],[2,10,'#c06030',12,6],
+  // Cosmic belly — swirling void energy
+  [3,9,'#1a0a00',10,5],[4,10,'#2a1000',8,4],[5,11,'#3a1800',6,3],
+  [4,10,'#ffcc0044',8,1],[5,11,'#ff880033',6,2], // gold energy swirls
+  // ORBITAL MASS — chunks of matter orbiting him
+  [0,7,'#8a4a10',2,2],[14,7,'#8a4a10',2,2], // side masses
+  [0,10,'#6a3000',2,3],[14,10,'#6a3000',2,3],
+  // Tiny arms (still jayj arms, unchanged — the contrast makes it worse)
+  [0,8,'#c06030',1,4],[15,8,'#c06030',1,4],
+  // Legs — floating
+  [4,15,'#8a4a10',3,1],[9,15,'#8a4a10',3,1],
+  // Cosmic aura tears in reality
+  [1,7,'#ffcc0066',1,1],[14,7,'#ffcc0066',1,1],
+  [0,11,'#ff440033',1,2],[15,11,'#ff440033',1,2],
+])}
 // ═══════════════════════════════════════════
 //  JAYJAMON DATA
 // ═══════════════════════════════════════════
@@ -1701,6 +2081,12 @@ const JAY={
   luxembourgian:{name:'LUXEMBOURGIAN ARMY',type:'Military/Tiny',baseHp:155,baseAtk:112,draw:sLuxembourgian,mythic:false,
     desc:'The entire Luxembourgian army, compressed into one Jayjamon-shaped unit. Three soldiers. One flag. Maximum efficiency.',
     moves:[{name:'TINY INVASION',pwr:108},{name:'FLAG BASH',pwr:95},{name:'GRAND DUCHY SLAM',pwr:118},{name:'LUXEMBOURG BLITZ',pwr:102}]},
+  shingoddzilla:{name:'SHIN GODDZILLA',type:'FINAL/Kaiju',baseHp:180,baseAtk:95,draw:sShinGoddzilla,mythic:true,ultraGod:false,spawnOnce:true,hidden:true,noFlee:true,
+    desc:'Phase 1 of the final trial. A nuclear kaiju of incomprehensible scale. This is merely the opening act.',
+    moves:[{name:'NUCLEAR STOMP',pwr:340},{name:'KAIJU ROAR',pwr:300},{name:'RADIATION SURGE',pwr:320},{name:'CITY CRUSHER',pwr:360}]},
+  omegadevourerjayj:{name:'OMEGA DEVOURER JAYJ',type:'COSMIC/Transcendent',baseHp:2500,baseAtk:800,draw:sOmegaDevourerJayj,mythic:true,ultraGod:true,spawnOnce:true,hidden:true,noFlee:true,
+    desc:'This is the true form. Jayj, but having consumed the concept of limitation itself. The third eye sees your entire team. Good luck.',
+    moves:[{name:'REALITY DEVOUR',pwr:700},{name:'COSMIC FAT ROLL',pwr:650},{name:'VOID WHEEZE',pwr:600},{name:'OMEGA CONSUMPTION',pwr:750}]},
   boriscat:{name:'BORIS THE FAT ASS CAT',type:'Feline/Massive',baseHp:175,baseAtk:88,draw:sBoriscat,mythic:false,
     desc:'An orange tabby of extraordinary girth. Unimpressed by everything. Has knocked something off every surface in Big Jayj house.',
     moves:[{name:'FAT CAT FLOP',pwr:90},{name:'JUDGEMENT STARE',pwr:78},{name:'LAZY SWIPE',pwr:82},{name:'HEAVYWEIGHT PURR',pwr:68}]},
@@ -1718,7 +2104,7 @@ const JAY={
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
     moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','richieIndie','jayj','jayjdugong','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','rocco','alby','nick','elliot','jfmk','threerats','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','gianthamleg','boriscat','jayjoesmithcat','eviltree','bataar','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
+const ALL_KEYS=['shingoddzilla','omegadevourerjayj','indie','richieIndie','jayj','jayjdugong','hangryjayj','jesse','leprechaun','rohan','drrohan','almond','oscar','ratoscar','arlie','rocco','alby','nick','elliot','jfmk','threerats','sonny','googspice','polargoog','freakypratiky','megafreakypratiky','omegajayj','rotoscoperocco','terry','gianthamleg','boriscat','jayjoesmithcat','eviltree','bataar','bellybuttonfluff','christmaspratik','milkteaman','unclefatty','luxembourgian'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -1732,7 +2118,7 @@ const G={
   caught:new Set(),seen:new Set(),
   battles:0,wins:0,money:500,playtime:0,
   bag:{ball:3,superball:0,mythball:0,potion:2,superpotion:0,bigzoup:0,mythorb:0,chillidrop:0,mythstone:0},
-  enemy:null,locked:false,over:false,noFlee:false,megaKey:false,_ratsDefeated:false,
+  enemy:null,locked:false,over:false,noFlee:false,megaKey:false,_ratsDefeated:false,_finalBossDefeated:false,_finalBossPhase:0,
   gymsBeaten:[false,false,false,false,false,false,false],councilBeaten:[false,false,false,false],
   peer:null,conn:null,mpMyTurn:false,mpPeerPos:null,
 };
@@ -1819,6 +2205,72 @@ function addToPartyOrBox(inst){
     return 'box';
   }
 }
+
+// ═══════════════════════════════════════════
+//  TYPE SYSTEM
+// ═══════════════════════════════════════════
+// Each Jayjamon has a primary type. Types have effectiveness vs other types.
+// 2.0 = super effective, 0.5 = not very effective, 0 = immune, 1 = normal
+
+const TYPES={
+  'Indie':    {strong:['Chill','Confused'],    weak:['Fire','Spicy'],          immune:[]},
+  'Fire':     {strong:['Indie','Arboreal'],    weak:['Aquatic','Bald'],        immune:[]},
+  'Spicy':    {strong:['Heavy','Indie'],       weak:['Aquatic','Spirit'],      immune:['Chill']},
+  'Aquatic':  {strong:['Fire','Spicy','Heavy'],weak:['Indie','Spirit'],        immune:[]},
+  'Heavy':    {strong:['Tiny','Feline'],       weak:['Aquatic','Academic'],    immune:[]},
+  'Dreads':   {strong:['Indie','Chill'],       weak:['Fire','Sinister'],       immune:['Confused']},
+  'Chill':    {strong:['Spicy','Sinister'],    weak:['Heavy','Dreads'],        immune:[]},
+  'Nerd':     {strong:['Confused','Chill'],    weak:['Spirit','Arboreal'],     immune:[]},
+  'Bald':     {strong:['Fire','Nerd'],         weak:['Heavy','Spicy'],         immune:[]},
+  'Tiny':     {strong:['Nerd','Bald'],         weak:['Heavy','Feline'],        immune:[]},
+  'Confused': {strong:['Bald','Tiny'],         weak:['Nerd','Dreads'],         immune:[]},
+  'Sharp':    {strong:['Indie','Confused'],    weak:['Bald','Sinister'],       immune:[]},
+  'Academic': {strong:['Heavy','Confused'],    weak:['Fire','Sharp'],          immune:[]},
+  'Cosmic':   {strong:['Spirit','Sharp'],      weak:['Indie','Dreads'],        immune:['Confused']},
+  'Feline':   {strong:['Indie','Tiny'],        weak:['Heavy','Bald'],          immune:[]},
+  'Spirit':   {strong:['Nerd','Chill'],        weak:['Cosmic','Dreads'],       immune:['Confused','Bald']},
+  'Sinister': {strong:['Nerd','Spirit'],       weak:['Cosmic','Fire'],         immune:[]},
+  'Arboreal': {strong:['Aquatic','Chill'],     weak:['Fire','Tiny'],           immune:[]},
+  'Military': {strong:['Bald','Sharp'],        weak:['Spicy','Aquatic'],       immune:[]},
+  'Primate':  {strong:['Tiny','Confused'],     weak:['Academic','Cosmic'],     immune:[]},
+  'Beverage': {strong:['Fire','Spicy'],        weak:['Dreads','Bald'],         immune:[]},
+  'Festive':  {strong:['Chill','Indie'],       weak:['Fire','Heavy'],          immune:[]},
+  'Ginger':   {strong:['Indie','Chill'],       weak:['Aquatic','Bald'],        immune:[]},
+  'Professional':{strong:['Indie','Chill'],   weak:['Spicy','Heavy'],         immune:[]},
+  'Lint':     {strong:['Confused','Chill'],    weak:['Fire','Dreads'],         immune:[]},
+  'MYTHIC':   {strong:[],                      weak:[],                        immune:[]},
+  'Secret':   {strong:['MYTHIC'],              weak:[],                        immune:[]},
+};
+
+// Get primary type from a JAY type string like "Indie/Vibes"
+function getPrimaryType(typeStr){
+  if(!typeStr)return null;
+  const t=typeStr.split('/')[0].trim();
+  return TYPES[t]?t:null;
+}
+
+// Returns damage multiplier based on attacker type vs defender type
+function getTypeMultiplier(attackerKey, defenderKey){
+  const atk=JAY[attackerKey],def=JAY[defenderKey];
+  if(!atk||!def)return 1;
+  const atkType=getPrimaryType(atk.type);
+  const defType=getPrimaryType(def.type);
+  if(!atkType||!defType||!TYPES[atkType])return 1;
+  const chart=TYPES[atkType];
+  if(chart.immune.includes(defType))return 0;
+  if(chart.strong.includes(defType))return 2;
+  if(chart.weak.includes(defType))return 0.5;
+  return 1;
+}
+
+// Returns text label for multiplier
+function getTypeLabel(mult){
+  if(mult===2)return "It's super effective!";
+  if(mult===0.5)return "It's not very effective...";
+  if(mult===0)return "It has no effect!";
+  return null;
+}
+
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
 // ═══════════════════════════════════════════
@@ -1828,14 +2280,14 @@ const TILE={COLS:115,ROWS:60};
 const T_GRASS=0,T_TALL=1,T_PATH=2,T_WALL=3,T_WATER=4,
       T_CENTER=5,T_SHOP=6,T_SIGN=7,T_TREE=8,T_FLOWER=9,
       T_LAVA=10,T_ROCK=11,T_SNOW=12,T_ICE=13,T_DARK=14,T_PORTAL=15,
-      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23,T_VOID=24,T_VOID_DOOR=25,T_SECRET=26,T_GYM=27,T_COUNCIL=28,T_HOUSE=29,T_HOUSE_WALL=30;
+      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23,T_VOID=24,T_VOID_DOOR=25,T_SECRET=26,T_GYM=27,T_COUNCIL=28,T_HOUSE=29,T_HOUSE_WALL=30,T_TEMPLE=31,T_STATUE=32;
 const TILE_COLORS={[T_GRASS]:'#3a7a3a',[T_TALL]:'#1e5c1e',[T_PATH]:'#a08060',
   [T_WALL]:'#8b4513',[T_WATER]:'#3060a8',[T_CENTER]:'#e03050',[T_SHOP]:'#d0a030',
   [T_SIGN]:'#c08040',[T_TREE]:'#226622',[T_FLOWER]:'#4a9a4a',[T_LAVA]:'#cc3300',
   [T_ROCK]:'#886644',[T_SNOW]:'#ddeeff',[T_ICE]:'#aaccee',[T_DARK]:'#110022',
   [T_PORTAL]:'#660099',[T_MOUNTAIN]:'#887766',[T_CITY]:'#667788',
-  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030',[T_VOID]:'#0a000a',[T_VOID_DOOR]:'#330044',[T_SECRET]:'#1a0000',[T_GYM]:'#e0c020',[T_COUNCIL]:'#800000',[T_HOUSE]:'#c8a050',[T_HOUSE_WALL]:'#6a3a1a'};
-const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_VOID_DOOR,T_SECRET,T_HOUSE];
+  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030',[T_VOID]:'#0a000a',[T_VOID_DOOR]:'#330044',[T_SECRET]:'#1a0000',[T_GYM]:'#e0c020',[T_COUNCIL]:'#800000',[T_HOUSE]:'#c8a050',[T_HOUSE_WALL]:'#6a3a1a',[T_TEMPLE]:'#d4c080',[T_STATUE]:'#e8d8a0'};
+const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS,T_VOID,T_VOID_DOOR,T_SECRET,T_HOUSE,T_TEMPLE];
 
 function buildMap(){
   const C=TILE.COLS,R=TILE.ROWS,m=[];
@@ -2013,12 +2465,41 @@ function buildMap(){
     for(let dr=0;dr<3;dr++) for(let dc=0;dc<3;dc++) m[gr+dr][gc+dc]=T_GYM;
   });
 
-  // ── COUNCIL OF 53 LAIR — rows 30-38, cols 44-46 (between brum & lair) ──
-  for(let r=30;r<39;r++) for(let c=59;c<62;c++) m[r][c]=T_COUNCIL;
-  // Council door tile (walkable, gated) — player steps on col 44, rows 33-34
-  m[33][59]=T_COUNCIL;m[34][59]=T_COUNCIL; // entry tiles (detected in walk loop)
-  // Connect council to path
-  m[33][58]=T_PATH;m[34][58]=T_PATH;
+  // ── COUNCIL OF 53 — south of Birmingham, rows 52-59, cols 75-82 ──
+  for(let r=53;r<60;r++) for(let c=75;c<83;c++) m[r][c]=T_COUNCIL;
+  // Outer wall ring — darker inside
+  for(let c=75;c<83;c++){m[52][c]=T_COUNCIL;m[59][c]=T_WALL;}
+  for(let r=52;r<60;r++){m[r][74]=T_WALL;m[r][83]=T_WALL;}
+  // Entry gate (south side of Birmingham road, col 83 approach)
+  m[52][78]=T_PATH;m[52][79]=T_PATH; // gap in top wall = entrance
+  // Path connecting Birmingham road (row 38-39) down to council
+  for(let r=40;r<53;r++){m[r][78]=T_PATH;m[r][79]=T_PATH;}
+  // Council signs either side of gate
+  m[53][76]=T_SIGN;m[53][81]=T_SIGN;
+
+  // ── TEMPLE OF GODS — rows 52-59, cols 97-108 ──
+  // Grand temple floor
+  for(let r=53;r<59;r++) for(let c=98;c<108;c++) m[r][c]=T_TEMPLE;
+  // Temple outer walls
+  for(let c=97;c<109;c++){m[52][c]=T_TEMPLE;m[59][c]=T_WALL;}
+  for(let r=52;r<60;r++){m[r][97]=T_WALL;m[r][108]=T_WALL;}
+  // Corner pillars inside
+  m[53][99]=T_WALL;m[53][106]=T_WALL;
+  m[57][99]=T_WALL;m[57][106]=T_WALL;
+  // Approach path INSIDE temple (rows 57-58 only — stops before statue)
+  for(let c=100;c<106;c++){m[57][c]=T_PATH;m[58][c]=T_PATH;}
+  // Temple entrance gap at south wall
+  m[59][101]=T_PATH;m[59][102]=T_PATH;m[59][103]=T_PATH;m[59][104]=T_PATH;
+  // Path from OUTSIDE connecting south to temple entrance (rows 50-58, stops at entrance)
+  for(let r=50;r<59;r++){m[r][102]=T_PATH;m[r][103]=T_PATH;}
+  // THE STATUE — place LAST so path doesn't overwrite it
+  // Big 4-wide statue at rows 53-56, cols 101-104
+  m[53][101]=T_STATUE;m[53][102]=T_STATUE;m[53][103]=T_STATUE;m[53][104]=T_STATUE;
+  m[54][101]=T_STATUE;m[54][102]=T_STATUE;m[54][103]=T_STATUE;m[54][104]=T_STATUE;
+  m[55][101]=T_STATUE;m[55][102]=T_STATUE;m[55][103]=T_STATUE;m[55][104]=T_STATUE;
+  m[56][102]=T_STATUE;m[56][103]=T_STATUE; // pedestal base
+  // Temple signs flanking entrance
+  m[52][100]=T_SIGN;m[52][105]=T_SIGN;
 
   // ── THE FIELDS (cols 92-98, rows 1-52) ──
   for(let r=1;r<R-1;r++){m[r][109]=T_FIELD;m[r][110]=T_FIELD;m[r][111]=T_FIELD;m[r][112]=T_FIELD;m[r][113]=T_WALL;}
@@ -2068,9 +2549,11 @@ const REGION_BOUNDS=[
   {name:'MOUNTAIN',  r1:1,c1:84,r2:22,c2:114},
   {name:'VOLCANO',   r1:1,c1:62,r2:23,c2:96},
   {name:'JAYJ NOSE', r1:22,c1:59,r2:28,c2:87},
+  {name:'COUNCIL',   r1:52,c1:74,r2:60,c2:83},
   {name:'BIRMINGHAM',r1:29,c1:59,r2:52,c2:109},
   {name:'MYTH.LAIR', r1:29,c1:15,r2:53,c2:59},
   {name:'FIELDS',    r1:1,c1:107,r2:53,c2:114},
+  {name:'TEMPLE',    r1:52,c1:97,r2:60,c2:109},
   {name:'TOWN',      r1:1,c1:15,r2:28,c2:60},
   {name:'THE VOID',   r1:53,c1:15,r2:59,c2:25},
 ];
@@ -2174,7 +2657,15 @@ function renderWorld(){
       const t=WORLD_MAP[tr][tc];
       ctx.fillStyle=TILE_COLORS[t]||'#3a7a3a';
       ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
-      if(t===T_TALL){ctx.fillStyle='#155015';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,10);ctx.fillRect(c*RENDER_TILE+7,r*RENDER_TILE+4,3,8);ctx.fillRect(c*RENDER_TILE+12,r*RENDER_TILE+2,2,10);}
+      // Grass texture variation
+      if(t===T_GRASS&&(tr+tc)%5===0){ctx.fillStyle='rgba(0,0,0,.08)';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);}
+      if(t===T_GRASS&&(tr*3+tc*2)%7===0){ctx.fillStyle='rgba(80,160,40,.15)';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,RENDER_TILE-4,RENDER_TILE-4);}
+      if(t===T_PATH&&(tr+tc)%3===0){ctx.fillStyle='rgba(0,0,0,.1)';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,2);}
+      if(t===T_TALL){
+        ctx.fillStyle='#155015';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,10);
+        ctx.fillRect(c*RENDER_TILE+7,r*RENDER_TILE+4,3,8);ctx.fillRect(c*RENDER_TILE+12,r*RENDER_TILE+2,2,10);
+        ctx.fillStyle='#1a6020';ctx.fillRect(c*RENDER_TILE+4,r*RENDER_TILE+1,2,8);ctx.fillRect(c*RENDER_TILE+10,r*RENDER_TILE+3,2,9);
+      }
       else if(t===T_TREE){ctx.fillStyle='#1a5c1a';ctx.beginPath();ctx.arc(c*RENDER_TILE+8,r*RENDER_TILE+6,6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5a3a1a';ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE+10,4,6);}
       else if(t===T_CENTER){ctx.fillStyle='#c02040';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,4);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('HC',c*RENDER_TILE+3,r*RENDER_TILE+11);}
       else if(t===T_SHOP){ctx.fillStyle='#b08020';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,4);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('$',c*RENDER_TILE+5,r*RENDER_TILE+11);}
@@ -2205,9 +2696,84 @@ function renderWorld(){
         ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,10);
         ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE+7,1,6);
       } else if(t===T_FIELD_TALL){ctx.fillStyle='#1a5a0a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+2,2,12);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE,2,14);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,11);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+1,2,13);ctx.fillStyle='#3a9a1a';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,2);ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE,3,2);}
+      else if(t===T_SECRET){
+        // Secret tile: void-tall ones just use base color; only the infamous rats tile pulses red
+        if(tr===53&&tc===36&&!G._ratsDefeated&&!G.caught.has('threerats')){
+          const p=(Math.sin(Date.now()/600)+1)/2;
+          ctx.fillStyle='#1a0000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+          ctx.globalAlpha=0.3+p*0.5;ctx.fillStyle='#ff2200';
+          ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+3,RENDER_TILE-6,RENDER_TILE-6);
+          ctx.globalAlpha=1;
+        } else if(tr!==53||tc!==36){
+          // void-zone tall grass — dark with faint purple wisp
+          ctx.fillStyle='#0a000a';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+          if((tr*7+tc*13)%9===0){ctx.globalAlpha=0.4;ctx.fillStyle='#550077';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+5,6,6);ctx.globalAlpha=1;}
+        } else {
+          // rats tile already defeated/caught — plain dark
+          ctx.fillStyle='#330000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        }
+      }
+      else if(t===T_VOID){
+        ctx.fillStyle='#050005';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        if((tr*7+tc*13)%11===0){ctx.fillStyle='#440055';ctx.fillRect(c*RENDER_TILE+4,r*RENDER_TILE+4,2,2);}
+        if((tr*5+tc*9)%7===0){ctx.fillStyle='#220033';ctx.fillRect(c*RENDER_TILE+10,r*RENDER_TILE+10,2,2);}
+      }
+      else if(t===T_VOID_DOOR){
+        ctx.fillStyle='#1a0022';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        const p=(Math.sin(Date.now()/400)+1)/2;
+        ctx.globalAlpha=0.4+p*0.5;ctx.fillStyle='#aa00ff';
+        ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+3,RENDER_TILE-6,RENDER_TILE-6);ctx.globalAlpha=1;
+      }
+      else if(t===T_GYM){
+        ctx.fillStyle='#c8a000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.fillStyle='#e8d020';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,RENDER_TILE-4,RENDER_TILE-4);
+        ctx.fillStyle='#ffeC40';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+5,RENDER_TILE-10,RENDER_TILE-10);
+        ctx.fillStyle='#333';ctx.font=Math.round(RENDER_TILE*0.5)+'px sans-serif';ctx.textAlign='center';
+        ctx.fillText('G',c*RENDER_TILE+RENDER_TILE/2,r*RENDER_TILE+RENDER_TILE*0.7);ctx.textAlign='left';
+      }
+      else if(t===T_COUNCIL){
+        ctx.fillStyle='#600000';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.fillStyle='#900000';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,RENDER_TILE-4,RENDER_TILE-4);
+        const p=(Math.sin(Date.now()/500)+1)/2;
+        ctx.globalAlpha=0.3+p*0.4;ctx.fillStyle='#ff2200';
+        ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+5,RENDER_TILE-10,RENDER_TILE-10);ctx.globalAlpha=1;
+        ctx.fillStyle='#ffaa00';ctx.font=Math.round(RENDER_TILE*0.45)+'px sans-serif';ctx.textAlign='center';
+        ctx.fillText('C',c*RENDER_TILE+RENDER_TILE/2,r*RENDER_TILE+RENDER_TILE*0.7);ctx.textAlign='left';
+      }
+      else if(t===T_HOUSE){
+        ctx.fillStyle='#c8a050';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.fillStyle='#b08030';
+        if((tr+tc)%3===0)ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,2);
+        if((tr+tc)%3===1)ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE+10,RENDER_TILE,2);
+      }
+      else if(t===T_TEMPLE){
+        ctx.fillStyle='#c8b860';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        // gold marble tile lines
+        ctx.fillStyle='rgba(0,0,0,.12)';
+        ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,1);
+        ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,1,RENDER_TILE);
+        ctx.fillStyle='rgba(255,255,200,.25)';
+        ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,RENDER_TILE-4,RENDER_TILE-4);
+      } else if(t===T_STATUE){
+        // Golden glowing statue
+        const p=(Math.sin(Date.now()/700)+1)/2;
+        ctx.fillStyle='#8a6a10';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.fillStyle=`rgba(${Math.floor(220+p*35)},${Math.floor(180+p*30)},50,1)`;
+        ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+1,RENDER_TILE-6,RENDER_TILE-2);
+        ctx.globalAlpha=0.3+p*0.4;
+        ctx.fillStyle='#fff8a0';
+        ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+3,RENDER_TILE-10,RENDER_TILE-6);
+        ctx.globalAlpha=1;
+      } else if(t===T_HOUSE_WALL){
+        ctx.fillStyle='#6a3a1a';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.fillStyle='#8b5a2b';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,RENDER_TILE-4,RENDER_TILE-4);
+        ctx.fillStyle='#5a2a0a';ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE+6,RENDER_TILE-12,RENDER_TILE-12);
+      }
     }
   }
   // peer
+  // Draw world trainers
+  drawTrainers(ctx,cc,cr);
   if(G.conn&&G.mpPeerPos){
     const{col:pc,row:pr}=G.mpPeerPos,sx=(pc-cc)*16,sy=(pr-cr)*16;
     if(sx>=0&&sx<CANVAS_W&&sy>=0&&sy<CANVAS_H){ctx.fillStyle='#f00';ctx.fillRect(sx,sy,RENDER_TILE,RENDER_TILE);ctx.fillStyle='#fff';ctx.font='5px sans-serif';ctx.fillText('P2',sx+2,sy+9);}
@@ -2268,21 +2834,27 @@ function startWalk(){
           }
         }
         // SECRET TILE — trigger Three Rats encounter when stepped on
-        if(t===T_SECRET&&nr===53&&nc>=19&&nc<=23){
-          if(!G._ratsDefeated){
+        if(t===T_SECRET&&nr===53&&nc===36){
+          if(!G._ratsDefeated&&!G.caught.has('threerats')){
             triggerRatsEncounter();return;
           }
         }
         PLAYER.prevRow=nr;PLAYER.prevCol=nc;
+        // Check trainer encounters
+        if(checkTrainerEncounters(nr,nc))return;
+        // STATUE trigger — player walks to row 57 inside temple (1 tile south of statue base)
+        if(nr===57&&nc>=100&&nc<=105){checkTempleStatue(nr,nc);return;}
         // buildings — enter silently, no msg
         for(let dr=-1;dr<=0;dr++) for(let dc=-1;dc<=1;dc++){
           const bt=WORLD_MAP[nr+dr]?.[nc+dc];
           if(bt===T_CENTER){stopWalk();showView('center');renderCenter();return;}
           if(bt===T_SHOP){stopWalk();showView('shop');updateShopMoney();return;}
+          if(bt===T_STATUE){
+            checkTempleStatue(nr,nc);return;
+          }
           if(bt===T_GYM){
-            // Find which gym this is
             const gymId=getGymId(nr,nc);
-            if(gymId>=0) openGym(gymId);return;
+            if(gymId>=0){stopWalk();openGym(gymId);}return;
           }
           if(bt===T_COUNCIL){
             if((G.gymsBeaten||[]).filter(Boolean).length<7){
@@ -2306,7 +2878,8 @@ function stopWalk(){
 
 function showRegionBanner(name){
   const b=document.getElementById('region-banner');
-  const labels={'BIG JAYJ HOUSE':"🏠 BIG JAYJ'S HOUSE",'GYM 1':'🏋️ STARTER GYM','GYM 2':'🏋️ STREET GYM','GYM 3':'🌋 BLAZE GYM','GYM 4':'⛰️ PEAK GYM','GYM 5':'💪 BULK GYM','GYM 6':'🏙️ CITY GYM','GYM 7':'💀 SHADOW GYM','COUNCIL':'🔥 COUNCIL OF 53','TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE','THE VOID':'🕳️ THE VOID'};
+  if(!b)return;
+  const labels={'TEMPLE':"⛩️ TEMPLE OF GODS",'BIG JAYJ HOUSE':"🏠 BIG JAYJ'S HOUSE",'GYM 1':'🏋️ STARTER GYM','GYM 2':'🏋️ STREET GYM','GYM 3':'🌋 BLAZE GYM','GYM 4':'⛰️ PEAK GYM','GYM 5':'💪 BULK GYM','GYM 6':'🏙️ CITY GYM','GYM 7':'💀 SHADOW GYM','COUNCIL':'🔥 COUNCIL OF 53','TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE','THE VOID':'🕳️ THE VOID'};
   b.textContent=labels[name]||name;b.style.display='block';
   setTimeout(()=>b.style.display='none',2500);
 }
@@ -2569,8 +3142,8 @@ function refreshBattleUI(isMythic=false){
   (document.getElementById('esp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:${mAnim};transform-origin:center">${ed.draw()}</div>`;
   (document.getElementById('psp')||{}).innerHTML=`<div style="width:100%;height:100%;animation:${pAnim}">${pd.draw()}</div>`;
   const bf=document.getElementById('bf'),btb=document.getElementById('btb'),bfiE=document.getElementById('bfi-e');
-  if(isMythic){bf.classList.add('mythic-bg');btb.classList.add('mythic-text');bfiE.classList.add('mythic-info');}
-  else{bf.classList.remove('mythic-bg');btb.classList.remove('mythic-text');bfiE.classList.remove('mythic-info');}
+  if(isMythic){if(bf)bf.classList.add('mythic-bg');if(btb)btb.classList.add('mythic-text');if(bfiE)bfiE.classList.add('mythic-info');}
+  else{if(bf)bf.classList.remove('mythic-bg');if(btb)btb.classList.remove('mythic-text');if(bfiE)bfiE.classList.remove('mythic-info');}
   (document.getElementById('bfen')||{}).className='bfn'+(isMythic?' mythic-name':'');
   (document.getElementById('bfen')||{}).textContent=ed.name+(isMythic?' ✨':'');
   (document.getElementById('bfelv')||{}).textContent=`Lv.${en.lv}`;
@@ -2580,8 +3153,16 @@ function refreshBattleUI(isMythic=false){
   pd.moves.forEach((mv,i)=>{
     const nb=document.getElementById(`bm${i+1}n`);
     const pb=document.getElementById(`bm${i+1}p`);
+    const tb=document.getElementById(`bm${i+1}t`);
     if(nb)nb.textContent=mv.name;
     if(pb)pb.textContent=`PWR:${mv.pwr}`;
+    if(tb&&en){
+      const mult=getTypeMultiplier(pl.key,en.key);
+      if(mult===2){tb.textContent='▲ 2× SUPER';tb.className='bmt se';}
+      else if(mult===0.5){tb.textContent='▼ ½× WEAK';tb.className='bmt nve';}
+      else if(mult===0){tb.textContent='✗ NO EFFECT';tb.className='bmt ni';}
+      else{tb.textContent='';tb.className='bmt';}
+    }
   });
   // Hide move buttons that don't have a move
   for(let i=1;i<=4;i++){
@@ -2623,7 +3204,7 @@ function lockBtns(v){
   // Also disable tab buttons
   ['btab-fight','btab-action'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
 }
-function calcDmg(atk,pwr,lv){return Math.max(1,Math.floor(atk*pwr/100*(0.85+Math.random()*0.15)+lv*0.5));}
+function calcDmg(atk,pwr,lv,mult=1){return Math.max(1,Math.floor(atk*pwr/100*(0.85+Math.random()*0.15)*mult+lv*0.5));}
 
 async function useMove(idx){
   if(G.locked||G.over)return;
@@ -2632,10 +3213,12 @@ async function useMove(idx){
   const pd=JAY[pl.key],ed=JAY[en.key];
   const move=pd.moves[idx];
   let dmg;
+  const typeMult=getTypeMultiplier(pl.key,en.key);
+  const typeLabel=getTypeLabel(typeMult);
   if(pd.specialVs&&pd.specialVs[en.key]==='oneshot')dmg=en.maxHp;
   else if((pl.key==='rotoscoperocco'&&en.key==='terry')||(pl.key==='terry'&&en.key==='rotoscoperocco'))
-    dmg=Math.floor(calcDmg(pd.baseAtk,move.pwr,en.lv)*0.7);
-  else dmg=calcDmg(pd.baseAtk,move.pwr,en.lv);
+    dmg=Math.floor(calcDmg(pd.baseAtk,move.pwr,en.lv,0.7));
+  else dmg=calcDmg(pd.baseAtk,move.pwr,en.lv,typeMult);
   en.hp=Math.max(0,en.hp-dmg);
 
   // MOVE ANIMATION
@@ -2647,7 +3230,7 @@ async function useMove(idx){
   const ew=document.getElementById('esp')?.firstChild;
   if(ew)ew.style.animation='s-hurt 0.35s ease';
   setHP('e',en.hp,en.maxHp,JAY[en.key].mythic);
-  setBT(`${pd.name}: ${move.name}! (${dmg})`);
+  setBT(`${pd.name}: ${move.name}! (${dmg})${typeLabel?' ▸ '+typeLabel:''}`);
   await sleep(520);
   if(ew)ew.style.animation=JAY[en.key].mythic?'mythic-idleF 1.6s ease-in-out infinite':'s-idleF 1.4s ease-in-out infinite';
   if(pw)pw.style.animation='s-idle 1.4s ease-in-out infinite';
@@ -2710,11 +3293,13 @@ async function enemyTurn(){
   const pl=G.party[G.activeIdx],en=G.enemy;
   const pd=JAY[pl.key],ed=JAY[en.key];
   const move=ed.moves[Math.random()<0.5?0:1];
+  const eTypeMult=getTypeMultiplier(en.key,pl.key);
+  const eTypeLabel=getTypeLabel(eTypeMult);
   let dmg;
   if(ed.specialVs&&ed.specialVs[pl.key]==='oneshot')dmg=pl.maxHp;
   else if((en.key==='rotoscoperocco'&&pl.key==='terry')||(en.key==='terry'&&pl.key==='rotoscoperocco'))
-    dmg=Math.floor(calcDmg(ed.baseAtk,move.pwr,pl.lv)*0.7);
-  else dmg=calcDmg(ed.baseAtk,move.pwr,pl.lv);
+    dmg=Math.floor(calcDmg(ed.baseAtk,move.pwr,pl.lv,0.7));
+  else dmg=calcDmg(ed.baseAtk,move.pwr,pl.lv,eTypeMult);
   pl.hp=Math.max(0,pl.hp-dmg);
 
   playMoveFX(move.name,true);
@@ -2776,7 +3361,10 @@ function openMidBattleSwitch(){
 
 function checkNextFighter(){
   const alive=G.party.filter(p=>p.hp>0);
-  if(alive.length===0){showView('gameover');(document.getElementById('go-text')||{}).textContent=`All fainted after ${G.battles} battles!`;return;}
+  if(alive.length===0){
+    // If we lost to the rats, mark resolved so they don't respawn
+    if(G.enemy&&G.enemy.key==='threerats'){G._ratsDefeated=true;G.noFlee=false;const rb=document.getElementById('bmf');if(rb){rb.disabled=false;rb.style.opacity='';}}
+    showView('gameover');(document.getElementById('go-text')||{}).textContent=`All fainted after ${G.battles} battles!`;return;}
   const list=document.getElementById('sel-list');list.innerHTML='';
   alive.forEach(inst=>{
     const i=G.party.indexOf(inst),d=JAY[inst.key];
@@ -2790,6 +3378,7 @@ function checkNextFighter(){
 
 async function tryBall(){
   if(G.locked||G.over)return;
+  if(G.enemy&&G.enemy._trainerBattle){setBT("Can't catch a trainer's Jayjamon!");lockBtns(false);return;}
   const en=G.enemy,ed=JAY[en.key],isMythic=ed.mythic||false;
   const hasBall=(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)>0;
   if(!hasBall){setBT('No Jayballs!');return;}
@@ -2802,18 +3391,20 @@ async function tryBall(){
   const rate=Math.min(isMythic?0.75:0.95,(isMythic?0.05:0.15)+(1-en.hp/en.maxHp)*0.65+catchBonus);
   const success=Math.random()<rate;
   const ov=document.getElementById('co'),ball=document.getElementById('co-ball'),txt=document.getElementById('co-txt');
-  const dots=[1,2,3].map(i=>document.getElementById(`cd${i}`));
+  if(!ov||!ball||!txt){lockBtns(false);return;}
+  const dots=[1,2,3].map(i=>document.getElementById(`cd${i}`)).filter(Boolean);
   dots.forEach(d=>{d.classList.remove('lit');d.className='co-dot'+(isMythic?' mythic-dot':'');});
   txt.className='co-txt'+(isMythic?' m':'');
   if(isMythic)ov.classList.add('mythic-catch');else ov.classList.remove('mythic-catch');
-  ball.style.animation='co-throw 0.5s ease-out forwards';ball.textContent=isMythic?'🟣':'⚪';
-  txt.textContent=`${ballName}...`;ov.classList.add('show');await sleep(700);
-  ball.textContent=isMythic?'💜':'🔵';ball.style.animation='co-shake 0.38s ease-in-out infinite';
-  for(let i=0;i<3;i++){await sleep(isMythic?600:480);if(i<3)dots[i].classList.add('lit');txt.textContent=`${['one...','two...','three...'][i]}`;}
-  await sleep(600);ov.classList.remove('show');ball.style.animation='';
+  if(ball){ball.style.animation='co-throw 0.5s ease-out forwards';ball.textContent=isMythic?'🟣':'⚪';}
+  if(txt)txt.textContent=`${ballName}...`;if(ov)ov.classList.add('show');await sleep(700);
+  if(ball){ball.textContent=isMythic?'💜':'🔵';ball.style.animation='co-shake 0.38s ease-in-out infinite';}
+  for(let i=0;i<3;i++){await sleep(isMythic?600:480);if(dots[i])dots[i].classList.add('lit');if(txt)txt.textContent=`${['one...','two...','three...'][i]}`;}
+  await sleep(600);if(ov)ov.classList.remove('show');if(ball)ball.style.animation='';
   (document.getElementById('ball-count')||{}).textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
   if(success){
     G.caught.add(en.key);
+    if(en.key==='threerats'){G._ratsDefeated=true;G.noFlee=false;} // rats resolved on catch too
     const alreadyOwned=G.party.find(p=>p.key===en.key)||(G.box||[]).find(p=>p.key===en.key);
     if(!alreadyOwned){
       if(G.party.filter(p=>p).length<6){
@@ -3238,7 +3829,7 @@ function mpSetHPBar(who,hp,max){
   const f=document.getElementById('mp-'+who+'-hp-fill');
   if(!f)return;
   f.style.width=pct+'%';f.className='bfhf'+(pct>50?'':pct>20?' mid':' low');
-  document.getElementById('mp-'+who+'-hp-num').textContent=Math.max(0,hp)+'/'+max;
+  (document.getElementById('mp-'+who+'-hp-num')||{}).textContent=Math.max(0,hp)+'/'+max;
 }
 function mpSetBattleMsg(msg,cursor=false){
   (document.getElementById('mp-btb')||{}).textContent=msg;
@@ -3390,7 +3981,7 @@ function devRun(){
   devHistIdx=-1;
   inp.value='';
   devPrint('> '+raw,'#00ff41');
-  devExec(raw.toLowerCase());
+  devExec(raw.toLowerCase(), raw);
 }
 function devPrint(msg,color='#00cc33'){
   const out=document.getElementById('dev-output');
@@ -3399,7 +3990,7 @@ function devPrint(msg,color='#00cc33'){
   line.style.fontSize='7px';
   line.style.lineHeight='1.9';
   line.style.fontFamily="'Press Start 2P',monospace";
-  line.textContent=msg;
+  if(line)line.textContent=msg;
   out.appendChild(line);
   out.scrollTop=out.scrollHeight;
 }
@@ -3407,9 +3998,10 @@ function devOk(msg){devPrint('✓ '+msg,'#00ff99');}
 function devErr(msg){devPrint('✗ ERROR: '+msg,'#ff4444');}
 function devInfo(msg){devPrint('  '+msg,'#888888');}
 
-function devExec(cmd){
+function devExec(cmd, rawOriginal){
   const parts=cmd.trim().split(/\s+/);
   const base=parts[0];
+  const raw=rawOriginal||cmd; // original casing preserved for text commands
 
   // ── HELP ──
   if(base==='help'){
@@ -3603,6 +4195,11 @@ function devExec(cmd){
       lair:       {col:14, row:27},
       center:     {col:23, row:8 },
       shop:       {col:23, row:13},
+      temple:     {col:102,row:57},
+      council:    {col:79, row:55},
+      void:       {col:19, row:56},
+      house:      {col:7,  row:30},
+      fields:     {col:111,row:20},
     };
     if(!region||!warps[region]){
       devErr(`Unknown region: "${region}"`);
@@ -3765,6 +4362,60 @@ function devExec(cmd){
   if(base==='clear'||base==='cls'){
     (document.getElementById('dev-output')||{}).innerHTML='';
     devPrint('Console cleared.','#444');return;
+  }
+
+  // ── PATCHNOTE COMMAND ──
+  if(base==='patchnote'){
+    const noteText=(rawOriginal||cmd).slice('patchnote'.length).trim();
+    if(!noteText){devErr('Usage: patchnote <your update text>');return;}
+    const num=addPatchNote(noteText);
+    devOk('Patch note v'+num+' saved!');
+    devInfo('"'+noteText+'"');
+    devInfo('Players will see it next time they open the game.');
+    return;
+  }
+
+  // ── LIST PATCH NOTES ──
+  if(base==='patchnotes'){
+    const notes=getPatchNotes();
+    if(!notes.length){devInfo('No patch notes yet. Use: patchnote <text>');return;}
+    devPrint('─── PATCH NOTES ───','#444');
+    notes.forEach((n,i)=>devInfo(`v${i+1} [${n.date}]: ${n.text}`));
+    return;
+  }
+
+  // ── DELETE PATCH NOTE ──
+  if(base==='delpatchnote'){
+    const idx=parseInt(parts[1]);
+    if(isNaN(idx)){devErr('Usage: delpatchnote <version number>');return;}
+    const notes=getPatchNotes();
+    if(idx<1||idx>notes.length){devErr(`No patch note v${idx}`);return;}
+    notes.splice(idx-1,1);
+    savePatchNotes(notes);
+    devOk(`Deleted patch note v${idx}`);return;
+  }
+
+  // ── COMPLETE COMMAND — unlock everything except final boss ──
+  if(base==='complete'){
+    // Beat all gyms
+    G.gymsBeaten=[true,true,true,true,true,true,true];
+    // Beat all council
+    G.councilBeaten=[true,true,true,true];
+    // Catch all dexable jayjamon (not hidden final boss)
+    DEXABLE_KEYS.forEach(k=>{
+      G.caught.add(k);G.seen.add(k);
+      if(!G.party.find(p=>p&&p.key===k)&&!(G.box||[]).find(p=>p&&p.key===k)){
+        if(G.party.filter(p=>p).length<6) G.party.push(newInst(k,50));
+        else{if(!G.box)G.box=[];G.box.push(newInst(k,50));}
+      }
+    });
+    G.megaKey=true;G._ratsDefeated=true;
+    G.money=(G.money||0)+9999;
+    updateHUD();scheduleAutoSave();
+    devOk('All gyms beaten, council defeated, JayDex completed!');
+    devInfo('Head to the Temple of Gods to attempt the final boss.');
+    devInfo('Use "warp temple" to get there fast.');
+    return;
   }
 
   // ── STEW EASTER EGG ──
@@ -4099,7 +4750,7 @@ function doSave(){submitLBScore();_origDoSave();}
 //  THREE RATS ENCOUNTER (secret tile, no flee)
 // ═══════════════════════════════════════════
 function triggerRatsEncounter(){
-  if(G._ratsDefeated){startWalk();return;} // already beaten
+  if(G._ratsDefeated||G.caught.has('threerats')){startWalk();return;} // already resolved
   stopWalk();
   G.seen.add('threerats');
   SPAWNED_MYTHICS.add('threerats');
@@ -4197,16 +4848,24 @@ function getCouncilTeams(){
 }
 
 const GYM_LOCS=[
-  {r:3,c:5},{r:18,c:5},
-  {r:4,c:50},{r:4,c:72},
-  {r:24,c:48},{r:33,c:50},
-  {r:27,c:25},
+  {r:3,c:20},{r:18,c:20},
+  {r:4,c:65},{r:4,c:87},
+  {r:24,c:63},{r:33,c:65},
+  {r:27,c:40},
 ];
 
 function getGymId(pr,pc){
-  for(let i=0;i<GYM_LOCS.length;i++){
-    const{r,c}=GYM_LOCS[i];
-    if(pr>=r-1&&pr<=r+3&&pc>=c-1&&pc<=c+4) return i;
+  // Find which gym the player is adjacent to by checking nearby tiles
+  for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+    const tr=pr+dr,tc=pc+dc;
+    if(tr<0||tr>=TILE.ROWS||tc<0||tc>=TILE.COLS)continue;
+    if(WORLD_MAP[tr][tc]===T_GYM){
+      // Found a gym tile — find which gym it belongs to
+      for(let i=0;i<GYM_LOCS.length;i++){
+        const{r,c}=GYM_LOCS[i];
+        if(tr>=r&&tr<r+3&&tc>=c&&tc<c+3) return i;
+      }
+    }
   }
   return -1;
 }
@@ -4230,7 +4889,7 @@ function openGym(gymId){
 
   // Leader card
   const card=document.getElementById('gym-leader-card');
-  card.innerHTML=`<div style="font-size:16px">${gym.emoji}</div>
+  if(card)card.innerHTML=`<div style="font-size:16px">${gym.emoji}</div>
     <div>
       <div style="font-size:6px;color:#e8d020">${gym.leader}</div>
       <div style="font-size:5px;color:#888;margin-top:2px">${gym.leaderTeam.map(([k,lv])=>JAY[k]?.name+' Lv.'+lv).join(' · ')}</div>
@@ -4239,12 +4898,12 @@ function openGym(gymId){
   const fightBtn=document.getElementById('gym-fight-btn');
   const sub=document.getElementById('gym-leader-sub');
   if(beaten){
-    fightBtn.textContent='⚔️ REMATCH LEADER';
-    sub.textContent='already beaten · rematch available';
-    currentGymPhase=1; // skip to leader for rematch
+    if(fightBtn)fightBtn.textContent='⚔️ REMATCH LEADER';
+    if(sub)sub.textContent='already beaten · rematch available';
+    currentGymPhase=1;
   } else {
-    fightBtn.textContent='⚔️ CHALLENGE LEADER';
-    sub.textContent='beat trainers first · then the leader';
+    if(fightBtn)fightBtn.textContent='⚔️ CHALLENGE LEADER';
+    if(sub)sub.textContent='beat trainers first · then the leader';
   }
 
   showView('gym');
@@ -4314,6 +4973,38 @@ function _handleTrainerChain(caught){
     return false; // fall through to normal endBattle (world/gameover)
   }
 
+  // ── FINAL BOSS PHASE TRANSITION ──
+  if(G.enemy&&G.enemy._isFinalBoss&&enemyWasKO){
+    if(G._finalBossPhase===1){
+      // Phase 1 done — transition to true final boss
+      G._finalBossPhase=2;
+      G.enemy=newInst('omegadevourerjayj',100);
+      G.enemy._trainerBattle=true;
+      G.enemy._isFinalBoss=true;
+      G.over=false;G.locked=false;
+      // Dramatic transition
+      const bf=document.getElementById('bf');
+      if(bf){bf.style.background='linear-gradient(180deg,#000000 0%,#0a0000 40%,#1a0800 100%)';}
+      setTimeout(()=>{
+        refreshBattleUI(true);
+        setBT('Shin Goddzilla... fainted?\n\n...\n\n👁️  THE TRUE FORM AWAKENS  👁️\nOMEGA DEVOURER JAYJ!',false);
+      },500);
+      return true;
+    } else if(G._finalBossPhase===2){
+      // TRUE FINAL BOSS DEFEATED
+      G._finalBossDefeated=true;
+      G.noFlee=false;
+      const runBtn=document.getElementById('bmf');
+      if(runBtn){runBtn.disabled=false;runBtn.style.opacity='';}
+      G.caught.add('shingoddzilla');G.caught.add('omegadevourerjayj');
+      G.seen.add('shingoddzilla');G.seen.add('omegadevourerjayj');
+      scheduleAutoSave();
+      toast('🌟🌟🌟\nOMEGA DEVOURER JAYJ\nDEFEATED!\n\nYOU ARE THE TRUE\nJAYJAMON MASTER!\n🌟🌟🌟');
+      setTimeout(()=>{endBattle(false);},500);
+      return true;
+    }
+  }
+
   // ── GYM trainer chain ──
   const ctx=G._gymBattleContext;
   if(ctx&&isTrainerBattle&&enemyWasKO){
@@ -4343,12 +5034,21 @@ function _handleTrainerChain(caught){
       const gym=GYMS[ctx.gymId];
       toast('Badge earned! '+gym.leader+' defeated!');
       scheduleAutoSave();
+    } else if(ctx.type==='worldtrainer'){
+      initTrainers();
+      G.trainerBeaten[ctx.trainerIdx]=true;
+      const wt=WORLD_TRAINERS[ctx.trainerIdx];
+      toast(wt.name+' was defeated! ⭐');
+      G.money+=50+Math.floor(Math.random()*100);
+      updateHUD();
+      scheduleAutoSave();
     } else {
       currentGymTrainerIdx++;
       currentGymPhase=(currentGymTrainerIdx>=GYMS[ctx.gymId].teams.length)?1:0;
       toast('Trainer defeated!');
     }
-    setTimeout(()=>{showView('gym');openGym(ctx.gymId);},400);
+    if(ctx.type==='worldtrainer'){setTimeout(()=>{showView('world');startWalk();},400);}
+    else{setTimeout(()=>{showView('gym');openGym(ctx.gymId);},400);}
     return true;
   }
 
@@ -4442,6 +5142,335 @@ function startCouncilBattle(memberIdx){
   (document.getElementById('bf')||{style:{}}).style.background='linear-gradient(180deg,#1a0000 0%,#2a0000 60%,var(--gb4) 100%)';
   refreshBattleUI(false);
   setBT(`COUNCIL MEMBER: ${member.name}! Lv.100 ${JAY[first.key]?.name}!`,false);
+}
+
+
+// ═══════════════════════════════════════════
+//  PATCH NOTES SYSTEM
+// ═══════════════════════════════════════════
+function getPatchNotes(){
+  try{const raw=_ls.get('jayjamon_patchnotes');return raw?JSON.parse(raw):[];}catch(e){return[];}
+}
+function savePatchNotes(notes){
+  _ls.set('jayjamon_patchnotes',JSON.stringify(notes));
+}
+function addPatchNote(text){
+  const notes=getPatchNotes();
+  notes.push({text,date:new Date().toLocaleDateString('en-GB'),ts:Date.now()});
+  savePatchNotes(notes);
+  return notes.length;
+}
+function showPatchNotesModal(){
+  const notes=getPatchNotes();
+  if(!notes.length)return;
+  const list=document.getElementById('patchnotes-list');
+  if(!list)return;
+  list.innerHTML='';
+  // Show newest first
+  [...notes].reverse().forEach((n,i)=>{
+    const div=document.createElement('div');
+    div.style.cssText='padding:4px 0;border-bottom:1px solid var(--gb1);margin-bottom:3px;';
+    div.innerHTML=`<span style="color:var(--gb2)">v${notes.length-i}</span> <span style="color:var(--gb1)">[${n.date}]</span><br><span style="color:var(--gb4)">${n.text}</span>`;
+    list.appendChild(div);
+  });
+  const m=document.getElementById('patchnotes-modal');
+  if(m)m.style.display='flex';
+}
+function closePatchNotes(){
+  const m=document.getElementById('patchnotes-modal');
+  if(m)m.style.display='none';
+}
+// Show patch notes on first load if any exist
+setTimeout(()=>{
+  const notes=getPatchNotes();
+  if(notes.length>0) showPatchNotesModal();
+},800);
+
+
+// ═══════════════════════════════════════════
+//  WORLD TRAINERS
+// ═══════════════════════════════════════════
+// Each trainer: row, col, name, colour, jayjamon teams
+// Trainers face a fixed direction. Stepping adjacent triggers battle.
+// Once beaten, they turn grey and won't battle again until reset.
+
+const WORLD_TRAINERS=[
+  // ── TOWN ──
+  {r:5, c:19, name:'LADS LAD BRAD',    col:'#e06030', dir:'D',
+   team:[['indie',8],['alby',9]]},
+  {r:20, c:20, name:'VIBES GURL',      col:'#cc44aa', dir:'U',
+   team:[['jesse',10],['rohan',11]]},
+  {r:8, c:36, name:'OSCAR FAN',         col:'#44aa44', dir:'L',
+   team:[['oscar',12],['oscar',13]]},
+  {r:22, c:42, name:'ELLIOT JR',        col:'#3366cc', dir:'R',
+   team:[['elliot',14],['arlie',13],['nick',12]]},
+
+  // ── VOLCANO ──
+  {r:6, c:66, name:'LAVA LENNY',        col:'#cc3300', dir:'D',
+   team:[['jesse',18],['jesse',19],['leprechaun',20]]},
+  {r:12, c:72, name:'SPICE QUEEN',      col:'#ff6600', dir:'L',
+   team:[['leprechaun',22],['hangryjayj',20]]},
+
+  // ── MOUNTAIN / ICE RINK ──
+  {r:5, c:88, name:'MOUNTAIN MAN',      col:'#8899aa', dir:'D',
+   team:[['rohan',22],['drrohan',22],['almond',20]]},
+  {r:16, c:93, name:'ICE QUEEN CAROL',  col:'#aaddff', dir:'U',
+   team:[['freakypratiky',30],['alby',28],['nick',29]]},
+
+  // ── JAYJ'S NOSE ──
+  {r:25, c:65, name:'NOSE APPRECIATOR', col:'#c8a030', dir:'L',
+   team:[['jayj',25],['jayjdugong',24],['jayj',26]]},
+  {r:26, c:78, name:'BULK BOY',         col:'#886633', dir:'R',
+   team:[['jayj',28],['ratoscar',26],['oscar',27]]},
+
+  // ── BIRMINGHAM ──
+  {r:33, c:72, name:'CITY SLICKER',     col:'#667799', dir:'U',
+   team:[['richieIndie',32],['elliot',34],['arlie',33]]},
+  {r:44, c:64, name:'BRUMMY BOB',        col:'#5577aa', dir:'R',
+   team:[['rocco',36],['ratoscar',35],['hangryjayj',34]]},
+  {r:36, c:96, name:'BRUM HARD KAREN',  col:'#aa4499', dir:'L',
+   team:[['omegajayj',40],['jayj',38],['jayjdugong',36]]},
+
+  // ── MYTHICAL LAIR ──
+  {r:35, c:28, name:'LAIR GUARDIAN',    col:'#660099', dir:'D',
+   team:[['rocco',38],['elliot',40],['drrohan',38]]},
+  {r:46, c:48, name:'SHADOW KNIGHT',    col:'#330066', dir:'U',
+   team:[['richieIndie',44],['hangryjayj',42],['ratoscar',44]]},
+
+  // ── BIG JAYJ'S HOUSE ──
+  {r:10, c:7, name:'HOUSE BUTLER',      col:'#c8a050', dir:'R',
+   team:[['boriscat',30],['eviltree',30],['bataar',28]]},
+  {r:30, c:8, name:'MIDNIGHT MONK',     col:'#334466', dir:'L',
+   team:[['bataar',35],['almond',32],['ghostly',30]]},
+
+  // ── VOID ──
+  {r:56, c:19, name:'VOID WANDERER',    col:'#aa00cc', dir:'D',
+   team:[['luxembourgian',40],['milkteaman',38],['bellybuttonfluff',40]]},
+
+  // ── THE FIELDS ──
+  {r:10, c:111, name:'FIELD MASTER',    col:'#2a6a0a', dir:'L',
+   team:[['indie',50],['richieIndie',52],['jfmk',50],['leprechaun',52]]},
+  {r:30, c:110, name:'WILD WANDERER',   col:'#448822', dir:'U',
+   team:[['rohan',48],['almond',50],['drrohan',49]]},
+];
+
+// Track which trainers have been beaten (by index)
+// Loaded/saved with game state
+
+function initTrainers(){
+  if(!G.trainerBeaten)G.trainerBeaten=new Array(WORLD_TRAINERS.length).fill(false);
+}
+
+function drawTrainers(ctx,cc,cr){
+  initTrainers();
+  const T=RENDER_TILE,s=T/16;
+  WORLD_TRAINERS.forEach((tr,i)=>{
+    const sx=(tr.c-cc)*T,sy=(tr.r-cr)*T;
+    if(sx<-T||sx>480+T||sy<-T||sy>240+T)return;
+    const beaten=G.trainerBeaten[i];
+    // Body
+    ctx.fillStyle=beaten?'#555':tr.col;
+    ctx.fillRect(sx+3*s,sy+5*s,10*s,8*s);
+    // Head
+    ctx.fillStyle=beaten?'#777':'#f5c5a3';
+    ctx.fillRect(sx+4*s,sy+1*s,8*s,6*s);
+    // Hair
+    ctx.fillStyle=beaten?'#444':'#222';
+    ctx.fillRect(sx+4*s,sy+0,8*s,3*s);
+    // Eyes (direction-dependent dot)
+    ctx.fillStyle='#fff';
+    const ed2={U:[7,1],D:[7,6],L:[2,4],R:[12,4]}[tr.dir]||[7,4];
+    ctx.fillRect(sx+ed2[0]*s,sy+ed2[1]*s,2*s,2*s);
+    // "!" exclamation above if not beaten and nearby
+    const pdist=Math.abs(PLAYER.row-tr.r)+Math.abs(PLAYER.col-tr.c);
+    if(!beaten&&pdist<=5){
+      ctx.fillStyle='#ffee00';
+      ctx.font='bold '+(T*0.6)+'px monospace';
+      ctx.textAlign='center';
+      ctx.fillText('!',sx+T/2,sy-2);
+      ctx.textAlign='left';
+    }
+    // "✓" if beaten
+    if(beaten){
+      ctx.fillStyle='#88cc44';
+      ctx.font=(T*0.5)+'px monospace';
+      ctx.textAlign='center';
+      ctx.fillText('✓',sx+T/2,sy-1);
+      ctx.textAlign='left';
+    }
+    // Legs
+    ctx.fillStyle=beaten?'#444':'#1a1a2a';
+    const lob=0;
+    ctx.fillRect(sx+4*s,sy+13*s,4*s,3*s);
+    ctx.fillRect(sx+8*s,sy+13*s,4*s,3*s);
+  });
+}
+
+function checkTrainerEncounters(nr,nc){
+  initTrainers();
+  for(let i=0;i<WORLD_TRAINERS.length;i++){
+    if(G.trainerBeaten[i])continue;
+    const tr=WORLD_TRAINERS[i];
+    const dist=Math.abs(nr-tr.r)+Math.abs(nc-tr.c);
+    if(dist===1){
+      // Player is directly adjacent — trigger battle
+      startTrainerBattle(i);
+      return true;
+    }
+  }
+  return false;
+}
+
+function startTrainerBattle(trainerIdx){
+  stopWalk();
+  const tr=WORLD_TRAINERS[trainerIdx];
+  const teamPairs=tr.team.filter(([k])=>JAY[k]); // filter invalid keys
+  if(!teamPairs.length){startWalk();return;}
+  G._gymBattleContext={type:'worldtrainer',trainerIdx,gymId:-1};
+  const first=teamPairs[0];
+  G.enemy=newInst(first[0],first[1]);
+  G.enemy._trainerBattle=true;
+  G.enemy._teamPairs=teamPairs;
+  G.enemy._teamIdx=0;
+  G.enemy._trainerIdx=trainerIdx;
+  G.battles++;G.over=false;G.locked=false;G.noFlee=false; // can flee world trainers
+  showView('battle');
+  document.getElementById('bf').style.background='';
+  document.getElementById('bf').classList.remove('mythic-bg');
+  refreshBattleUI(false);
+  toast(tr.name+' wants to battle! ⚔️');
+  setBT(tr.name+' sends out '+JAY[first[0]].name+'!',false);
+  scheduleAutoSave();
+}
+
+
+function openTypeChart(){
+  showView('typechart');
+  const el=document.getElementById('typechart-body');
+  if(!el)return;
+  el.innerHTML='';
+
+  // Get all unique primary types that appear in the actual game
+  const usedTypes=new Set();
+  Object.values(JAY).forEach(d=>{
+    const t=getPrimaryType(d.type);
+    if(t)usedTypes.add(t);
+  });
+
+  // Sort types alphabetically
+  const sorted=[...usedTypes].sort();
+
+  sorted.forEach(atkType=>{
+    const chart=TYPES[atkType];
+    if(!chart)return;
+
+    const card=document.createElement('div');
+    card.style.cssText='background:linear-gradient(135deg,rgba(15,40,15,.95),rgba(8,24,8,.9));border:2px solid var(--gb1);border-radius:4px;padding:8px 10px;';
+
+    // Type name header
+    const header=document.createElement('div');
+    header.style.cssText='font-size:6px;color:var(--gb2);margin-bottom:5px;letter-spacing:1px;';
+    header.textContent=atkType.toUpperCase();
+    card.appendChild(header);
+
+    // Rows
+    const rows=[
+      {label:'▲ STRONG VS',list:chart.strong,color:'#ff6633',badge:'2×'},
+      {label:'▼ WEAK VS',  list:chart.weak,  color:'#4488cc',badge:'½×'},
+      {label:'✗ IMMUNE TO',list:chart.immune,color:'#888888',badge:'0'},
+    ];
+
+    rows.forEach(({label,list,color,badge})=>{
+      if(!list.length)return;
+      const row=document.createElement('div');
+      row.style.cssText='display:flex;align-items:flex-start;gap:5px;margin-top:3px;flex-wrap:wrap;';
+
+      const lbl=document.createElement('span');
+      lbl.style.cssText=`font-size:4px;color:${color};flex-shrink:0;width:52px;padding-top:1px;`;
+      lbl.textContent=label;
+      row.appendChild(lbl);
+
+      const tags=document.createElement('div');
+      tags.style.cssText='display:flex;gap:3px;flex-wrap:wrap;';
+      list.forEach(t=>{
+        const tag=document.createElement('span');
+        tag.style.cssText=`font-size:4px;padding:1px 4px;border:1px solid ${color};border-radius:2px;color:${color};background:rgba(0,0,0,.4);`;
+        tag.textContent=t;
+        tags.appendChild(tag);
+      });
+      row.appendChild(tags);
+      card.appendChild(row);
+    });
+
+    el.appendChild(card);
+  });
+}
+
+
+// ═══════════════════════════════════════════
+//  TEMPLE OF GODS — FINAL BOSS
+// ═══════════════════════════════════════════
+const DEXABLE_KEYS=ALL_KEYS.filter(k=>!JAY[k]?.hidden);
+
+function templeGateCheck(){
+  const gyms=(G.gymsBeaten||[]).every(Boolean);
+  const council=(G.councilBeaten||[]).every(Boolean);
+  const dex=DEXABLE_KEYS.every(k=>G.caught.has(k));
+  return{gyms,council,dex,open:gyms&&council&&dex};
+}
+
+function checkTempleStatue(pr,pc){
+  stopWalk();
+  const check=templeGateCheck();
+  if(!check.open){
+    const missing=[];
+    if(!check.gyms) missing.push('all 7 gym badges');
+    if(!check.council) missing.push('all 4 Council members');
+    if(!check.dex) missing.push(`complete JayDex (${DEXABLE_KEYS.filter(k=>G.caught.has(k)).length}/${DEXABLE_KEYS.length})`);
+    toast('The statue is silent...\n\nYou still need:\n'+missing.join('\n'));
+    setTimeout(()=>startWalk(),100);
+    return;
+  }
+  if(G._finalBossDefeated){
+    toast('The Omega Devourer slumbers.\nYou already proved yourself.');
+    setTimeout(()=>startWalk(),100);
+    return;
+  }
+  // Show confirmation prompt
+  showTemplePrompt();
+}
+
+function showTemplePrompt(){
+  const modal=document.getElementById('temple-prompt');
+  if(modal)modal.style.display='flex';
+}
+function hideTemplePrompt(){
+  const modal=document.getElementById('temple-prompt');
+  if(modal)modal.style.display='none';
+}
+function acceptFinalBoss(){
+  hideTemplePrompt();
+  // Phase 1: Shin Goddzilla
+  G._finalBossPhase=1;
+  G.enemy=newInst('shingoddzilla',99);
+  G.enemy._trainerBattle=true; // no catching
+  G.enemy._teamPairs=[['shingoddzilla',99]];
+  G.enemy._teamIdx=0;
+  G.enemy._isFinalBoss=true;
+  G.noFlee=true;G.battles++;G.over=false;G.locked=false;
+  setTimeout(()=>{
+    document.getElementById('bmf').disabled=true;
+    document.getElementById('bmf').style.opacity='0.2';
+  },200);
+  showView('battle');
+  const bf=document.getElementById('bf');
+  if(bf){bf.classList.add('mythic-bg');bf.style.background='linear-gradient(180deg,#001000 0%,#002000 40%,#003000 100%)';}
+  refreshBattleUI(true);
+  setBT('⚡ THE STATUE TREMBLES... ⚡\nSHIN GODDZILLA RISES!',false);
+}
+function declineFinalBoss(){
+  hideTemplePrompt();
+  startWalk();
 }
 
 buildStarters();
