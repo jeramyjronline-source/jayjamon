@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>JAYJAMON</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js"></script>
 
@@ -15,7 +15,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:#111;display:flex;flex-direction:column;align-items:center;
-  min-height:100dvh;padding:6px 4px 16px;font-family:'Press Start 2P',monospace;
+  min-height:100dvh;padding:4px 3px 10px;font-family:'Press Start 2P',monospace;
   background-image:radial-gradient(ellipse at 50% 0%,rgba(139,172,15,.1) 0%,transparent 60%);}
 h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(--gb0),5px 5px 0 rgba(0,0,0,.5);
   letter-spacing:5px;text-align:center;margin-bottom:4px;}
@@ -30,7 +30,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 #save-indicator{font-size:5px;color:var(--gb1);}
 
 /* SHELL */
-#shell{width:100%;max-width:480px;background:var(--gb0);border:3px solid var(--gb1);
+#shell{width:100%;max-width:500px;background:var(--gb0);border:3px solid var(--gb1);
   border-radius:6px;padding:3px;box-shadow:0 0 30px rgba(139,172,15,.2),inset 0 0 16px rgba(0,0,0,.4);}
 #screen{background:var(--scr);border:2px solid var(--gb1);border-radius:4px;
   position:relative;overflow:hidden;}
@@ -41,7 +41,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 .view.active{display:flex;}
 
 /* STARTER */
-#view-starter{padding:12px;gap:7px;overflow-y:auto;}
+#view-starter{padding:10px;gap:6px;overflow-y:auto;max-height:80dvh;}
 #view-starter h2{font-size:8px;color:var(--gb0);text-align:center;}
 #view-starter p{font-size:5px;color:var(--gb1);line-height:1.8;text-align:center;}
 .s-opt{background:var(--gb2);border:2px solid var(--gb0);border-radius:2px;padding:8px 10px;
@@ -54,7 +54,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
 
 /* WORLD */
 #view-world{padding:0;position:relative;line-height:0;}
-#world-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:none;aspect-ratio:2/1;}
+#world-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:none;}
 #world-hud{position:absolute;top:6px;left:6px;right:6px;display:flex;justify-content:space-between;
   pointer-events:none;z-index:10;flex-wrap:wrap;gap:3px;}
 .hud-box{background:rgba(15,56,15,.9);border:2px solid var(--gb2);padding:3px 6px;border-radius:2px;}
@@ -284,7 +284,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-world">
    <canvas id="world-canvas" width="480" height="240"></canvas>
    <div id="world-hud">
-    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/15</div></div>
+    <div class="hud-box"><div class="hud-label">CAUGHT</div><div class="hud-val" id="hud-caught">0/18</div></div>
     <div class="hud-box"><div class="hud-label">REGION</div><div class="hud-val" id="hud-region">TOWN</div></div>
     <div class="hud-box"><div class="hud-label">₽</div><div class="hud-val" id="hud-money">500</div></div>
    </div>
@@ -301,12 +301,21 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
     <div class="pp"><div class="bsw" id="psp"></div><div class="bfi"><div class="bfn" id="bfpn">???</div><div class="bflv" id="bfplv">Lv.?</div><div class="bfhl">HP</div><div class="bfht"><div class="bfhf" id="bfphf" style="width:100%"></div></div><div class="bfhn" id="bfphn">—</div></div></div>
    </div>
    <div id="btb"><span id="bt">...</span><span style="display:inline-block;width:7px;height:7px;background:currentColor;margin-left:4px;animation:blink .7s step-end infinite" id="btc"></span></div>
+   <!-- Fight tab / Action tab toggle -->
+   <div id="bmen-tabs" style="display:flex;background:var(--gb0);">
+    <button id="btab-fight" onclick="battleTab('fight')" style="flex:1;background:var(--gb2);border:none;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb0);padding:5px;cursor:pointer;">⚔ FIGHT</button>
+    <button id="btab-action" onclick="battleTab('action')" style="flex:1;background:var(--gb1);border:none;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gb4);padding:5px;cursor:pointer;">▸ ACTION</button>
+   </div>
    <div id="bmen">
     <button class="bmb" id="bm1" onclick="useMove(0)"><span id="bm1n">FIGHT</span><span class="bs" id="bm1p">PWR —</span></button>
     <button class="bmb" id="bm2" onclick="useMove(1)"><span id="bm2n">FIGHT</span><span class="bs" id="bm2p">PWR —</span></button>
+    <button class="bmb" id="bm3" onclick="useMove(2)"><span id="bm3n">FIGHT</span><span class="bs" id="bm3p">PWR —</span></button>
+    <button class="bmb" id="bm4" onclick="useMove(3)"><span id="bm4n">FIGHT</span><span class="bs" id="bm4p">PWR —</span></button>
+   </div>
+   <div id="bmen-action" style="display:none;background:var(--scr);display:none;grid-template-columns:1fr 1fr;">
     <button class="bmb bcatch" id="bmc" onclick="tryBall()">JAYBALL<span class="bs" id="ball-count">x0</span></button>
     <button class="bmb bitem" id="bmi" onclick="usePotionInBattle()">POTION<span class="bs" id="pot-count">x0</span></button>
-    <button class="bmb" id="bms" onclick="openMidBattleSwitch()" style="color:#5577cc">SWITCH<span class="bs">swap jayjamon</span></button>
+    <button class="bmb" id="bms" onclick="openMidBattleSwitch()" style="color:#5577cc">SWITCH<span class="bs">swap</span></button>
     <button class="bmb bflee" id="bmf" onclick="battleFlee()" style="border-right:none">RUN<span class="bs">escape!</span></button>
    </div>
   </div>
@@ -322,7 +331,7 @@ h1{font-size:clamp(18px,4.5vw,32px);color:var(--gb2);text-shadow:3px 3px 0 var(-
   <div class="view" id="view-menu">
    <div class="panel-title">MENU</div>
    <button class="menu-btn" onclick="showView('world');startWalk()">▸ BACK TO WORLD<span class="ms">resume exploring</span></button>
-   <button class="menu-btn" onclick="showView('dex');renderDex()">▸ JAYDEX<span class="ms">14 Jayjamon + SONNY</span></button>
+   <button class="menu-btn" onclick="showView('dex');renderDex()">▸ JAYDEX<span class="ms">17 Jayjamon to catch</span></button>
    <button class="menu-btn" onclick="openBag()">▸ BAG<span class="ms">items &amp; jayballs</span></button>
    <button class="menu-btn" onclick="showView('mp')">▸ MULTIPLAYER<span class="ms">battle online</span></button>
    <button class="menu-btn" onclick="doSave()">▸ SAVE GAME<span class="ms">saves to your account</span></button>
@@ -638,6 +647,46 @@ const MOVE_FX={
   'PIXEL SHATTER':     {type:'scatter', color:'#ff00ff'},
   "RIVAL'S WRATH":     {type:'slash',   color:'#6600ff'},
   'PURPLE DEVASTATION':{type:'mega',    color:'#6600ff'},
+  'CONFUSED STARE':    {type:'vibes',   color:'#aaaaff'},
+  'CASUAL SHRUG':      {type:'sound',   color:'#6a8aaa'},
+  'DEATH STARE':       {type:'light',   color:'#1a3a5a'},
+  'INTENSE FOCUS':     {type:'slash',   color:'#88c0e8'},
+  'MOPE ATTACK':       {type:'vibes',   color:'#9988cc'},
+  'SAD CHORD':         {type:'sound',   color:'#aaaaee'},
+  'HEAT WAVE':         {type:'fire',    color:'#ff8800'},
+  'COMBUSTION':        {type:'fire',    color:'#ff4400'},
+  'KNOT LOCK':         {type:'vines',   color:'#226622'},
+  'ROOTS WRATH':       {type:'slash',   color:'#336633'},
+  'PRESCRIPTION BURN': {type:'light',   color:'#4090d0'},
+  'FOUR-EYES FURY':    {type:'slam',    color:'#4090d0'},
+  'CHROME SHINE':      {type:'light',   color:'#ffe0a0'},
+  'BALD TACKLE':       {type:'dash',    color:'#e8d0a0'},
+  'QUICK DASH':        {type:'dash',    color:'#60a0e0'},
+  'SMALL BUT DEADLY':  {type:'bite',    color:'#ff8844'},
+  'BLANK EXPRESSION':  {type:'vibes',   color:'#bbbbbb'},
+  'ACCIDENTAL HIT':    {type:'scatter', color:'#aaaaaa'},
+  'LASER GLARE':       {type:'light',   color:'#1a3a5a'},
+  'ANALYTICAL STRIKE': {type:'slash',   color:'#2288aa'},
+  'FAT ROLL':          {type:'stomp',   color:'#4a6ab0'},
+  'SEISMIC STOMP':     {type:'stomp',   color:'#3a5aa0'},
+  'MOUSE RUSH':        {type:'dash',    color:'#b0b0b0'},
+  'CHEESE BREATH':     {type:'gas',     color:'#ddcc00'},
+  'RAT FRENZY':        {type:'scatter', color:'#888888'},
+  'SEWER SURGE':       {type:'fire',    color:'#666644'},
+  'TOXIC TAIL':        {type:'slash',   color:'#668833'},
+  'FERAL SCREAM':      {type:'sound',   color:'#999999'},
+  'ULTRA GOD STOMP':   {type:'mega',    color:'#ff0000'},
+  'TRANSCENDENT SLAM': {type:'mega',    color:'#ff4400'},
+  'LAVA PILLAR':       {type:'eruption',color:'#ff6600'},
+  'VOLCANIC FURY':     {type:'fire',    color:'#ff4400'},
+  'HIMALAYAN STRIKE':  {type:'slam',    color:'#ccccff'},
+  'FREAKY DANCE':      {type:'scatter', color:'#ff00ff'},
+  'OMEGA WHEEZE':      {type:'gas',     color:'#4a6ab0'},
+  'FULL MASS DROP':    {type:'mega',    color:'#2a3a90'},
+  'FRAME TEAR':        {type:'glitch',  color:'#00ffff'},
+  'STATIC OVERLOAD':   {type:'glitch',  color:'#ff00ff'},
+  'COAT SLASH':        {type:'slash',   color:'#6600ff'},
+  'FINAL RECKONING':   {type:'mega',    color:'#440088'},
 };
 
 let fxParticles=[];
@@ -793,55 +842,154 @@ function animFx(){
   if(fxParticles.length>0) fxAnimId=requestAnimationFrame(animFx);
 }
 
+
+// NICK — relaxed dude, wavy brown hair, slightly confused look
+function sNick(){return svg([
+  // wavy brown hair, side-swept
+  [3,0,'#7a4a18',10,2],[2,1,'#7a4a18',12,3],[2,2,'#9a6228',12,2],
+  [2,1,'#9a6228',3,4],[11,1,'#7a4a18',3,4],
+  [3,3,'#9a6228',1,2],[12,3,'#9a6228',1,2],
+  // face
+  [4,3,'#f2c8a0',8,5],[5,4,'#f2c8a0',6,4],
+  // eyes — slightly squinting, confused
+  [5,5,'#5a3a18',2,1],[9,5,'#5a3a18',2,1],
+  [5,4,'#333',2,1],[9,4,'#333',2,1],
+  // slightly raised eyebrow on one side
+  [4,4,'#7a4a18',2,1],
+  // mouth — slight frown/unsure expression
+  [7,7,'#b06050',2,1],[6,7,'#c07060',1,1],[9,7,'#c07060',1,1],
+  // neck
+  [7,8,'#f2c8a0',2,2],
+  // casual tee — grey/blue
+  [4,10,'#6a8aaa',8,5],[3,10,'#6a8aaa',1,4],[12,10,'#6a8aaa',1,4],
+  // arms
+  [2,10,'#6a8aaa',2,4],[13,10,'#6a8aaa',2,4],
+  // hands
+  [2,14,'#f2c8a0',2,1],[13,14,'#f2c8a0',2,1],
+  // jeans
+  [5,15,'#3a5a88',3,1],[8,15,'#3a5a88',3,1],
+  // hair detail
+  [4,0,'#b07a30',4,1],[8,0,'#b07a30',3,1],
+])}
+
+// ELLIOT — sharp, intense, neat medium glasses, determined look
+function sElliot(){return svg([
+  // neat dark hair, short and tidy
+  [4,0,'#1a1a1a',8,2],[3,1,'#1a1a1a',10,3],[3,2,'#2a2a2a',10,2],
+  [3,3,'#1a1a1a',1,3],[12,3,'#1a1a1a',1,3],
+  // face
+  [4,3,'#f0d0b0',8,5],[5,4,'#f0d0b0',6,4],
+  // MEDIUM glasses — confident size, not huge, sharp angular frames
+  [4,5,'#222',4,3],[4,5,'#444',3,2],[5,6,'#88c0e8',2,1],
+  [9,5,'#222',4,3],[9,5,'#444',3,2],[10,6,'#88c0e8',2,1],
+  [8,6,'#222',1,1], // bridge
+  // intense focused eyes behind glasses
+  [5,6,'#1a3a5a',2,1],[10,6,'#1a3a5a',2,1],
+  [6,5,'#000',1,1],[11,5,'#000',1,1],
+  // determined straight mouth
+  [6,8,'#a06050',4,1],
+  // neck
+  [7,8,'#f0d0b0',2,2],
+  // shirt — smart, dark navy
+  [4,10,'#1a2a4a',8,5],[3,10,'#1a2a4a',1,4],[12,10,'#1a2a4a',1,4],
+  // collar detail
+  [7,10,'#2a3a5a',2,2],[6,10,'#1a2a4a',1,1],[9,10,'#1a2a4a',1,1],
+  // arms
+  [2,10,'#1a2a4a',2,4],[13,10,'#1a2a4a',2,4],
+  // hands
+  [2,14,'#f0d0b0',2,1],[13,14,'#f0d0b0',2,1],
+  // trousers — dark grey
+  [5,15,'#333',3,1],[8,15,'#333',3,1],
+  // glasses glint
+  [5,5,'#aaddff',1,1],[10,5,'#aaddff',1,1],
+])}
+
+// RAT OSCAR — evolved form, sleeker, meaner, longer tail, sharp teeth
+function sRatOscar(){return svg([
+  // smaller sharper ears
+  [3,0,'#888',3,3],[10,0,'#888',3,3],[4,1,'#c08888',1,1],[11,1,'#c08888',1,1],
+  // elongated sleek head
+  [3,2,'#999',10,7],[2,3,'#999',12,5],[2,5,'#999',12,4],
+  // sharp beady eyes (red-tinted, evolved)
+  [5,4,'#cc2222',2,2],[9,4,'#cc2222',2,2],[6,4,'#111',1,1],[10,4,'#111',1,1],
+  // pointed snout
+  [5,7,'#aa2222',2,1],[6,7,'#ff4444',2,1],
+  // sharp exposed teeth
+  [5,8,'#fff',2,1],[8,8,'#fff',2,1],
+  // longer whiskers
+  [0,6,'#555',5,1],[11,6,'#555',5,1],[0,7,'#555',4,1],[12,7,'#555',4,1],
+  [0,8,'#555',3,1],[13,8,'#555',3,1],
+  // sleeker body
+  [1,9,'#888',14,6],[2,10,'#999',12,4],[2,12,'#aaa',10,2],
+  // belly (smaller)
+  [5,10,'#ccc',6,3],
+  // legs — longer, more agile
+  [2,14,'#777',3,2],[10,14,'#777',3,2],[1,15,'#666',5,1],[9,15,'#666',5,1],
+  // long whippy tail
+  [14,11,'#888',1,1],[15,10,'#888',1,1],[15,9,'#888',1,1],[15,8,'#888',1,1],
+  [15,7,'#777',1,1],[14,6,'#777',1,1],
+])}
 // ═══════════════════════════════════════════
 //  JAYJAMON DATA
 // ═══════════════════════════════════════════
 const JAY={
   indie:{name:'INDIE',type:'Indie/Vibes',baseHp:90,baseAtk:62,draw:sIndie,mythic:false,
     desc:'Brooding blonde Jayjamon. Knows bands you\'ve never heard of. Sighs constantly.',
-    moves:[{name:'ACOUSTIC BLAST',pwr:44},{name:'EMOTIONAL DAMAGE',pwr:58}]},
+    moves:[{name:'ACOUSTIC BLAST',pwr:44},{name:'EMOTIONAL DAMAGE',pwr:58},{name:'MOPE ATTACK',pwr:52},{name:'SAD CHORD',pwr:66}]},
   jayj:{name:'JAYJ',type:'Heavy/Stout',baseHp:145,baseAtk:72,draw:sJayj,mythic:false,
-    desc:'Morbidly obese. Every footstep registers on the Richter scale.',
-    moves:[{name:'BODY SLAM',pwr:82},{name:'GRAVITON WHEEZE',pwr:54}]},
+    desc:'Morbidly obese. Every footstep registers on the Richter scale. Evolves into OMEGA JAYJ at Lv.50.',
+    evolvesAt:50,evolvesInto:'omegajayj',
+    moves:[{name:'BODY SLAM',pwr:82},{name:'GRAVITON WHEEZE',pwr:54},{name:'FAT ROLL',pwr:68},{name:'SEISMIC STOMP',pwr:90}]},
   jesse:{name:'JESSE',type:'Fire/Chaos',baseHp:84,baseAtk:82,draw:sJesse,mythic:false,
     desc:'Ginger-haired chaos engine. Do not let near open flames.',
-    moves:[{name:'GINGER SNAP',pwr:72},{name:'FRECKLE STORM',pwr:50}]},
+    moves:[{name:'GINGER SNAP',pwr:72},{name:'FRECKLE STORM',pwr:50},{name:'HEAT WAVE',pwr:64},{name:'COMBUSTION',pwr:88}]},
   rohan:{name:'ROHAN',type:'Dreads/Chill',baseHp:100,baseAtk:70,draw:sRohan,mythic:false,
     desc:'Dreadlocked Jayjamon. Hair so long it contains its own ecosystem.',
-    moves:[{name:'DREAD WHIP',pwr:66},{name:'TANGLE TRAP',pwr:52}]},
+    moves:[{name:'DREAD WHIP',pwr:66},{name:'TANGLE TRAP',pwr:52},{name:'KNOT LOCK',pwr:60},{name:'ROOTS WRATH',pwr:78}]},
   oscar:{name:'OSCAR',type:'Normal/Large',baseHp:112,baseAtk:74,draw:sOscar,mythic:false,
-    desc:'Just an absolutely massive mouse. Nobody knows why. Eats everything.',
-    moves:[{name:'BIG CHOMP',pwr:76},{name:'GIANT SQUEAK',pwr:48}]},
+    desc:'Just an absolutely massive mouse. Nobody knows why. Eats everything. Evolves into RAT OSCAR at Lv.40.',
+    evolvesAt:40,evolvesInto:'ratoscar',
+    moves:[{name:'BIG CHOMP',pwr:76},{name:'GIANT SQUEAK',pwr:48},{name:'MOUSE RUSH',pwr:60},{name:'CHEESE BREATH',pwr:52}]},
+  ratoscar:{name:'RAT OSCAR',type:'Evolved/Feral',baseHp:155,baseAtk:108,draw:sRatOscar,mythic:false,
+    desc:'Oscar evolved. Now sleeker, faster, and considerably more aggressive. Those teeth are not just for show.',
+    evolvedFrom:'oscar',
+    moves:[{name:'RAT FRENZY',pwr:95},{name:'SEWER SURGE',pwr:82},{name:'TOXIC TAIL',pwr:78},{name:'FERAL SCREAM',pwr:65}]},
   arlie:{name:'ARLIE',type:'Nerd/Glass',baseHp:78,baseAtk:66,draw:sArlie,mythic:false,
     desc:'Glasses larger than its own head. Vision is perfect; everything else is chaos.',
-    moves:[{name:'LENS FLARE',pwr:62},{name:'SPECS SMASH',pwr:70}]},
+    moves:[{name:'LENS FLARE',pwr:62},{name:'SPECS SMASH',pwr:70},{name:'PRESCRIPTION BURN',pwr:58},{name:'FOUR-EYES FURY',pwr:80}]},
   rocco:{name:'ROCCO',type:'Bald/Stone',baseHp:120,baseAtk:78,draw:sRocco,mythic:false,
     desc:'Completely bald. Blinding dome shine is used as a weapon.',
-    moves:[{name:'DOME GLARE',pwr:68},{name:'SKULL BASH',pwr:80}]},
+    moves:[{name:'DOME GLARE',pwr:68},{name:'SKULL BASH',pwr:80},{name:'CHROME SHINE',pwr:62},{name:'BALD TACKLE',pwr:74}]},
   alby:{name:'ALBY',type:'Tiny/Speedy',baseHp:55,baseAtk:58,draw:sAlby,mythic:false,
     desc:'Incredibly small. Hard to hit. Surprisingly fierce.',
-    moves:[{name:'MICRO BITE',pwr:55},{name:'TINY TACKLE',pwr:42}]},
+    moves:[{name:'MICRO BITE',pwr:55},{name:'TINY TACKLE',pwr:42},{name:'QUICK DASH',pwr:62},{name:'SMALL BUT DEADLY',pwr:70}]},
+  nick:{name:'NICK',type:'Chill/Confused',baseHp:88,baseAtk:65,draw:sNick,mythic:false,
+    desc:'Just a normal dude called Nick. Always looks slightly confused. Very chill about it though.',
+    moves:[{name:'CONFUSED STARE',pwr:50},{name:'CASUAL SHRUG',pwr:62},{name:'BLANK EXPRESSION',pwr:45},{name:'ACCIDENTAL HIT',pwr:72}]},
+  elliot:{name:'ELLIOT',type:'Sharp/Intense',baseHp:82,baseAtk:78,draw:sElliot,mythic:false,
+    desc:'Extremely focused. Wears neat sharp glasses. Will not break eye contact. Ever.',
+    moves:[{name:'DEATH STARE',pwr:72},{name:'INTENSE FOCUS',pwr:60},{name:'LASER GLARE',pwr:80},{name:'ANALYTICAL STRIKE',pwr:66}]},
   sonny:{name:'SONNY G.B.',type:'ULTRA GOD BEAST MYTHICAL LEGEND',baseHp:9999,baseAtk:99999,draw:sSonny,mythic:true,ultraGod:true,spawnOnce:true,
     desc:'Sonny Gordon Beasly transcended all known tiers. Only reachable after conquering ALL mythicals. One-shots JAYJ and OMEGA JAYJ. The Fields are his domain.',
-    moves:[{name:'THE BEASLY SPECIAL',pwr:99999},{name:"GORDON'S WRATH",pwr:88888}],
+    moves:[{name:'THE BEASLY SPECIAL',pwr:99999},{name:"GORDON'S WRATH",pwr:88888},{name:'ULTRA GOD STOMP',pwr:77777},{name:'TRANSCENDENT SLAM',pwr:99000}],
     specialVs:{jayj:'oneshot',omegajayj:'oneshot'}},
   googspice:{name:'GOOG SPICE',type:'MYTHIC/Volcano',baseHp:380,baseAtk:220,draw:sGoogSpice,mythic:true,spawnOnce:true,
     desc:'Born from the volcano\'s core. Made of pure condensed spice and magma. Only ONE exists.',
-    moves:[{name:'SPICE ERUPTION',pwr:200},{name:'MAGMA SURGE',pwr:180}]},
+    moves:[{name:'SPICE ERUPTION',pwr:200},{name:'MAGMA SURGE',pwr:180},{name:'LAVA PILLAR',pwr:165},{name:'VOLCANIC FURY',pwr:215}]},
   freakypratiky:{name:'FREAKY PRATIKY',type:'MYTHIC/Mountain',baseHp:350,baseAtk:240,draw:sFreakyPratiky,mythic:true,spawnOnce:true,
     desc:'A wildly freaky entity from Nepal. Three eyes. Only ONE exists.',
-    moves:[{name:'NEPAL FRENZY',pwr:220},{name:'THIRD EYE BLAST',pwr:200}]},
-  omegajayj:{name:'OMEGA JAYJ',type:'MYTHIC/Birmingham',baseHp:420,baseAtk:210,draw:sOmegaJayj,mythic:true,spawnOnce:true,
+    moves:[{name:'NEPAL FRENZY',pwr:220},{name:'THIRD EYE BLAST',pwr:200},{name:'HIMALAYAN STRIKE',pwr:190},{name:'FREAKY DANCE',pwr:175}]},
+  omegajayj:{name:'OMEGA JAYJ',type:'MYTHIC/Birmingham',baseHp:420,baseAtk:210,draw:sOmegaJayj,mythic:true,spawnOnce:true,canEvolveFrom:'jayj',
     desc:'The ultimate evolution of JAYJ, forged in Birmingham. Only ONE exists.',
-    moves:[{name:'OMEGA SLAM',pwr:210},{name:'BRUMMIE CRUSH',pwr:190}]},
+    moves:[{name:'OMEGA SLAM',pwr:210},{name:'BRUMMIE CRUSH',pwr:190},{name:'OMEGA WHEEZE',pwr:180},{name:'FULL MASS DROP',pwr:230}]},
   rotoscoperocco:{name:'ROTOSCOPE ROCCO',type:'MYTHIC/Lair',baseHp:460,baseAtk:280,draw:sRotoscopeRocco,mythic:true,spawnOnce:true,
     desc:'A reality-glitching mythical from the Lair. Rivals TERRY.',
-    moves:[{name:'REALITY GLITCH',pwr:270},{name:'PIXEL SHATTER',pwr:260}]},
+    moves:[{name:'REALITY GLITCH',pwr:270},{name:'PIXEL SHATTER',pwr:260},{name:'FRAME TEAR',pwr:245},{name:'STATIC OVERLOAD',pwr:255}]},
   terry:{name:'TERRY',type:'MYTHIC/Lair',baseHp:460,baseAtk:285,draw:sTerry,mythic:true,spawnOnce:true,
     desc:'The dark rival of Rotoscope Rocco. Purple coat. The strongest.',
-    moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265}]},
+    moves:[{name:"RIVAL'S WRATH",pwr:280},{name:'PURPLE DEVASTATION',pwr:265},{name:'COAT SLASH',pwr:255},{name:'FINAL RECKONING',pwr:290}]},
 };
-const ALL_KEYS=['indie','jayj','jesse','rohan','oscar','arlie','rocco','alby','sonny','googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
+const ALL_KEYS=['indie','jayj','jesse','rohan','oscar','ratoscar','arlie','rocco','alby','nick','elliot','sonny','googspice','freakypratiky','omegajayj','rotoscoperocco','terry'];
 const TOTAL=ALL_KEYS.length;
 const STARTERS=['indie','jesse','oscar'];
 const SPAWNED_MYTHICS=new Set();
@@ -886,6 +1034,25 @@ function levelUpInst(inst,times=1){
   return levelled;
 }
 
+// Check and trigger evolution after level-up
+function checkEvolution(inst){
+  const d=JAY[inst.key];
+  if(!d.evolvesAt||inst.lv<d.evolvesAt)return null;
+  const targetKey=d.evolvesInto;
+  if(!targetKey||!JAY[targetKey])return null;
+  const oldName=d.name;
+  const newD=JAY[targetKey];
+  // Transform in-place
+  inst.key=targetKey;
+  const newMax=calcMaxHp(targetKey,inst.lv);
+  const diff=newMax-inst.maxHp;
+  inst.maxHp=newMax;
+  inst.hp=Math.min(inst.maxHp,inst.hp+diff);
+  // Mark as caught
+  G.caught.add(targetKey);G.seen.add(targetKey);
+  return{oldName,newName:newD.name};
+}
+
 // Award exp to active jayjamon after winning a battle
 function awardExp(winner, defeatedLv, isMythic){
   if(!winner)return null;
@@ -895,7 +1062,8 @@ function awardExp(winner, defeatedLv, isMythic){
   if(winner.exp>=winner.expToNext){
     const oldLv=winner.lv;
     levelUpInst(winner,1);
-    return{levelled:true,oldLv,newLv:winner.lv,expGained:base};
+    const evo=checkEvolution(winner);
+    return{levelled:true,oldLv,newLv:winner.lv,expGained:base,evolution:evo};
   }
   return{levelled:false,expGained:base};
 }
@@ -908,14 +1076,14 @@ const TILE={COLS:64,ROWS:36};
 const T_GRASS=0,T_TALL=1,T_PATH=2,T_WALL=3,T_WATER=4,
       T_CENTER=5,T_SHOP=6,T_SIGN=7,T_TREE=8,T_FLOWER=9,
       T_LAVA=10,T_ROCK=11,T_SNOW=12,T_ICE=13,T_DARK=14,T_PORTAL=15,
-      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21;
+      T_MOUNTAIN=16,T_CITY=17,T_LAIR_WALL=18,T_LAIR_FLOOR=19,T_FIELD=20,T_FIELD_TALL=21,T_ICE_RINK=22,T_NOSE_GRASS=23;
 const TILE_COLORS={[T_GRASS]:'#3a7a3a',[T_TALL]:'#1e5c1e',[T_PATH]:'#a08060',
   [T_WALL]:'#8b4513',[T_WATER]:'#3060a8',[T_CENTER]:'#e03050',[T_SHOP]:'#d0a030',
   [T_SIGN]:'#c08040',[T_TREE]:'#226622',[T_FLOWER]:'#4a9a4a',[T_LAVA]:'#cc3300',
   [T_ROCK]:'#886644',[T_SNOW]:'#ddeeff',[T_ICE]:'#aaccee',[T_DARK]:'#110022',
   [T_PORTAL]:'#660099',[T_MOUNTAIN]:'#887766',[T_CITY]:'#667788',
-  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a'};
-const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL];
+  [T_LAIR_WALL]:'#220033',[T_LAIR_FLOOR]:'#1a0028',[T_FIELD]:'#5a9a2a',[T_FIELD_TALL]:'#2a6a0a',[T_ICE_RINK]:'#c8eeff',[T_NOSE_GRASS]:'#c8a030'};
+const WALKABLE=[T_GRASS,T_TALL,T_PATH,T_FLOWER,T_LAVA,T_ROCK,T_SNOW,T_ICE,T_DARK,T_MOUNTAIN,T_CITY,T_LAIR_FLOOR,T_FIELD,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS];
 
 function buildMap(){
   const C=TILE.COLS,R=TILE.ROWS,m=[];
@@ -935,15 +1103,37 @@ function buildMap(){
   for(let r=12;r<15;r++) for(let c=22;c<26;c++) m[r][c]=T_SHOP;
   for(let c=30;c<C-1;c++){m[9][c]=T_PATH;m[10][c]=T_PATH;}
   for(let r=17;r<R-1;r++){m[r][15]=T_PATH;m[r][16]=T_PATH;}
+  // Volcano path down east side
   for(let r=1;r<10;r++){m[r][48]=T_PATH;m[r][49]=T_PATH;}
+  // Volcano lava core
   for(let r=2;r<15;r++) for(let c=33;c<58;c++){
     if(m[r][c]===T_GRASS){const d=Math.abs(r-8)+Math.abs(c-45);if(d<4)m[r][c]=T_LAVA;else m[r][c]=T_ROCK;}
   }
   for(let r=5;r<12;r++) for(let c=40;c<52;c++){if(Math.abs(r-8)+Math.abs(c-46)<5)m[r][c]=T_LAVA;else m[r][c]=T_ROCK;}
   for(let c=35;c<57;c++){m[1][c]=T_ROCK;m[15][c]=T_ROCK;}
   for(let r=1;r<16;r++){m[r][32]=T_ROCK;m[r][60]=T_ROCK;}
-  for(let r=1;r<9;r++) for(let c=45;c<61;c++){if(m[r][c]===T_GRASS||m[r][c]===T_ROCK)m[r][c]=(r+c)%3===0?T_SNOW:T_MOUNTAIN;}
-  for(let c=50;c<58;c++){m[1][c]=T_ICE;m[2][c]=T_SNOW;}
+  // EXPANDED MOUNTAIN — now covers rows 1-14, cols 44-63
+  for(let r=1;r<15;r++) for(let c=45;c<63;c++){
+    if(m[r][c]===T_GRASS||m[r][c]===T_ICE)
+      m[r][c]=(r<4||(c>57&&r<8))?T_SNOW:(r+c)%4===0?T_ICE:T_MOUNTAIN;
+  }
+  // Mountain path north
+  for(let r=1;r<9;r++){m[r][48]=T_PATH;m[r][49]=T_PATH;}
+  // Mountain top peak ice
+  for(let c=50;c<62;c++) m[1][c]=T_ICE;
+  for(let c=48;c<62;c++) m[2][c]=T_SNOW;
+  // ICE RINK — rows 10-14, cols 50-60, Freaky Pratiky spawns here
+  for(let r=10;r<15;r++) for(let c=50;c<61;c++) m[r][c]=T_ICE_RINK;
+  // Ice rink border
+  for(let c=49;c<62;c++){m[9][c]=T_ICE;m[15][c]=T_ROCK;}
+  for(let r=10;r<15;r++){m[r][49]=T_ICE;m[r][61]=T_ICE;}
+  // Path to ice rink from volcano path
+  m[9][48]=T_PATH;m[9][49]=T_PATH;m[10][48]=T_PATH;
+  // JAYJ'S NOSE — orange grass zone, rows 16-18, cols 30-43 (between town path and volcano)
+  for(let r=16;r<19;r++) for(let c=30;c<44;c++) m[r][c]=T_NOSE_GRASS;
+  // Connect nose to path
+  m[15][30]=T_PATH;m[16][30]=T_PATH;
+  for(let c=30;c<44;c++) m[15][c]=T_PATH;
   for(let r=20;r<34;r++) for(let c=32;c<60;c++){if(m[r][c]===T_GRASS)m[r][c]=T_CITY;}
   for(let c=32;c<60;c++){m[26][c]=T_PATH;m[27][c]=T_PATH;}
   for(let r=20;r<34;r++){m[r][44]=T_PATH;m[r][45]=T_PATH;}
@@ -975,21 +1165,25 @@ function buildMap(){
 const WORLD_MAP=buildMap();
 
 const GRASS_ZONES=[
-  {r1:2,c1:2,r2:7,c2:11,  pool:['indie','arlie','alby']},
-  {r1:12,c1:2,r2:16,c2:11, pool:['jesse','rohan','rocco']},
-  {r1:2,c1:19,r2:7,c2:27,  pool:['oscar','sonny','alby']},
+  {r1:2,c1:2,r2:7,c2:11,  pool:['indie','arlie','alby','nick']},
+  {r1:12,c1:2,r2:16,c2:11, pool:['jesse','rohan','rocco','elliot']},
+  {r1:2,c1:19,r2:7,c2:27,  pool:['oscar','alby']},
   {r1:12,c1:19,r2:16,c2:27,pool:['jayj','rocco','arlie']},
   {r1:2,c1:33,r2:14,c2:59, pool:['googspice'],     mythicKey:'googspice'},
-  {r1:1,c1:45,r2:8,c2:60,  pool:['freakypratiky'], mythicKey:'freakypratiky'},
+  {r1:1,c1:45,r2:14,c2:63, pool:['freakypratiky'], mythicKey:'freakypratiky'},
+  {r1:10,c1:50,r2:14,c2:60, pool:['freakypratiky','indie','alby'], mythicKey:'freakypratiky'},  // ice rink also spawns FP
+  {r1:16,c1:30,r2:18,c2:43, pool:['jayj','indie','nick','elliot','alby'], lv:20},  // Jayj's Nose lv20
   {r1:21,c1:33,r2:25,c2:42,pool:['omegajayj'],     mythicKey:'omegajayj'},
   {r1:28,c1:46,r2:32,c2:58,pool:['jayj','oscar','omegajayj'],mythicKey:'omegajayj'},
   {r1:23,c1:3,r2:31,c2:13, pool:['rotoscoperocco'],mythicKey:'rotoscoperocco'},
   {r1:23,c1:15,r2:31,c2:26,pool:['terry'],         mythicKey:'terry'},
-  {r1:1,c1:61,r2:35,c2:62,  pool:['sonny'],          mythicKey:'sonny', fieldsGate:true, midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby']},
+  {r1:1,c1:61,r2:35,c2:62,  pool:['sonny'],          mythicKey:'sonny', fieldsGate:true, midPool:['indie','jesse','rohan','oscar','arlie','rocco','alby','nick','elliot']},
 ];
 const REGION_BOUNDS=[
   {name:'VOLCANO',   r1:1,c1:32,r2:16,c2:61},
-  {name:'MOUNTAIN',  r1:1,c1:44,r2:9,c2:61},
+  {name:'MOUNTAIN',  r1:1,c1:44,r2:14,c2:63},
+  {name:'ICE RINK',  r1:10,c1:49,r2:15,c2:62},
+  {name:'JAYJ NOSE', r1:15,c1:29,r2:19,c2:44},
   {name:'BIRMINGHAM',r1:19,c1:31,r2:34,c2:61},
   {name:'MYTH.LAIR', r1:19,c1:1,r2:34,c2:29},
   {name:'TOWN',      r1:1,c1:1,r2:18,c2:31},
@@ -1112,7 +1306,20 @@ function renderWorld(){
       else if(t===T_SIGN){ctx.fillStyle='#c0a060';ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+3,6,8);ctx.fillStyle='#8b6030';ctx.fillRect(c*RENDER_TILE+7,r*RENDER_TILE+11,2,5);}
       else if(t===T_FLOWER){ctx.fillStyle='#ffdd00';ctx.beginPath();ctx.arc(c*RENDER_TILE+8,r*RENDER_TILE+8,2,0,Math.PI*2);ctx.fill();}
       else if(t===T_FIELD){ctx.fillStyle='#4a8a1a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+6,2,8);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE+4,2,10);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+7,2,7);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+5,2,9);}
-      else if(t===T_FIELD_TALL){ctx.fillStyle='#1a5a0a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+2,2,12);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE,2,14);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,11);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+1,2,13);ctx.fillStyle='#3a9a1a';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,2);ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE,3,2);}
+      else if(t===T_ICE_RINK){
+        // Ice rink — light blue with crosshatch lines
+        ctx.fillStyle='#d8f4ff';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.strokeStyle='#88ccee';ctx.lineWidth=0.5;
+        ctx.beginPath();ctx.moveTo(c*RENDER_TILE,r*RENDER_TILE+8);ctx.lineTo(c*RENDER_TILE+RENDER_TILE,r*RENDER_TILE+8);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(c*RENDER_TILE+RENDER_TILE/2,r*RENDER_TILE);ctx.lineTo(c*RENDER_TILE+RENDER_TILE/2,r*RENDER_TILE+RENDER_TILE);ctx.stroke();
+      } else if(t===T_NOSE_GRASS){
+        // Jayj's Nose — amber orange with nose-hair wisps
+        ctx.fillStyle='#d4882a';ctx.fillRect(c*RENDER_TILE,r*RENDER_TILE,RENDER_TILE,RENDER_TILE);
+        ctx.fillStyle='#aa6010';
+        ctx.fillRect(c*RENDER_TILE+3,r*RENDER_TILE+5,2,8);
+        ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,10);
+        ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE+7,1,6);
+      } else if(t===T_FIELD_TALL){ctx.fillStyle='#1a5a0a';ctx.fillRect(c*RENDER_TILE+1,r*RENDER_TILE+2,2,12);ctx.fillRect(c*RENDER_TILE+5,r*RENDER_TILE,2,14);ctx.fillRect(c*RENDER_TILE+9,r*RENDER_TILE+3,2,11);ctx.fillRect(c*RENDER_TILE+13,r*RENDER_TILE+1,2,13);ctx.fillStyle='#3a9a1a';ctx.fillRect(c*RENDER_TILE+2,r*RENDER_TILE+2,3,2);ctx.fillRect(c*RENDER_TILE+6,r*RENDER_TILE,3,2);}
     }
   }
   // peer
@@ -1160,7 +1367,7 @@ function startWalk(){
         const reg=getRegion(nr,nc);
         if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
         document.getElementById('hud-region').textContent=reg;
-        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL];
+        const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS];
         if(tallTypes.includes(t)){
           PLAYER.grassSteps++;
           if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
@@ -1184,7 +1391,7 @@ function stopWalk(){
 
 function showRegionBanner(name){
   const b=document.getElementById('region-banner');
-  const labels={'TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS'};
+  const labels={'TOWN':'🏡 JAYTOWN','VOLCANO':'🌋 VOLCANO','MOUNTAIN':'⛰️ MOUNTAIN','BIRMINGHAM':'🏙️ BIRMINGHAM','MYTH.LAIR':'💀 MYTHICAL LAIR','FIELDS':'🌾 THE FIELDS','ICE RINK':'⛸️ ICE RINK','JAYJ NOSE':'👃 JAYJ\'S NOSE'};
   b.textContent=labels[name]||name;b.style.display='block';
   setTimeout(()=>b.style.display='none',2500);
 }
@@ -1258,7 +1465,9 @@ function triggerEncounter(r,c){
   if(available.length===0){startWalk();return;}
   const key=available[Math.floor(Math.random()*available.length)];
   G.seen.add(key);
-  G.enemy=newInst(key,Math.floor(Math.random()*6)+2);
+  const baseLv=zone.lv||null; // zone can specify a base level
+  const lv=baseLv?baseLv+Math.floor(Math.random()*5):Math.floor(Math.random()*6)+2;
+  G.enemy=newInst(key,lv);
   G.battles++;G.over=false;G.locked=false;
   showView('battle');refreshBattleUI(false);
   setBT(`${JAY[key].name}!`,false);
@@ -1409,7 +1618,19 @@ function refreshBattleUI(isMythic=false){
   document.getElementById('bfpn').textContent=pd.name;
   document.getElementById('bfplv').textContent=`Lv.${pl.lv}`;
   setHP('e',en.hp,en.maxHp,isMythic);setHP('p',pl.hp,pl.maxHp,false);
-  pd.moves.forEach((mv,i)=>{document.getElementById(`bm${i+1}n`).textContent=mv.name;document.getElementById(`bm${i+1}p`).textContent=`PWR:${mv.pwr}`;});
+  pd.moves.forEach((mv,i)=>{
+    const nb=document.getElementById(`bm${i+1}n`);
+    const pb=document.getElementById(`bm${i+1}p`);
+    if(nb)nb.textContent=mv.name;
+    if(pb)pb.textContent=`PWR:${mv.pwr}`;
+  });
+  // Hide move buttons that don't have a move
+  for(let i=1;i<=4;i++){
+    const b=document.getElementById(`bm${i}`);
+    if(b)b.style.display=pd.moves[i-1]?'':'none';
+  }
+  // Reset to fight tab
+  battleTab('fight');
   document.getElementById('ball-count').textContent=`x${(G.bag.ball||0)+(G.bag.superball||0)+(G.bag.mythball||0)}`;
   document.getElementById('pot-count').textContent=`x${(G.bag.potion||0)+(G.bag.superpotion||0)+(G.bag.bigzoup||0)}`;
   document.getElementById('btc').style.display='none';
@@ -1426,9 +1647,20 @@ function setBT(msg,cursor=false){
   document.getElementById('bt').textContent=msg;
   document.getElementById('btc').style.display=cursor?'inline-block':'none';
 }
+function battleTab(tab){
+  const isFight=tab==='fight';
+  document.getElementById('bmen').style.display=isFight?'grid':'none';
+  document.getElementById('bmen-action').style.display=isFight?'none':'grid';
+  document.getElementById('btab-fight').style.background=isFight?'var(--gb2)':'var(--gb1)';
+  document.getElementById('btab-fight').style.color=isFight?'var(--gb0)':'var(--gb4)';
+  document.getElementById('btab-action').style.background=isFight?'var(--gb1)':'var(--gb2)';
+  document.getElementById('btab-action').style.color=isFight?'var(--gb4)':'var(--gb0)';
+}
 function lockBtns(v){
   G.locked=v;
-  ['bm1','bm2','bmc','bmi','bmf','bms'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
+  ['bm1','bm2','bm3','bm4','bmc','bmi','bmf','bms'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
+  // Also disable tab buttons
+  ['btab-fight','btab-action'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=v;});
 }
 function calcDmg(atk,pwr,lv){return Math.max(1,Math.floor(atk*pwr/100*(0.85+Math.random()*0.15)+lv*0.5));}
 
@@ -1466,7 +1698,15 @@ async function useMove(idx){
     const winner=G.party[G.activeIdx];
     const expResult=awardExp(winner,en.lv,JAY[en.key].mythic||JAY[en.key].ultraGod);
     if(expResult&&expResult.levelled){
-      setBT(`${JAY[en.key].mythic||JAY[en.key].ultraGod?ed.name+' vanished!':ed.name+' fainted!'} ${winner?JAY[winner.key].name:''} grew to Lv.${expResult.newLv}! ✨`);
+      if(expResult.evolution){
+        setBT(`${ed.name} fainted! ✨ ${expResult.evolution.oldName} evolved into ${expResult.evolution.newName}!`,true);
+        // Update player sprite in battle
+        const newPd=JAY[winner.key];
+        document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${newPd.draw()}</div>`;
+        document.getElementById('bfpn').textContent=newPd.name;
+      } else {
+        setBT(`${ed.name} fainted! ${winner?JAY[winner.key].name:''} ➜ Lv.${expResult.newLv}! ✨`);
+      }
       document.getElementById('bfplv').textContent='Lv.'+winner.lv;
       setHP('p',winner.hp,winner.maxHp);
     } else {
@@ -1605,10 +1845,15 @@ async function usePotionInBattle(){
   if(G.bag.bigzoup>0){
     G.bag.bigzoup--;
     levelUpInst(pl,5);
+    const bigEvo=checkEvolution(pl);
     setHP('p',pl.hp,pl.maxHp);
     document.getElementById('bfplv').textContent='Lv.'+pl.lv;
+    if(bigEvo){
+      document.getElementById('psp').innerHTML=`<div style="width:100%;height:100%;animation:s-idle 1.4s ease-in-out infinite">${JAY[pl.key].draw()}</div>`;
+      document.getElementById('bfpn').textContent=JAY[pl.key].name;
+    }
     document.getElementById('pot-count').textContent='x'+((G.bag.potion||0)+(G.bag.superpotion||0));
-    setBT(`Za Big Zoup! ${pd.name} grew to Lv.${pl.lv}! 🍲`);
+    setBT(bigEvo?`Za Big Zoup! ✨ ${bigEvo.oldName} evolved into ${bigEvo.newName}!`:`Za Big Zoup! ${JAY[pl.key].name} grew to Lv.${pl.lv}! 🍲`);
     await sleep(1200);lockBtns(false);setBT('Choose your move!',false);return;
   }
   if(G.bag.superpotion>0){G.bag.superpotion--;heal=100;}else G.bag.potion--;
@@ -1629,7 +1874,7 @@ function endBattle(caught){
   updateHUD();
   if(G.caught.size>=TOTAL){
     showView('win');
-    document.getElementById('win-txt').innerHTML=`Battles:${G.battles} · Wins:${G.wins}<br>All ${TOTAL} Jayjamon caught!<br>Even Sonny G.B. himself!`;
+    document.getElementById('win-txt').innerHTML=`Battles:${G.battles} \u00b7 Wins:${G.wins}<br>All ${TOTAL} caught! Even Sonny G.B.!`;
     doSave();return;
   }
   showView('world');startWalk();scheduleAutoSave();
@@ -2253,7 +2498,7 @@ function devExec(cmd){
           const reg=getRegion(nr,nc);
           if(reg!==lastRegion){lastRegion=reg;showRegionBanner(reg);}
           document.getElementById('hud-region').textContent=reg;
-          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL];
+          const tallTypes=[T_TALL,T_LAVA,T_DARK,T_FIELD_TALL,T_ICE_RINK,T_NOSE_GRASS];
           if(tallTypes.includes(t)&&!window._noEncounters){
             PLAYER.grassSteps++;
             if(PLAYER.grassSteps>=3&&Math.random()<0.4){PLAYER.grassSteps=0;triggerEncounter(nr,nc);return;}
